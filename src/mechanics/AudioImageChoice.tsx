@@ -1,54 +1,64 @@
-// Fahemtu — Produit 1 : M1, récupération audio ↔ image (cœur, 2 directions).
+// Fahemtu — Produit 1 : choix audio ↔ image (cœur). Sert M1 et M2.
 //
 // ORAL-ONLY : aucun texte arabe, aucune traduction FR. Le sens passe par
-// l'audio (arabe) et l'image. Le seul texte est du chrome (consigne générique).
+// l'audio (arabe) et l'image. Seul texte = chrome (consigne générique).
 //
 //   audio_to_image : on joue l'audio ; choisir l'image (4 options).
 //   image_to_audio : on montre l'image ; choisir le bon son (3 boutons son).
 //
-// Erreur → feedback bref, pas de révélation ; le mot revient plus loin (file).
+// `optionBuilder` choisit la stratégie de distracteurs :
+//   - cluster (§4) pour M1 ;
+//   - confusables (phonétiquement proches) pour M2 (discrimination).
+//
+// Feedback correctif partagé (rouge fautif + teal bonne réponse). Erreur → le
+// mot revient plus loin dans la file (récupération active plus tard).
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useSound } from "../app/sound-context";
 import { SpeakerIcon } from "../app/icons";
 import { WordImage } from "../ui/WordImage";
-import { buildOptions } from "../lib/distractors";
-import { ADVANCE_MS, REVEAL_MS, type MechanicProps } from "./types";
+import { buildOptions, type OptionBuilder } from "../lib/distractors";
+import { type MechanicProps } from "./types";
 import { useRetrievalQueue } from "./useRetrievalQueue";
+import { choiceRing, useChoiceFeedback } from "./choiceFeedback";
+import { ProgressBar } from "./ProgressBar";
 
-type Direction = "audio_to_image" | "image_to_audio";
+export type Direction = "audio_to_image" | "image_to_audio";
 
 const OPTION_COUNT: Record<Direction, number> = {
   audio_to_image: 4,
   image_to_audio: 3,
 };
 
-const CONSIGNE: Record<Direction, string> = {
-  audio_to_image: "Écoute, puis choisis l'image.",
-  image_to_audio: "Regarde l'image, puis choisis le bon son.",
-};
-
-type Status = "idle" | "correct" | "wrong";
-
-export function M1Retrieval({
+export function AudioImageChoice({
   words,
   pool,
   onComplete,
   direction,
-}: MechanicProps & { direction: Direction }) {
+  optionBuilder = buildOptions,
+  consigne,
+}: MechanicProps & {
+  direction: Direction;
+  optionBuilder?: OptionBuilder;
+  consigne: string;
+}) {
   const { play } = useSound();
   const { current, step, progress, advance } = useRetrievalQueue(words, onComplete);
+  const { status, chosen, locked, resolve } = useChoiceFeedback(advance);
 
   const options = useMemo(
-    () => (current ? buildOptions(current, pool, OPTION_COUNT[direction]) : []),
+    () => (current ? optionBuilder(current, pool, OPTION_COUNT[direction]) : []),
     // Régénéré à chaque item (`step`).
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [step, current?.slug, pool, direction],
+    [step, current?.slug, pool, direction, optionBuilder],
   );
 
-  const [status, setStatus] = useState<Status>("idle");
-  const [chosen, setChosen] = useState<string | null>(null);
-  const [pending, setPending] = useState<string | null>(null); // image_to_audio
+  // Sélection en attente (image_to_audio), indexée par item pour s'invalider
+  // automatiquement au changement d'item (pas d'effet de reset).
+  const [pending, setPending] = useState<{ step: number; slug: string } | null>(
+    null,
+  );
+  const pendingSlug = pending?.step === step ? pending.slug : null;
 
   // Auto-lecture de l'audio cible en direction audio→image (une fois par item).
   const playedRef = useRef(-1);
@@ -60,46 +70,13 @@ export function M1Retrieval({
   }, [direction, current, step, play]);
 
   if (!current) return null;
-
-  const locked = status !== "idle";
   const currentSlug = current.slug;
-
-  function commit(slug: string) {
-    if (locked || !current) return;
-    const correct = slug === current.slug;
-    setChosen(slug);
-    setStatus(correct ? "correct" : "wrong");
-    // Sur erreur, on laisse voir la révélation corrective avant d'enchaîner.
-    // Le mot reste réinséré dans la file (récupération active plus tard).
-    window.setTimeout(
-      () => {
-        setChosen(null);
-        setPending(null);
-        setStatus("idle");
-        advance(correct);
-      },
-      correct ? ADVANCE_MS : REVEAL_MS,
-    );
-  }
-
-  function optionRing(slug: string): string {
-    if (status === "idle") return "ring-ink/10 hover:ring-ocre/60";
-    // Choix de l'apprenant : teal si correct, rouge si fautif.
-    if (slug === chosen)
-      return status === "correct" ? "ring-2 ring-teal" : "ring-2 ring-[#D64541]";
-    // Révélation corrective : sur erreur, marquer la bonne réponse en teal.
-    if (status === "wrong" && slug === currentSlug) return "ring-2 ring-teal";
-    return "ring-ink/10 opacity-60";
-  }
 
   return (
     <div className="mx-auto flex w-full max-w-xl flex-1 flex-col px-6 py-6">
-      {/* Progression sobre (pas d'XP/score). */}
       <ProgressBar done={progress.done} total={progress.total} />
 
-      <p className="mt-6 text-center text-sm font-medium text-ink/60">
-        {CONSIGNE[direction]}
-      </p>
+      <p className="mt-6 text-center text-sm font-medium text-ink/60">{consigne}</p>
 
       {direction === "audio_to_image" ? (
         <>
@@ -120,9 +97,12 @@ export function M1Retrieval({
                 key={w.slug}
                 type="button"
                 disabled={locked}
-                onClick={() => commit(w.slug)}
-                className={`aspect-square overflow-hidden rounded-2xl bg-white p-2 ring-1 ${optionRing(
+                onClick={() => resolve(w.slug, w.slug === currentSlug)}
+                className={`aspect-square overflow-hidden rounded-2xl bg-white p-2 ring-1 ${choiceRing(
                   w.slug,
+                  currentSlug,
+                  status,
+                  chosen,
                 )}`}
               >
                 <WordImage word={w} />
@@ -138,7 +118,7 @@ export function M1Retrieval({
 
           <div className="mt-8 grid grid-cols-3 gap-4">
             {options.map((w) => {
-              const isPending = pending === w.slug && status === "idle";
+              const isPending = pendingSlug === w.slug && status === "idle";
               return (
                 <button
                   key={w.slug}
@@ -146,11 +126,13 @@ export function M1Retrieval({
                   disabled={locked}
                   onClick={() => {
                     play(w.audio);
-                    setPending(w.slug);
+                    setPending({ step, slug: w.slug });
                   }}
                   aria-label="Écouter ce son"
                   className={`grid aspect-square place-items-center rounded-2xl bg-white text-teal ring-1 ${
-                    isPending ? "ring-2 ring-ocre" : optionRing(w.slug)
+                    isPending
+                      ? "ring-2 ring-ocre"
+                      : choiceRing(w.slug, currentSlug, status, chosen)
                   }`}
                 >
                   <SpeakerIcon className="h-8 w-8" />
@@ -162,8 +144,10 @@ export function M1Retrieval({
           <div className="mt-8 flex justify-center">
             <button
               type="button"
-              disabled={locked || !pending}
-              onClick={() => pending && commit(pending)}
+              disabled={locked || !pendingSlug}
+              onClick={() =>
+                pendingSlug && resolve(pendingSlug, pendingSlug === currentSlug)
+              }
               className="rounded-xl bg-teal px-6 py-2.5 text-sm font-semibold text-creme hover:opacity-90 disabled:opacity-40"
             >
               Valider
@@ -171,20 +155,6 @@ export function M1Retrieval({
           </div>
         </>
       )}
-    </div>
-  );
-}
-
-function ProgressBar({ done, total }: { done: number; total: number }) {
-  const pct = total > 0 ? Math.round((done / total) * 100) : 0;
-  return (
-    <div className="flex items-center gap-3">
-      <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-ink/10">
-        <div className="h-full bg-ocre" style={{ width: `${pct}%` }} />
-      </div>
-      <span className="text-xs tabular-nums text-ink/50">
-        {done}/{total}
-      </span>
     </div>
   );
 }

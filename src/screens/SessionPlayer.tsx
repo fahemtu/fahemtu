@@ -8,8 +8,12 @@ import { useNavigation } from "../app/navigation-context";
 import { SESSIONS } from "../content/sessions";
 import { buildSessionBlocks } from "../lib/sessionArc";
 import { preloadWords } from "../lib/assets";
+import { buildConfusableOptions, buildOptions } from "../lib/distractors";
 import { Discovery } from "../mechanics/Discovery";
-import { M1Retrieval } from "../mechanics/M1Retrieval";
+import { AudioImageChoice } from "../mechanics/AudioImageChoice";
+import { Tri } from "../mechanics/Tri";
+import { Sprint } from "../mechanics/Sprint";
+import { Memory } from "../mechanics/Memory";
 
 export function SessionPlayer({ sessionId }: { sessionId: number }) {
   const { navigate, goHome } = useNavigation();
@@ -64,23 +68,41 @@ export function SessionPlayer({ sessionId }: { sessionId: number }) {
   switch (block.kind) {
     case "decouverte":
       return <Discovery key={blockIndex} words={block.words} onComplete={next} />;
-    case "retrieval_audio_to_image":
+    case "choice":
       return (
-        <M1Retrieval
+        <AudioImageChoice
           key={blockIndex}
-          direction="audio_to_image"
+          direction={block.direction}
+          consigne={block.consigne}
+          optionBuilder={
+            block.builder === "confusable" ? buildConfusableOptions : buildOptions
+          }
           words={block.words}
           pool={block.pool}
           onComplete={next}
         />
       );
-    case "retrieval_image_to_audio":
+    case "tri":
       return (
-        <M1Retrieval
+        <Tri key={blockIndex} words={block.words} pool={block.pool} onComplete={next} />
+      );
+    case "memory":
+      return (
+        <Memory
           key={blockIndex}
-          direction="image_to_audio"
           words={block.words}
           pool={block.pool}
+          pairs={block.pairs}
+          onComplete={next}
+        />
+      );
+    case "sprint":
+      return (
+        <Sprint
+          key={blockIndex}
+          words={block.words}
+          pool={block.pool}
+          count={block.count}
           onComplete={next}
         />
       );

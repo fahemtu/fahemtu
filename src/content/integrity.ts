@@ -5,6 +5,7 @@
 
 import { WORDS, wordBySlug, type Cluster } from "./words";
 import { SESSIONS } from "./sessions";
+import { CONFUSABLE_GROUPS } from "./confusables";
 
 export interface IntegrityResult {
   ok: boolean;
@@ -70,6 +71,16 @@ export function checkContentIntegrity(): IntegrityResult {
   for (const w of WORDS) {
     if (!introduced.has(w.slug))
       warnings.push(`"${w.slug}" n'est introduit par aucune session.`);
+  }
+
+  // Confusables (M2) : slugs définis, groupes d'au moins 2 mots.
+  for (const group of CONFUSABLE_GROUPS) {
+    if (group.length < 2)
+      warnings.push(`Groupe confusable de moins de 2 mots : [${group.join(", ")}].`);
+    for (const slug of group) {
+      if (!wordBySlug[slug])
+        errors.push(`Groupe confusable référence un slug inconnu : "${slug}".`);
+    }
   }
 
   return { ok: errors.length === 0, errors, warnings };

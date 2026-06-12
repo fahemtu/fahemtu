@@ -8,7 +8,8 @@
 //   - ne JAMAIS échouer : si les candidats manquent, on renvoie moins d'options
 //     plutôt que de planter.
 
-import type { Word } from "../content/words";
+import { wordBySlug, type Word } from "../content/words";
+import { confusablesOf } from "../content/confusables";
 import { shuffle } from "./shuffle";
 
 /**
@@ -30,6 +31,13 @@ export function pickDistractors(
   return ordered.slice(0, count);
 }
 
+/** Signature commune des constructeurs d'options (cible incluse, mélangées). */
+export type OptionBuilder = (
+  target: Word,
+  pool: readonly Word[],
+  desiredOptions: number,
+) => Word[];
+
 /**
  * Construit les options d'un item (cible incluse), mélangées.
  * `desiredOptions` = nombre total souhaité (cible + distracteurs).
@@ -42,5 +50,35 @@ export function buildOptions(
   desiredOptions: number,
 ): Word[] {
   const distractors = pickDistractors(target, pool, Math.max(0, desiredOptions - 1));
+  return shuffle([target, ...distractors]);
+}
+
+/**
+ * Options pour M2 (discrimination) : distracteurs phonétiquement proches
+ * (confusables.ts) déjà introduits, complétés par la logique de cluster (§4)
+ * si besoin. Ne plante jamais ; la cible est toujours présente.
+ */
+export function buildConfusableOptions(
+  target: Word,
+  pool: readonly Word[],
+  desiredOptions: number,
+): Word[] {
+  const want = Math.max(0, desiredOptions - 1);
+  const poolSlugs = new Set(pool.map((w) => w.slug));
+  const confusables = confusablesOf(target.slug)
+    .filter((s) => s !== target.slug && poolSlugs.has(s))
+    .map((s) => wordBySlug[s])
+    .filter(Boolean);
+
+  let distractors = shuffle(confusables).slice(0, want);
+  if (distractors.length < want) {
+    // Complétion par cluster (§4) en excluant la cible et les déjà choisis.
+    const taken = new Set([target.slug, ...distractors.map((w) => w.slug)]);
+    const remaining = pool.filter((w) => !taken.has(w.slug));
+    distractors = [
+      ...distractors,
+      ...pickDistractors(target, remaining, want - distractors.length),
+    ];
+  }
   return shuffle([target, ...distractors]);
 }

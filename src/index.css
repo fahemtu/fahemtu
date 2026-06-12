@@ -30,3 +30,13 @@ body {
 
 /* Feedback < 300 ms : aucune transition décorative globale.
    Les rares transitions utiles sont déclarées localement et courtes. */
+
+/* Compte à rebours du sprint (M4) : informatif, non décoratif. */
+@keyframes fahemtu-countdown {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
