@@ -58,8 +58,8 @@ export function ProofPlayer() {
 
   if (finished) {
     return (
-      <div className="mx-auto flex w-full max-w-md flex-1 flex-col items-center justify-center gap-6 px-6 py-12 text-center">
-        <div className="text-7xl font-bold tabular-nums text-teal">
+      <div className="mx-auto flex w-full max-w-md flex-1 flex-col items-center justify-center gap-6 px-5 py-10 text-center sm:px-6 sm:py-12">
+        <div className="text-6xl font-bold tabular-nums text-teal sm:text-7xl">
           {TOTAL_WORDS}
         </div>
         <p className="text-lg text-ink">
@@ -85,7 +85,7 @@ export function ProofPlayer() {
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-xl flex-1 flex-col px-6 py-6">
+    <div className="mx-auto flex w-full max-w-xl flex-1 flex-col px-4 py-5 sm:px-6 sm:py-6">
       <ProgressBar done={index} total={sequence.length} />
 
       <p className="mt-6 text-center text-sm font-medium text-ink/60">
@@ -99,7 +99,7 @@ export function ProofPlayer() {
             type="button"
             disabled={locked}
             onClick={() => answer(w.slug, w.slug === currentSlug)}
-            className={`aspect-square overflow-hidden rounded-2xl bg-white p-2 ring-1 ${choiceRing(
+            className={`aspect-square touch-manipulation select-none overflow-hidden rounded-2xl bg-white p-2 ring-1 ${choiceRing(
               w.slug,
               currentSlug,
               status,

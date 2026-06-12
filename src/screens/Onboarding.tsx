@@ -110,7 +110,7 @@ function GuidedItem({
   }, [target.slug]);
 
   return (
-    <div className="mx-auto flex w-full max-w-xl flex-1 flex-col px-6 py-8">
+    <div className="mx-auto flex w-full max-w-xl flex-1 flex-col px-4 py-6 sm:px-6 sm:py-8">
       <p className="text-center text-xs font-semibold uppercase tracking-wide text-ink/40">
         Le geste {index}/{total}
       </p>
@@ -136,7 +136,7 @@ function GuidedItem({
             type="button"
             disabled={locked}
             onClick={() => resolve(w.slug, w.slug === target.slug)}
-            className={`aspect-square overflow-hidden rounded-2xl bg-white p-2 ring-1 ${choiceRing(
+            className={`aspect-square touch-manipulation select-none overflow-hidden rounded-2xl bg-white p-2 ring-1 ${choiceRing(
               w.slug,
               target.slug,
               status,
@@ -153,7 +153,7 @@ function GuidedItem({
 
 function Centered({ children }: { children: React.ReactNode }) {
   return (
-    <div className="mx-auto flex w-full max-w-xl flex-1 flex-col items-center justify-center gap-6 px-6 py-12 text-center">
+    <div className="mx-auto flex w-full max-w-xl flex-1 flex-col items-center justify-center gap-6 px-5 py-10 text-center sm:px-6 sm:py-12">
       {children}
     </div>
   );

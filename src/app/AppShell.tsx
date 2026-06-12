@@ -74,14 +74,14 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="flex min-h-full flex-col">
-      <header className="flex items-center justify-between px-5 py-3">
-        <div className="flex items-center gap-2">
+      <header className="flex items-center justify-between px-3 py-2 sm:px-5 sm:py-3">
+        <div className="flex items-center gap-1.5 sm:gap-2">
           {!onHome && (
             <button
               type="button"
               onClick={handleHomeClick}
               aria-label="Retour à l'accueil"
-              className="grid h-10 w-10 place-items-center rounded-full text-ink hover:bg-ink/5"
+              className="grid h-11 w-11 place-items-center rounded-full text-ink hover:bg-ink/5"
             >
               <HomeIcon className="h-5 w-5" />
             </button>
@@ -94,7 +94,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           onClick={toggleMuted}
           aria-label={muted ? "Activer le son" : "Couper le son"}
           aria-pressed={muted}
-          className="grid h-10 w-10 place-items-center rounded-full text-ink hover:bg-ink/5"
+          className="grid h-11 w-11 place-items-center rounded-full text-ink hover:bg-ink/5"
         >
           {muted ? (
             <SoundOffIcon className="h-5 w-5" />

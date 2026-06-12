@@ -80,7 +80,7 @@ export function AudioImageChoice({
   const currentSlug = current.slug;
 
   return (
-    <div className="mx-auto flex w-full max-w-xl flex-1 flex-col px-6 py-6">
+    <div className="mx-auto flex w-full max-w-xl flex-1 flex-col px-4 py-5 sm:px-6 sm:py-6">
       <ProgressBar done={progress.done} total={progress.total} />
 
       <p className="mt-6 text-center text-sm font-medium text-ink/60">{consigne}</p>
@@ -105,7 +105,7 @@ export function AudioImageChoice({
                 type="button"
                 disabled={locked}
                 onClick={() => answer(w.slug, w.slug === currentSlug)}
-                className={`aspect-square overflow-hidden rounded-2xl bg-white p-2 ring-1 ${choiceRing(
+                className={`aspect-square touch-manipulation select-none overflow-hidden rounded-2xl bg-white p-2 ring-1 ${choiceRing(
                   w.slug,
                   currentSlug,
                   status,
@@ -136,7 +136,7 @@ export function AudioImageChoice({
                     setPending({ step, slug: w.slug });
                   }}
                   aria-label="Écouter ce son"
-                  className={`grid aspect-square place-items-center rounded-2xl bg-white text-teal ring-1 ${
+                  className={`grid aspect-square touch-manipulation select-none place-items-center rounded-2xl bg-white text-teal ring-1 ${
                     isPending
                       ? "ring-2 ring-ocre"
                       : choiceRing(w.slug, currentSlug, status, chosen)

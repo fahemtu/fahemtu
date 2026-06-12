@@ -34,7 +34,7 @@ export function Discovery({
   const last = index === words.length - 1;
 
   return (
-    <div className="mx-auto flex w-full max-w-xl flex-1 flex-col px-6 py-6">
+    <div className="mx-auto flex w-full max-w-xl flex-1 flex-col px-4 py-5 sm:px-6 sm:py-6">
       <p className="text-center text-sm font-medium text-ink/60">
         Écoute et observe — nouveau mot {index + 1}/{words.length}
       </p>
@@ -43,7 +43,7 @@ export function Discovery({
         type="button"
         onClick={() => play(word.audio)}
         aria-label="Réécouter"
-        className="mx-auto mt-8 aspect-square w-64 max-w-full overflow-hidden rounded-3xl bg-white p-3 ring-1 ring-ink/10 hover:ring-ocre/60"
+        className="mx-auto mt-6 aspect-square w-56 max-w-full touch-manipulation select-none overflow-hidden rounded-3xl bg-white p-3 ring-1 ring-ink/10 hover:ring-ocre/60 sm:mt-8 sm:w-64"
       >
         <WordImage word={word} />
       </button>

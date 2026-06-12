@@ -15,7 +15,7 @@ export function Summary({ sessionId }: { sessionId: number }) {
   const canContinue = nextSession && isUnlocked(nextSession.id);
 
   return (
-    <div className="mx-auto flex w-full max-w-md flex-1 flex-col items-center justify-center gap-6 px-6 py-12 text-center">
+    <div className="mx-auto flex w-full max-w-md flex-1 flex-col items-center justify-center gap-6 px-5 py-10 text-center sm:px-6 sm:py-12">
       <p className="text-sm font-semibold uppercase tracking-wide text-ocre">
         Session {sessionId} terminée
       </p>

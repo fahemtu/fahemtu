@@ -100,10 +100,11 @@ export function Memory({
     return "ring-1 ring-ink/10 hover:ring-ocre/60";
   }
 
-  const cols = cards.length <= 8 ? "grid-cols-4" : cards.length <= 12 ? "grid-cols-4" : "grid-cols-5";
+  // Mobile : 3 colonnes (cartes plus grandes) ; à partir de sm : 4 colonnes.
+  const cols = cards.length > 12 ? "grid-cols-4 sm:grid-cols-5" : "grid-cols-3 sm:grid-cols-4";
 
   return (
-    <div className="mx-auto flex w-full max-w-xl flex-1 flex-col px-6 py-6">
+    <div className="mx-auto flex w-full max-w-xl flex-1 flex-col px-4 py-5 sm:px-6 sm:py-6">
       <ProgressBar done={matched.size} total={total} />
 
       <p className="mt-6 text-center text-sm font-medium text-ink/60">
@@ -121,7 +122,7 @@ export function Memory({
               disabled={busy || matched.has(card.slug)}
               onClick={() => tap(card)}
               aria-label={card.kind === "sound" ? "Carte son" : "Carte image"}
-              className={`grid aspect-square place-items-center overflow-hidden rounded-2xl bg-white p-2 ${ringFor(
+              className={`grid aspect-square touch-manipulation select-none place-items-center overflow-hidden rounded-2xl bg-white p-2 ${ringFor(
                 card,
               )}`}
             >

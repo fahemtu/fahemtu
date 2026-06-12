@@ -82,7 +82,7 @@ export function Sprint({
   const currentSlug = current.slug;
 
   return (
-    <div className="mx-auto flex w-full max-w-xl flex-1 flex-col px-6 py-6">
+    <div className="mx-auto flex w-full max-w-xl flex-1 flex-col px-4 py-5 sm:px-6 sm:py-6">
       <ProgressBar done={index} total={sequence.length} />
 
       <p className="mt-6 text-center text-sm font-medium text-ink/60">
@@ -111,7 +111,7 @@ export function Sprint({
               if (correct) onWordMastered?.(currentSlug);
               resolve(w.slug, correct);
             }}
-            className={`aspect-square overflow-hidden rounded-2xl bg-white p-2 ring-1 ${choiceRing(
+            className={`aspect-square touch-manipulation select-none overflow-hidden rounded-2xl bg-white p-2 ring-1 ${choiceRing(
               w.slug,
               currentSlug,
               status,

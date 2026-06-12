@@ -17,7 +17,7 @@ export function JourneyMap() {
   const { comprisCount, isCompleted, isUnlocked, reset } = useProgress();
 
   return (
-    <div className="mx-auto w-full max-w-md px-6 py-8">
+    <div className="mx-auto w-full max-w-md px-5 py-8 sm:px-6">
       <header className="text-center">
         <h1 className="text-2xl font-bold tracking-tight text-ink">
           Les mots qui débloquent l'arabe
@@ -43,7 +43,7 @@ export function JourneyMap() {
                 type="button"
                 disabled={locked}
                 onClick={() => navigate({ name: "session", sessionId: s.id })}
-                className={`flex w-full items-center gap-4 rounded-2xl px-4 py-4 text-left ring-1 transition-none ${
+                className={`flex w-full touch-manipulation select-none items-center gap-4 rounded-2xl px-4 py-4 text-left ring-1 transition-none ${
                   locked
                     ? "bg-ink/[0.03] ring-ink/10 opacity-60"
                     : "bg-white ring-ink/10 hover:ring-ocre/60"

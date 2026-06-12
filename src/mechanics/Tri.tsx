@@ -37,7 +37,7 @@ export function Tri({ words, pool, onComplete, onWordMastered }: MechanicProps) 
   const correctCluster = current.cluster;
 
   return (
-    <div className="mx-auto flex w-full max-w-xl flex-1 flex-col px-6 py-6">
+    <div className="mx-auto flex w-full max-w-xl flex-1 flex-col px-4 py-5 sm:px-6 sm:py-6">
       <ProgressBar done={progress.done} total={progress.total} />
 
       <p className="mt-6 text-center text-sm font-medium text-ink/60">
@@ -66,7 +66,7 @@ export function Tri({ words, pool, onComplete, onWordMastered }: MechanicProps) 
               if (correct) onWordMastered?.(current.slug);
               resolve(c, correct);
             }}
-            className={`flex items-center gap-3 rounded-2xl bg-white px-4 py-4 text-left ring-1 ${choiceRing(
+            className={`flex touch-manipulation select-none items-center gap-3 rounded-2xl bg-white px-4 py-4 text-left ring-1 ${choiceRing(
               c,
               correctCluster,
               status,
