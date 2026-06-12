@@ -101,11 +101,12 @@ export function Sprint({
       </div>
 
       <div className="mt-8 grid grid-cols-2 gap-4">
-        {options.map((w) => (
+        {options.map((w, i) => (
           <button
             key={w.slug}
             type="button"
             disabled={locked}
+            aria-label={`Choix ${i + 1}`}
             onClick={() => {
               const correct = w.slug === currentSlug;
               if (correct) onWordMastered?.(currentSlug);

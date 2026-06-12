@@ -3,7 +3,7 @@
 // session, §8 : une session quittée en cours n'est pas marquée complétée) +
 // réglage « son ». Aucun chrome décoratif, aucun XP/vies/streak.
 
-import { useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useNavigation } from "./navigation-context";
 import { useSound } from "./sound-context";
 import { HomeIcon, SoundOffIcon, SoundOnIcon } from "./icons";
@@ -23,6 +23,18 @@ function ConfirmDialog({
   onConfirm: () => void;
   onCancel: () => void;
 }) {
+  const cancelRef = useRef<HTMLButtonElement>(null);
+
+  // Focus initial sur l'option sûre + Échap pour annuler (a11y clavier).
+  useEffect(() => {
+    cancelRef.current?.focus();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onCancel();
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [onCancel]);
+
   return (
     <div
       role="dialog"
@@ -39,6 +51,7 @@ function ConfirmDialog({
         <p className="mt-2 text-sm text-ink/70">{body}</p>
         <div className="mt-6 flex justify-end gap-3">
           <button
+            ref={cancelRef}
             type="button"
             onClick={onCancel}
             className="rounded-lg px-4 py-2 text-sm font-medium text-ink/70 hover:bg-ink/5"

@@ -28,6 +28,16 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Accessibilité : focus clavier visible et sobre (jamais au pointeur/tactile).
+   Pas de surbrillance grise au tap sur mobile. */
+:focus-visible {
+  outline: 2px solid var(--color-teal);
+  outline-offset: 2px;
+}
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
 /* Feedback < 300 ms : aucune transition décorative globale.
    Les rares transitions utiles sont déclarées localement et courtes. */
 

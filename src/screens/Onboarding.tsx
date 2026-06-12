@@ -130,11 +130,12 @@ function GuidedItem({
       </div>
 
       <div className="mt-8 grid grid-cols-3 gap-4">
-        {options.map((w) => (
+        {options.map((w, i) => (
           <button
             key={w.slug}
             type="button"
             disabled={locked}
+            aria-label={`Choix ${i + 1}`}
             onClick={() => resolve(w.slug, w.slug === target.slug)}
             className={`aspect-square touch-manipulation select-none overflow-hidden rounded-2xl bg-white p-2 ring-1 ${choiceRing(
               w.slug,

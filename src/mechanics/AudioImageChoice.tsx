@@ -99,11 +99,12 @@ export function AudioImageChoice({
           </div>
 
           <div className="mt-8 grid grid-cols-2 gap-4">
-            {options.map((w) => (
+            {options.map((w, i) => (
               <button
                 key={w.slug}
                 type="button"
                 disabled={locked}
+                aria-label={`Choix ${i + 1}`}
                 onClick={() => answer(w.slug, w.slug === currentSlug)}
                 className={`aspect-square touch-manipulation select-none overflow-hidden rounded-2xl bg-white p-2 ring-1 ${choiceRing(
                   w.slug,
@@ -124,7 +125,7 @@ export function AudioImageChoice({
           </div>
 
           <div className="mt-8 grid grid-cols-3 gap-4">
-            {options.map((w) => {
+            {options.map((w, i) => {
               const isPending = pendingSlug === w.slug && status === "idle";
               return (
                 <button
@@ -135,7 +136,8 @@ export function AudioImageChoice({
                     play(w.audio);
                     setPending({ step, slug: w.slug });
                   }}
-                  aria-label="Écouter ce son"
+                  aria-label={`Écouter le son ${i + 1}`}
+                  aria-pressed={isPending}
                   className={`grid aspect-square touch-manipulation select-none place-items-center rounded-2xl bg-white text-teal ring-1 ${
                     isPending
                       ? "ring-2 ring-ocre"
