@@ -17,6 +17,8 @@ export interface ProgressValue {
   recordMastered: (slug: string) => void;
   /** Marque une session complétée (idempotent). */
   completeSession: (sessionId: number) => void;
+  /** Réinitialise toute la progression (outil de dev). */
+  reset: () => void;
 }
 
 export const ProgressContext = createContext<ProgressValue | null>(null);

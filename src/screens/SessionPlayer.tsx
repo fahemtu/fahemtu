@@ -10,6 +10,7 @@ import { SESSIONS } from "../content/sessions";
 import { buildSessionBlocks } from "../lib/sessionArc";
 import { preloadWords } from "../lib/assets";
 import { buildConfusableOptions, buildOptions } from "../lib/distractors";
+import { ProofPlayer } from "./ProofPlayer";
 import { Discovery } from "../mechanics/Discovery";
 import { AudioImageChoice } from "../mechanics/AudioImageChoice";
 import { Tri } from "../mechanics/Tri";
@@ -52,16 +53,7 @@ export function SessionPlayer({ sessionId }: { sessionId: number }) {
     );
   }
 
-  if (session.isProof) {
-    return (
-      <CenteredNote
-        title="Moment de preuve"
-        body="La rafale sur les 67 mots arrive à l'étape 6."
-        cta="Retour à la carte"
-        onCta={goHome}
-      />
-    );
-  }
+  if (session.isProof) return <ProofPlayer />;
 
   if (blocks.length === 0 || done) return null; // redirection en cours
 

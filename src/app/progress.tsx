@@ -58,6 +58,8 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     );
   }, []);
 
+  const reset = useCallback(() => setStore({ completed: [], mastered: [] }), []);
+
   const isCompleted = useCallback(
     (sessionId: number) => completedSet.has(sessionId),
     [completedSet],
@@ -78,8 +80,17 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       isUnlocked,
       recordMastered,
       completeSession,
+      reset,
     }),
-    [completedSet, masteredSet, isCompleted, isUnlocked, recordMastered, completeSession],
+    [
+      completedSet,
+      masteredSet,
+      isCompleted,
+      isUnlocked,
+      recordMastered,
+      completeSession,
+      reset,
+    ],
   );
 
   return (

@@ -6,12 +6,15 @@ import { useNavigation } from "../app/navigation-context";
 import { useProgress } from "../app/progress-context";
 import { SESSIONS } from "../content/sessions";
 import { CheckIcon, LockIcon } from "../app/icons";
+import { DEV_UNLOCK_ALL_PHASES } from "../config";
 
 const TOTAL_WORDS = 67;
+// Outils de dev visibles seulement en développement (jamais en prod).
+const SHOW_DEV_TOOLS = import.meta.env.DEV || DEV_UNLOCK_ALL_PHASES;
 
 export function JourneyMap() {
   const { navigate } = useNavigation();
-  const { comprisCount, isCompleted, isUnlocked } = useProgress();
+  const { comprisCount, isCompleted, isUnlocked, reset } = useProgress();
 
   return (
     <div className="mx-auto w-full max-w-md px-6 py-8">
@@ -81,6 +84,18 @@ export function JourneyMap() {
           );
         })}
       </ol>
+
+      {SHOW_DEV_TOOLS && (
+        <div className="mt-8 border-t border-ink/10 pt-4 text-center">
+          <button
+            type="button"
+            onClick={reset}
+            className="text-xs font-medium text-ink/40 hover:text-ink/70"
+          >
+            dev · réinitialiser la progression
+          </button>
+        </div>
+      )}
     </div>
   );
 }
