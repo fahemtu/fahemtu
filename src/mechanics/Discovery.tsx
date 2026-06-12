@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { useSound } from "../app/sound-context";
 import { WordImage } from "../ui/WordImage";
 import { SpeakerIcon } from "../app/icons";
+import { SessionLayout } from "./layout";
 import type { Word } from "../content/words";
 
 export function Discovery({
@@ -34,28 +35,30 @@ export function Discovery({
   const last = index === words.length - 1;
 
   return (
-    <div className="mx-auto flex w-full max-w-xl flex-1 flex-col px-4 py-5 sm:px-6 sm:py-6">
-      <p className="text-center text-sm font-medium text-ink/60">
+    <SessionLayout>
+      <p className="shrink-0 text-center text-sm font-medium text-ink/60">
         Écoute et observe — nouveau mot {index + 1}/{words.length}
       </p>
 
-      <button
-        type="button"
-        onClick={() => play(word.audio)}
-        aria-label="Réécouter"
-        className="mx-auto mt-6 aspect-square w-56 max-w-full touch-manipulation select-none overflow-hidden rounded-3xl bg-white p-3 ring-1 ring-ink/10 hover:ring-ocre/60 sm:mt-8 sm:w-64"
-      >
-        <WordImage word={word} />
-      </button>
+      {/* Bloc image + légende, centré verticalement dans l'espace disponible. */}
+      <div className="flex min-h-0 flex-1 flex-col items-center justify-center gap-4">
+        <button
+          type="button"
+          onClick={() => play(word.audio)}
+          aria-label="Réécouter"
+          className="aspect-square h-full max-h-full max-w-full touch-manipulation select-none overflow-hidden rounded-3xl bg-white p-3 ring-1 ring-ink/10 hover:ring-ocre/60"
+        >
+          <WordImage word={word} />
+        </button>
 
-      <div className="mt-4 flex justify-center">
-        <span className="inline-flex items-center gap-1.5 text-xs text-ink/40">
+        <span className="inline-flex shrink-0 items-center gap-1.5 text-xs text-ink/40">
           <SpeakerIcon className="h-4 w-4" />
           Touche l'image pour réécouter
         </span>
       </div>
 
-      <div className="mt-auto flex justify-center pt-8">
+      {/* « Suivant » à distance normale, non plaqué au bas de l'écran. */}
+      <div className="mt-4 flex shrink-0 justify-center">
         <button
           type="button"
           onClick={() => {
@@ -67,6 +70,6 @@ export function Discovery({
           {last ? "Commencer les exercices" : "Suivant"}
         </button>
       </div>
-    </div>
+    </SessionLayout>
   );
 }
