@@ -85,8 +85,13 @@ export function AppShell({ children }: { children: ReactNode }) {
     else goHome();
   };
 
+  // Écran de jeu (session, dont la preuve S8) : hauteur stable basée sur le
+  // plus petit viewport (svh) → tout tient sans scroll quel que soit l'état de
+  // la barre d'URL. Ailleurs (scrollable) : dvh, qui suit le viewport courant.
+  const heightClass = route.name === "session" ? "h-screen-stable" : "h-screen-dynamic";
+
   return (
-    <div className="flex h-dvh flex-col overflow-hidden">
+    <div className={`flex flex-col overflow-hidden ${heightClass}`}>
       <header className="flex shrink-0 items-center justify-between px-3 py-2 sm:px-5 sm:py-3">
         <div className="flex items-center gap-1.5 sm:gap-2">
           {!onHome && (

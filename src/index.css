@@ -28,6 +28,20 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Hauteur plein-écran robuste (ordre = priorité croissante, le navigateur
+   garde la dernière unité qu'il comprend → fallback 100vh inclus) :
+   - stable : 100svh = plus PETIT viewport (barre d'URL visible). Un écran de
+     jeu tient toujours, sans dépendre de l'état de la barre ni jank de resize.
+   - dynamic : 100dvh = viewport courant, pour les écrans scrollables. */
+.h-screen-stable {
+  height: 100vh;
+  height: 100svh;
+}
+.h-screen-dynamic {
+  height: 100vh;
+  height: 100dvh;
+}
+
 /* Accessibilité : focus clavier visible et sobre (jamais au pointeur/tactile).
    Pas de surbrillance grise au tap sur mobile. */
 :focus-visible {
