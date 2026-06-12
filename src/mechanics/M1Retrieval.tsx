@@ -13,7 +13,7 @@ import { useSound } from "../app/sound-context";
 import { SpeakerIcon } from "../app/icons";
 import { WordImage } from "../ui/WordImage";
 import { buildOptions } from "../lib/distractors";
-import { ADVANCE_MS, type MechanicProps } from "./types";
+import { ADVANCE_MS, REVEAL_MS, type MechanicProps } from "./types";
 import { useRetrievalQueue } from "./useRetrievalQueue";
 
 type Direction = "audio_to_image" | "image_to_audio";
@@ -62,24 +62,34 @@ export function M1Retrieval({
   if (!current) return null;
 
   const locked = status !== "idle";
+  const currentSlug = current.slug;
 
   function commit(slug: string) {
     if (locked || !current) return;
     const correct = slug === current.slug;
     setChosen(slug);
     setStatus(correct ? "correct" : "wrong");
-    window.setTimeout(() => {
-      setChosen(null);
-      setPending(null);
-      setStatus("idle");
-      advance(correct);
-    }, ADVANCE_MS);
+    // Sur erreur, on laisse voir la révélation corrective avant d'enchaîner.
+    // Le mot reste réinséré dans la file (récupération active plus tard).
+    window.setTimeout(
+      () => {
+        setChosen(null);
+        setPending(null);
+        setStatus("idle");
+        advance(correct);
+      },
+      correct ? ADVANCE_MS : REVEAL_MS,
+    );
   }
 
   function optionRing(slug: string): string {
     if (status === "idle") return "ring-ink/10 hover:ring-ocre/60";
-    if (chosen !== slug) return "ring-ink/10 opacity-60";
-    return status === "correct" ? "ring-2 ring-teal" : "ring-2 ring-[#D64541]";
+    // Choix de l'apprenant : teal si correct, rouge si fautif.
+    if (slug === chosen)
+      return status === "correct" ? "ring-2 ring-teal" : "ring-2 ring-[#D64541]";
+    // Révélation corrective : sur erreur, marquer la bonne réponse en teal.
+    if (status === "wrong" && slug === currentSlug) return "ring-2 ring-teal";
+    return "ring-ink/10 opacity-60";
   }
 
   return (

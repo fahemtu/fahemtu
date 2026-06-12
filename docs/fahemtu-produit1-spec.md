@@ -91,8 +91,10 @@ logique de distracteurs commune (§4). Feedback **< 300 ms**, pas de transition 
 - **Direction B — `image → audio`** : on affiche l'image cible. On propose **3 boutons
   « son »** (icône haut-parleur) à écouter ; l'apprenant choisit celui qui correspond.
 - Correct → avancer. Incorrect → feedback bref + le mot **revient dans la file** plus loin
-  dans l'étape (pas d'aide gratuite, pas de révélation immédiate de la bonne réponse au-delà
-  du feedback minimal).
+  dans l'étape (pas d'aide gratuite). Sur erreur, **révéler brièvement la bonne réponse**
+  (feedback correctif) tout en gardant la réinsertion en file : la révélation arrive *après*
+  la tentative, jamais avant (anti-spectateur), et le mot revient pour une vraie récupération
+  active plus tard.
 
 ### M2 — Discrimination (travail du son sur mots réels)
 - On joue l'audio cible ; l'apprenant choisit parmi des images dont les mots sont

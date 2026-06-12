@@ -14,5 +14,8 @@ export interface MechanicProps {
   onComplete: () => void;
 }
 
-/** Délai d'enchaînement après réponse (le feedback visuel, lui, est immédiat). */
+/** Délai d'enchaînement après une bonne réponse (feedback visuel immédiat). */
 export const ADVANCE_MS = 250;
+
+/** Délai sur erreur : laisse voir la révélation corrective avant d'enchaîner. */
+export const REVEAL_MS = 900;
