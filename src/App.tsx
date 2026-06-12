@@ -3,11 +3,17 @@
 // Les écrans réels (carte de parcours, onboarding, lecteur, preuve, résumé)
 // arrivent aux étapes suivantes.
 
+import { useEffect } from "react";
 import { NavigationProvider } from "./app/navigation";
 import { useNavigation } from "./app/navigation-context";
 import { SoundProvider } from "./app/sound";
+import { useSound } from "./app/sound-context";
 import { AppShell } from "./app/AppShell";
+import { IntegrityGate } from "./app/IntegrityGate";
 import { SESSIONS } from "./content/sessions";
+import { wordBySlug } from "./content/words";
+import { WordImage } from "./ui/WordImage";
+import { preloadWords } from "./lib/assets";
 
 function Placeholder({
   badge,
@@ -60,6 +66,34 @@ function HomePlaceholder() {
   );
 }
 
+// Sonde provisoire (étape 2) : vérifie le chargement audio/image et le rendu
+// image|hex. Aucun texte arabe ni traduction FR — clic = jouer l'audio.
+// Remplacée par les mécaniques réelles à l'étape 3.
+function ContentProbe({ slugs }: { slugs: string[] }) {
+  const { play } = useSound();
+  const words = slugs.map((s) => wordBySlug[s]).filter(Boolean);
+
+  useEffect(() => {
+    preloadWords(words);
+  }, [words]);
+
+  return (
+    <div className="grid grid-cols-5 gap-3">
+      {words.map((w) => (
+        <button
+          key={w.slug}
+          type="button"
+          onClick={() => play(w.audio)}
+          aria-label="Écouter"
+          className="aspect-square overflow-hidden rounded-xl bg-creme p-1 ring-1 ring-ink/10 hover:ring-ocre/60"
+        >
+          <WordImage word={w} />
+        </button>
+      ))}
+    </div>
+  );
+}
+
 function Screens() {
   const { route, navigate, goHome } = useNavigation();
 
@@ -93,6 +127,7 @@ function Screens() {
             Lecteur de session provisoire (étape 3). Utilise le bouton accueil
             (en haut) pour tester la confirmation de sortie.
           </p>
+          {session && <ContentProbe slugs={session.newWords} />}
           <button
             type="button"
             onClick={() =>
@@ -127,9 +162,11 @@ export default function App() {
   return (
     <NavigationProvider>
       <SoundProvider>
-        <AppShell>
-          <Screens />
-        </AppShell>
+        <IntegrityGate>
+          <AppShell>
+            <Screens />
+          </AppShell>
+        </IntegrityGate>
       </SoundProvider>
     </NavigationProvider>
   );
