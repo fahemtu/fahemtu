@@ -115,7 +115,7 @@ export function Memory({
         Associe chaque image à son son.
       </p>
 
-      <FitGrid count={cards.length} cols={cols}>
+      <FitGrid count={cards.length} cols={cols} cap={160}>
         {cards.map((card) => {
           const isUp = matched.has(card.slug) || revealed.some((c) => c.id === card.id);
           const word = wordOf[card.slug];
@@ -126,7 +126,7 @@ export function Memory({
               disabled={busy || matched.has(card.slug)}
               onClick={() => tap(card)}
               aria-label={card.kind === "sound" ? "Carte son" : "Carte image"}
-              className={`grid min-h-0 touch-manipulation select-none place-items-center overflow-hidden rounded-2xl bg-white p-2 ${ringFor(
+              className={`grid aspect-square min-h-0 touch-manipulation select-none place-items-center overflow-hidden rounded-2xl bg-white p-2 ${ringFor(
                 card,
               )}`}
             >

@@ -58,7 +58,7 @@ export function Tri({ words, pool, onComplete, onWordMastered }: MechanicProps) 
         </button>
       </div>
 
-      <FitGrid count={categories.length} cols={2}>
+      <FitGrid count={categories.length} cols={2} square={false}>
         {categories.map((c) => (
           <button
             key={c}

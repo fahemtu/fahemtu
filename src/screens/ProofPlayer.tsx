@@ -95,7 +95,7 @@ export function ProofPlayer() {
         Écoute et choisis l'image.
       </p>
 
-      <FitGrid count={options.length} cols={2}>
+      <FitGrid count={options.length} cols={2} cap={260}>
         {options.map((w, i) => (
           <button
             key={w.slug}
@@ -103,7 +103,7 @@ export function ProofPlayer() {
             disabled={locked}
             aria-label={`Choix ${i + 1}`}
             onClick={() => answer(w.slug, w.slug === currentSlug)}
-            className={`min-h-0 touch-manipulation select-none overflow-hidden rounded-2xl bg-white p-2 ring-1 ${choiceRing(
+            className={`aspect-square min-h-0 touch-manipulation select-none overflow-hidden rounded-2xl bg-white p-2 ring-1 ${choiceRing(
               w.slug,
               currentSlug,
               status,

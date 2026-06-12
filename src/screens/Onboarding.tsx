@@ -130,7 +130,7 @@ function GuidedItem({
         </button>
       </div>
 
-      <FitGrid count={options.length} cols={3}>
+      <FitGrid count={options.length} cols={3} cap={200}>
         {options.map((w, i) => (
           <button
             key={w.slug}
@@ -138,7 +138,7 @@ function GuidedItem({
             disabled={locked}
             aria-label={`Choix ${i + 1}`}
             onClick={() => resolve(w.slug, w.slug === target.slug)}
-            className={`min-h-0 touch-manipulation select-none overflow-hidden rounded-2xl bg-white p-2 ring-1 ${choiceRing(
+            className={`aspect-square min-h-0 touch-manipulation select-none overflow-hidden rounded-2xl bg-white p-2 ring-1 ${choiceRing(
               w.slug,
               target.slug,
               status,
