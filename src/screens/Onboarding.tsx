@@ -155,10 +155,8 @@ function GuidedItem({
 
 function Centered({ children }: { children: React.ReactNode }) {
   return (
-    <div className="h-full overflow-y-auto">
-      <div className="mx-auto flex min-h-full w-full max-w-xl flex-col items-center justify-center gap-6 px-5 py-10 text-center sm:px-6 sm:py-12">
-        {children}
-      </div>
+    <div className="mx-auto flex w-full max-w-xl flex-1 flex-col items-center justify-center gap-6 px-5 py-10 text-center sm:px-6 sm:py-12">
+      {children}
     </div>
   );
 }

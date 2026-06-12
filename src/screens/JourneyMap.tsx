@@ -17,7 +17,7 @@ export function JourneyMap() {
   const { comprisCount, isCompleted, isUnlocked, reset } = useProgress();
 
   return (
-    <div className="mx-auto h-full w-full max-w-md overflow-y-auto px-5 py-8 sm:px-6">
+    <div className="mx-auto w-full max-w-md px-5 py-8 sm:px-6">
       <header className="text-center">
         <h1 className="text-2xl font-bold tracking-tight text-ink">
           Les mots qui débloquent l'arabe

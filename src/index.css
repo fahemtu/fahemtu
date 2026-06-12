@@ -41,6 +41,12 @@ body {
   height: 100vh;
   height: 100dvh;
 }
+/* Écrans de contenu : remplissent au moins le viewport mais peuvent grandir
+   → scroll de document naturel (pas de conteneur à scroll interne). */
+.min-h-screen-dynamic {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
 
 /* Accessibilité : focus clavier visible et sobre (jamais au pointeur/tactile).
    Pas de surbrillance grise au tap sur mobile. */

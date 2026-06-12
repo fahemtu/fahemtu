@@ -85,14 +85,25 @@ export function AppShell({ children }: { children: ReactNode }) {
     else goHome();
   };
 
-  // Écran de jeu (session, dont la preuve S8) : hauteur stable basée sur le
-  // plus petit viewport (svh) → tout tient sans scroll quel que soit l'état de
-  // la barre d'URL. Ailleurs (scrollable) : dvh, qui suit le viewport courant.
-  const heightClass = route.name === "session" ? "h-screen-stable" : "h-screen-dynamic";
+  // Écran de jeu (session, dont la preuve S8) : hauteur stable (svh) +
+  // overflow caché → tout tient sans scroll, quel que soit l'état de la barre
+  // d'URL. Écrans de contenu (accueil, onboarding, résumé) : flux normal, la
+  // page défile naturellement si ça déborde (pas de conteneur à scroll interne).
+  const isGame = route.name === "session";
 
   return (
-    <div className={`flex flex-col overflow-hidden ${heightClass}`}>
-      <header className="flex shrink-0 items-center justify-between px-3 py-2 sm:px-5 sm:py-3">
+    <div
+      className={
+        isGame
+          ? "flex h-screen-stable flex-col overflow-hidden"
+          : "flex min-h-screen-dynamic flex-col"
+      }
+    >
+      <header
+        className={`flex shrink-0 items-center justify-between px-3 py-2 sm:px-5 sm:py-3 ${
+          isGame ? "" : "sticky top-0 z-10 bg-creme"
+        }`}
+      >
         <div className="flex items-center gap-1.5 sm:gap-2">
           {!onHome && (
             <button
@@ -122,7 +133,9 @@ export function AppShell({ children }: { children: ReactNode }) {
         </button>
       </header>
 
-      <main className="flex min-h-0 flex-1 flex-col">{children}</main>
+      <main className={isGame ? "flex min-h-0 flex-1 flex-col" : "flex flex-1 flex-col"}>
+        {children}
+      </main>
 
       {confirmingExit && (
         <ConfirmDialog

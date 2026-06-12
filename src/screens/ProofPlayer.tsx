@@ -59,7 +59,7 @@ export function ProofPlayer() {
 
   if (finished) {
     return (
-      <div className="mx-auto flex h-full w-full max-w-md flex-col items-center justify-center gap-6 overflow-y-auto px-5 py-10 text-center sm:px-6 sm:py-12">
+      <div className="mx-auto flex h-full w-full max-w-md flex-col items-center justify-center gap-6 px-5 py-10 text-center sm:px-6 sm:py-12">
         <div className="text-6xl font-bold tabular-nums text-teal sm:text-7xl">
           {TOTAL_WORDS}
         </div>
