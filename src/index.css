@@ -50,3 +50,17 @@ button {
     width: 0%;
   }
 }
+
+/* Sensibilité au mouvement : neutralise les animations/transitions CSS
+   (dont le compte à rebours du sprint). La temporisation fonctionnelle du
+   feedback reste gérée par JS et n'est pas affectée. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
