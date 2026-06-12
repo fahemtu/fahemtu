@@ -85,17 +85,24 @@ export function JourneyMap() {
         })}
       </ol>
 
-      {SHOW_DEV_TOOLS && (
-        <div className="mt-8 border-t border-ink/10 pt-4 text-center">
+      <div className="mt-8 border-t border-ink/10 pt-4 text-center">
+        <button
+          type="button"
+          onClick={() => navigate({ name: "onboarding" })}
+          className="text-xs font-medium text-ink/50 hover:text-ink/80"
+        >
+          Revoir l'introduction
+        </button>
+        {SHOW_DEV_TOOLS && (
           <button
             type="button"
             onClick={reset}
-            className="text-xs font-medium text-ink/40 hover:text-ink/70"
+            className="ml-4 text-xs font-medium text-ink/40 hover:text-ink/70"
           >
             dev · réinitialiser la progression
           </button>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

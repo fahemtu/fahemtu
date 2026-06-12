@@ -10,6 +10,8 @@ export interface ProgressValue {
   masteredWords: ReadonlySet<string>;
   /** Compteur « mots compris » = nombre de mots maîtrisés. */
   comprisCount: number;
+  /** Onboarding déjà vu (premier lancement passé). */
+  onboarded: boolean;
   isCompleted: (sessionId: number) => boolean;
   /** Déverrouillée si 1re session, précédente complétée, ou dev-unlock. */
   isUnlocked: (sessionId: number) => boolean;
@@ -17,6 +19,8 @@ export interface ProgressValue {
   recordMastered: (slug: string) => void;
   /** Marque une session complétée (idempotent). */
   completeSession: (sessionId: number) => void;
+  /** Marque l'onboarding comme vu. */
+  markOnboarded: () => void;
   /** Réinitialise toute la progression (outil de dev). */
   reset: () => void;
 }

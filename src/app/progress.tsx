@@ -11,19 +11,23 @@ import { ProgressContext, type ProgressValue } from "./progress-context";
 interface Stored {
   completed: number[];
   mastered: string[];
+  onboarded: boolean;
 }
+
+const EMPTY: Stored = { completed: [], mastered: [], onboarded: false };
 
 function load(): Stored {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return { completed: [], mastered: [] };
+    if (!raw) return EMPTY;
     const parsed = JSON.parse(raw) as Partial<Stored>;
     return {
       completed: Array.isArray(parsed.completed) ? parsed.completed : [],
       mastered: Array.isArray(parsed.mastered) ? parsed.mastered : [],
+      onboarded: parsed.onboarded === true,
     };
   } catch {
-    return { completed: [], mastered: [] };
+    return EMPTY;
   }
 }
 
@@ -58,7 +62,11 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     );
   }, []);
 
-  const reset = useCallback(() => setStore({ completed: [], mastered: [] }), []);
+  const markOnboarded = useCallback(() => {
+    setStore((s) => (s.onboarded ? s : { ...s, onboarded: true }));
+  }, []);
+
+  const reset = useCallback(() => setStore(EMPTY), []);
 
   const isCompleted = useCallback(
     (sessionId: number) => completedSet.has(sessionId),
@@ -76,19 +84,23 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       completedSessions: completedSet,
       masteredWords: masteredSet,
       comprisCount: masteredSet.size,
+      onboarded: store.onboarded,
       isCompleted,
       isUnlocked,
       recordMastered,
       completeSession,
+      markOnboarded,
       reset,
     }),
     [
       completedSet,
       masteredSet,
+      store.onboarded,
       isCompleted,
       isUnlocked,
       recordMastered,
       completeSession,
+      markOnboarded,
       reset,
     ],
   );
