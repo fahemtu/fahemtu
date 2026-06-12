@@ -14,7 +14,7 @@ import { useRetrievalQueue } from "./useRetrievalQueue";
 import { choiceRing, useChoiceFeedback } from "./choiceFeedback";
 import { ProgressBar } from "./ProgressBar";
 
-export function Tri({ words, pool, onComplete }: MechanicProps) {
+export function Tri({ words, pool, onComplete, onWordMastered }: MechanicProps) {
   const { play } = useSound();
   const { current, step, progress, advance } = useRetrievalQueue(words, onComplete);
   const { status, chosen, locked, resolve } = useChoiceFeedback(advance);
@@ -61,7 +61,11 @@ export function Tri({ words, pool, onComplete }: MechanicProps) {
             key={c}
             type="button"
             disabled={locked}
-            onClick={() => resolve(c, c === correctCluster)}
+            onClick={() => {
+              const correct = c === correctCluster;
+              if (correct) onWordMastered?.(current.slug);
+              resolve(c, correct);
+            }}
             className={`flex items-center gap-3 rounded-2xl bg-white px-4 py-4 text-left ring-1 ${choiceRing(
               c,
               correctCluster,

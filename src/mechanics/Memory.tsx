@@ -21,6 +21,7 @@ interface Card {
 export function Memory({
   words,
   onComplete,
+  onWordMastered,
   pairs,
 }: MechanicProps & { pairs: number }) {
   const { play } = useSound();
@@ -73,6 +74,7 @@ export function Memory({
         setRevealed([]);
         setBusy(false);
         if (isMatch) {
+          onWordMastered?.(a.slug);
           setMatched((prev) => {
             const m = new Set(prev).add(a.slug);
             if (m.size === total && !doneRef.current) {

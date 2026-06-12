@@ -34,6 +34,7 @@ export function AudioImageChoice({
   words,
   pool,
   onComplete,
+  onWordMastered,
   direction,
   optionBuilder = buildOptions,
   consigne,
@@ -45,6 +46,12 @@ export function AudioImageChoice({
   const { play } = useSound();
   const { current, step, progress, advance } = useRetrievalQueue(words, onComplete);
   const { status, chosen, locked, resolve } = useChoiceFeedback(advance);
+
+  // Récupération correcte → mot compris (§8).
+  const answer = (id: string, correct: boolean) => {
+    if (correct && current) onWordMastered?.(current.slug);
+    resolve(id, correct);
+  };
 
   const options = useMemo(
     () => (current ? optionBuilder(current, pool, OPTION_COUNT[direction]) : []),
@@ -97,7 +104,7 @@ export function AudioImageChoice({
                 key={w.slug}
                 type="button"
                 disabled={locked}
-                onClick={() => resolve(w.slug, w.slug === currentSlug)}
+                onClick={() => answer(w.slug, w.slug === currentSlug)}
                 className={`aspect-square overflow-hidden rounded-2xl bg-white p-2 ring-1 ${choiceRing(
                   w.slug,
                   currentSlug,
@@ -146,7 +153,7 @@ export function AudioImageChoice({
               type="button"
               disabled={locked || !pendingSlug}
               onClick={() =>
-                pendingSlug && resolve(pendingSlug, pendingSlug === currentSlug)
+                pendingSlug && answer(pendingSlug, pendingSlug === currentSlug)
               }
               className="rounded-xl bg-teal px-6 py-2.5 text-sm font-semibold text-creme hover:opacity-90 disabled:opacity-40"
             >

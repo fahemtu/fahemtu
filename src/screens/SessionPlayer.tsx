@@ -1,10 +1,11 @@
 // Fahemtu — Produit 1 : lecteur de session.
-// Déroule les blocs de l'arc (§5) l'un après l'autre. À la fin, va au résumé.
-// La persistance (session complétée, mots maîtrisés) arrive à l'étape 5 ;
-// quitter en cours (bouton accueil) ne marque rien (§8).
+// Déroule les blocs de l'arc (§5) l'un après l'autre. À la fin : marque la
+// session complétée et va au résumé. Quitter en cours (bouton accueil) ne
+// marque rien (§8) — completeSession n'est appelé qu'à la toute fin.
 
 import { useEffect, useMemo, useState } from "react";
 import { useNavigation } from "../app/navigation-context";
+import { useProgress } from "../app/progress-context";
 import { SESSIONS } from "../content/sessions";
 import { buildSessionBlocks } from "../lib/sessionArc";
 import { preloadWords } from "../lib/assets";
@@ -17,6 +18,7 @@ import { Memory } from "../mechanics/Memory";
 
 export function SessionPlayer({ sessionId }: { sessionId: number }) {
   const { navigate, goHome } = useNavigation();
+  const { recordMastered, completeSession } = useProgress();
   const session = SESSIONS.find((s) => s.id === sessionId);
   const blocks = useMemo(
     () => (session ? buildSessionBlocks(session) : []),
@@ -31,12 +33,13 @@ export function SessionPlayer({ sessionId }: { sessionId: number }) {
 
   const done = blockIndex >= blocks.length;
 
-  // Fin de session → résumé inter-session.
+  // Fin de session → marque complétée puis va au résumé inter-session.
   useEffect(() => {
     if (session && !session.isProof && blocks.length > 0 && done) {
+      completeSession(sessionId);
       navigate({ name: "summary", sessionId });
     }
-  }, [done, session, blocks.length, navigate, sessionId]);
+  }, [done, session, blocks.length, navigate, sessionId, completeSession]);
 
   if (!session) {
     return (
@@ -80,11 +83,18 @@ export function SessionPlayer({ sessionId }: { sessionId: number }) {
           words={block.words}
           pool={block.pool}
           onComplete={next}
+          onWordMastered={recordMastered}
         />
       );
     case "tri":
       return (
-        <Tri key={blockIndex} words={block.words} pool={block.pool} onComplete={next} />
+        <Tri
+          key={blockIndex}
+          words={block.words}
+          pool={block.pool}
+          onComplete={next}
+          onWordMastered={recordMastered}
+        />
       );
     case "memory":
       return (
@@ -94,6 +104,7 @@ export function SessionPlayer({ sessionId }: { sessionId: number }) {
           pool={block.pool}
           pairs={block.pairs}
           onComplete={next}
+          onWordMastered={recordMastered}
         />
       );
     case "sprint":
@@ -104,6 +115,7 @@ export function SessionPlayer({ sessionId }: { sessionId: number }) {
           pool={block.pool}
           count={block.count}
           onComplete={next}
+          onWordMastered={recordMastered}
         />
       );
   }

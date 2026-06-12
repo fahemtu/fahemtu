@@ -12,6 +12,8 @@ export interface MechanicProps {
   pool: Word[];
   /** Appelé quand tous les items du bloc ont été réussis au moins une fois. */
   onComplete: () => void;
+  /** Remonte un mot récupéré correctement (→ « mot compris », §8). */
+  onWordMastered?: (slug: string) => void;
 }
 
 /** Délai d'enchaînement après une bonne réponse (feedback visuel immédiat). */

@@ -32,6 +32,7 @@ export function Sprint({
   words,
   pool,
   onComplete,
+  onWordMastered,
   count,
 }: MechanicProps & { count: number }) {
   const { play } = useSound();
@@ -105,7 +106,11 @@ export function Sprint({
             key={w.slug}
             type="button"
             disabled={locked}
-            onClick={() => resolve(w.slug, w.slug === currentSlug)}
+            onClick={() => {
+              const correct = w.slug === currentSlug;
+              if (correct) onWordMastered?.(currentSlug);
+              resolve(w.slug, correct);
+            }}
             className={`aspect-square overflow-hidden rounded-2xl bg-white p-2 ring-1 ${choiceRing(
               w.slug,
               currentSlug,
