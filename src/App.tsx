@@ -1,19 +1,15 @@
 // Fahemtu — Produit 1 : point d'entrée.
-// Étape 1 : coquille (tokens + AppShell + routing) avec écrans placeholder.
-// Les écrans réels (carte de parcours, onboarding, lecteur, preuve, résumé)
-// arrivent aux étapes suivantes.
+// Routing : home / onboarding / session (lecteur réel, M1) / summary.
+// Carte de parcours, onboarding et moment de preuve : écrans encore placeholder
+// (étapes 5–7). Le lecteur de session est jouable (étape 3).
 
-import { useEffect } from "react";
 import { NavigationProvider } from "./app/navigation";
 import { useNavigation } from "./app/navigation-context";
 import { SoundProvider } from "./app/sound";
-import { useSound } from "./app/sound-context";
 import { AppShell } from "./app/AppShell";
 import { IntegrityGate } from "./app/IntegrityGate";
 import { SESSIONS } from "./content/sessions";
-import { wordBySlug } from "./content/words";
-import { WordImage } from "./ui/WordImage";
-import { preloadWords } from "./lib/assets";
+import { SessionPlayer } from "./screens/SessionPlayer";
 
 function Placeholder({
   badge,
@@ -66,36 +62,8 @@ function HomePlaceholder() {
   );
 }
 
-// Sonde provisoire (étape 2) : vérifie le chargement audio/image et le rendu
-// image|hex. Aucun texte arabe ni traduction FR — clic = jouer l'audio.
-// Remplacée par les mécaniques réelles à l'étape 3.
-function ContentProbe({ slugs }: { slugs: string[] }) {
-  const { play } = useSound();
-  const words = slugs.map((s) => wordBySlug[s]).filter(Boolean);
-
-  useEffect(() => {
-    preloadWords(words);
-  }, [words]);
-
-  return (
-    <div className="grid grid-cols-5 gap-3">
-      {words.map((w) => (
-        <button
-          key={w.slug}
-          type="button"
-          onClick={() => play(w.audio)}
-          aria-label="Écouter"
-          className="aspect-square overflow-hidden rounded-xl bg-creme p-1 ring-1 ring-ink/10 hover:ring-ocre/60"
-        >
-          <WordImage word={w} />
-        </button>
-      ))}
-    </div>
-  );
-}
-
 function Screens() {
-  const { route, navigate, goHome } = useNavigation();
+  const { route, goHome } = useNavigation();
 
   switch (route.name) {
     case "home":
@@ -116,30 +84,8 @@ function Screens() {
           </button>
         </Placeholder>
       );
-    case "session": {
-      const session = SESSIONS.find((s) => s.id === route.sessionId);
-      return (
-        <Placeholder
-          badge={`Session ${route.sessionId}`}
-          title={session?.title ?? "Session"}
-        >
-          <p className="max-w-md text-ink/70">
-            Lecteur de session provisoire (étape 3). Utilise le bouton accueil
-            (en haut) pour tester la confirmation de sortie.
-          </p>
-          {session && <ContentProbe slugs={session.newWords} />}
-          <button
-            type="button"
-            onClick={() =>
-              navigate({ name: "summary", sessionId: route.sessionId })
-            }
-            className="rounded-xl bg-teal px-4 py-2 text-sm font-semibold text-creme hover:opacity-90"
-          >
-            Terminer (vers résumé)
-          </button>
-        </Placeholder>
-      );
-    }
+    case "session":
+      return <SessionPlayer sessionId={route.sessionId} />;
     case "summary":
       return (
         <Placeholder badge="Résumé" title="Bien joué">
