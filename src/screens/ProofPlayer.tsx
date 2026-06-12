@@ -13,6 +13,7 @@ import { buildOptions } from "../lib/distractors";
 import { shuffle } from "../lib/shuffle";
 import { choiceRing, useChoiceFeedback } from "../mechanics/choiceFeedback";
 import { ProgressBar } from "../mechanics/ProgressBar";
+import { FitGrid, SessionLayout } from "../mechanics/layout";
 
 const PROOF_SESSION_ID = 8;
 const TOTAL_WORDS = 67;
@@ -58,7 +59,7 @@ export function ProofPlayer() {
 
   if (finished) {
     return (
-      <div className="mx-auto flex w-full max-w-md flex-1 flex-col items-center justify-center gap-6 px-5 py-10 text-center sm:px-6 sm:py-12">
+      <div className="mx-auto flex h-full w-full max-w-md flex-col items-center justify-center gap-6 overflow-y-auto px-5 py-10 text-center sm:px-6 sm:py-12">
         <div className="text-6xl font-bold tabular-nums text-teal sm:text-7xl">
           {TOTAL_WORDS}
         </div>
@@ -85,14 +86,16 @@ export function ProofPlayer() {
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-xl flex-1 flex-col px-4 py-5 sm:px-6 sm:py-6">
-      <ProgressBar done={index} total={sequence.length} />
+    <SessionLayout>
+      <div className="shrink-0">
+        <ProgressBar done={index} total={sequence.length} />
+      </div>
 
-      <p className="mt-6 text-center text-sm font-medium text-ink/60">
+      <p className="mt-4 shrink-0 text-center text-sm font-medium text-ink/60">
         Écoute et choisis l'image.
       </p>
 
-      <div className="mt-8 grid grid-cols-2 gap-4">
+      <FitGrid count={options.length} cols={2}>
         {options.map((w, i) => (
           <button
             key={w.slug}
@@ -100,7 +103,7 @@ export function ProofPlayer() {
             disabled={locked}
             aria-label={`Choix ${i + 1}`}
             onClick={() => answer(w.slug, w.slug === currentSlug)}
-            className={`aspect-square touch-manipulation select-none overflow-hidden rounded-2xl bg-white p-2 ring-1 ${choiceRing(
+            className={`min-h-0 touch-manipulation select-none overflow-hidden rounded-2xl bg-white p-2 ring-1 ${choiceRing(
               w.slug,
               currentSlug,
               status,
@@ -110,7 +113,7 @@ export function ProofPlayer() {
             <WordImage word={w} />
           </button>
         ))}
-      </div>
-    </div>
+      </FitGrid>
+    </SessionLayout>
   );
 }

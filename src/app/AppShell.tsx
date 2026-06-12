@@ -86,8 +86,8 @@ export function AppShell({ children }: { children: ReactNode }) {
   };
 
   return (
-    <div className="flex min-h-full flex-col">
-      <header className="flex items-center justify-between px-3 py-2 sm:px-5 sm:py-3">
+    <div className="flex h-dvh flex-col overflow-hidden">
+      <header className="flex shrink-0 items-center justify-between px-3 py-2 sm:px-5 sm:py-3">
         <div className="flex items-center gap-1.5 sm:gap-2">
           {!onHome && (
             <button
@@ -117,7 +117,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         </button>
       </header>
 
-      <main className="flex flex-1 flex-col">{children}</main>
+      <main className="flex min-h-0 flex-1 flex-col">{children}</main>
 
       {confirmingExit && (
         <ConfirmDialog

@@ -13,6 +13,7 @@ import { type MechanicProps } from "./types";
 import { useRetrievalQueue } from "./useRetrievalQueue";
 import { choiceRing, useChoiceFeedback } from "./choiceFeedback";
 import { ProgressBar } from "./ProgressBar";
+import { FitGrid, SessionLayout } from "./layout";
 
 export function Tri({ words, pool, onComplete, onWordMastered }: MechanicProps) {
   const { play } = useSound();
@@ -37,14 +38,16 @@ export function Tri({ words, pool, onComplete, onWordMastered }: MechanicProps) 
   const correctCluster = current.cluster;
 
   return (
-    <div className="mx-auto flex w-full max-w-xl flex-1 flex-col px-4 py-5 sm:px-6 sm:py-6">
-      <ProgressBar done={progress.done} total={progress.total} />
+    <SessionLayout>
+      <div className="shrink-0">
+        <ProgressBar done={progress.done} total={progress.total} />
+      </div>
 
-      <p className="mt-6 text-center text-sm font-medium text-ink/60">
+      <p className="mt-4 shrink-0 text-center text-sm font-medium text-ink/60">
         Écoute, puis range le mot dans sa catégorie.
       </p>
 
-      <div className="mt-4 flex justify-center">
+      <div className="mt-3 flex shrink-0 justify-center">
         <button
           type="button"
           onClick={() => play(current.audio)}
@@ -55,7 +58,7 @@ export function Tri({ words, pool, onComplete, onWordMastered }: MechanicProps) 
         </button>
       </div>
 
-      <div className="mt-8 grid grid-cols-2 gap-4">
+      <FitGrid count={categories.length} cols={2}>
         {categories.map((c) => (
           <button
             key={c}
@@ -66,7 +69,7 @@ export function Tri({ words, pool, onComplete, onWordMastered }: MechanicProps) 
               if (correct) onWordMastered?.(current.slug);
               resolve(c, correct);
             }}
-            className={`flex touch-manipulation select-none items-center gap-3 rounded-2xl bg-white px-4 py-4 text-left ring-1 ${choiceRing(
+            className={`flex min-h-0 touch-manipulation select-none items-center gap-3 overflow-hidden rounded-2xl bg-white px-4 text-left ring-1 ${choiceRing(
               c,
               correctCluster,
               status,
@@ -79,7 +82,7 @@ export function Tri({ words, pool, onComplete, onWordMastered }: MechanicProps) 
             <span className="font-medium text-ink">{CLUSTER_LABEL[c]}</span>
           </button>
         ))}
-      </div>
-    </div>
+      </FitGrid>
+    </SessionLayout>
   );
 }

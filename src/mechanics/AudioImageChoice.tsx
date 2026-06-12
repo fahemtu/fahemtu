@@ -22,6 +22,7 @@ import { type MechanicProps } from "./types";
 import { useRetrievalQueue } from "./useRetrievalQueue";
 import { choiceRing, useChoiceFeedback } from "./choiceFeedback";
 import { ProgressBar } from "./ProgressBar";
+import { FitGrid, SessionLayout } from "./layout";
 
 export type Direction = "audio_to_image" | "image_to_audio";
 
@@ -80,14 +81,18 @@ export function AudioImageChoice({
   const currentSlug = current.slug;
 
   return (
-    <div className="mx-auto flex w-full max-w-xl flex-1 flex-col px-4 py-5 sm:px-6 sm:py-6">
-      <ProgressBar done={progress.done} total={progress.total} />
+    <SessionLayout>
+      <div className="shrink-0">
+        <ProgressBar done={progress.done} total={progress.total} />
+      </div>
 
-      <p className="mt-6 text-center text-sm font-medium text-ink/60">{consigne}</p>
+      <p className="mt-4 shrink-0 text-center text-sm font-medium text-ink/60">
+        {consigne}
+      </p>
 
       {direction === "audio_to_image" ? (
         <>
-          <div className="mt-4 flex justify-center">
+          <div className="mt-3 flex shrink-0 justify-center">
             <button
               type="button"
               onClick={() => play(current.audio)}
@@ -98,7 +103,7 @@ export function AudioImageChoice({
             </button>
           </div>
 
-          <div className="mt-8 grid grid-cols-2 gap-4">
+          <FitGrid count={options.length} cols={2}>
             {options.map((w, i) => (
               <button
                 key={w.slug}
@@ -106,7 +111,7 @@ export function AudioImageChoice({
                 disabled={locked}
                 aria-label={`Choix ${i + 1}`}
                 onClick={() => answer(w.slug, w.slug === currentSlug)}
-                className={`aspect-square touch-manipulation select-none overflow-hidden rounded-2xl bg-white p-2 ring-1 ${choiceRing(
+                className={`min-h-0 touch-manipulation select-none overflow-hidden rounded-2xl bg-white p-2 ring-1 ${choiceRing(
                   w.slug,
                   currentSlug,
                   status,
@@ -116,15 +121,17 @@ export function AudioImageChoice({
                 <WordImage word={w} />
               </button>
             ))}
-          </div>
+          </FitGrid>
         </>
       ) : (
         <>
-          <div className="mx-auto mt-4 aspect-square w-40 overflow-hidden rounded-2xl bg-white p-2 ring-1 ring-ink/10">
-            <WordImage word={current} />
+          <div className="mt-3 flex min-h-0 flex-1 items-center justify-center">
+            <div className="aspect-square h-full max-h-full max-w-full overflow-hidden rounded-2xl bg-white p-2 ring-1 ring-ink/10">
+              <WordImage word={current} />
+            </div>
           </div>
 
-          <div className="mt-8 grid grid-cols-3 gap-4">
+          <div className="mt-3 grid shrink-0 grid-cols-3 gap-3 sm:gap-4">
             {options.map((w, i) => {
               const isPending = pendingSlug === w.slug && status === "idle";
               return (
@@ -138,7 +145,7 @@ export function AudioImageChoice({
                   }}
                   aria-label={`Écouter le son ${i + 1}`}
                   aria-pressed={isPending}
-                  className={`grid aspect-square touch-manipulation select-none place-items-center rounded-2xl bg-white text-teal ring-1 ${
+                  className={`grid h-16 touch-manipulation select-none place-items-center rounded-2xl bg-white text-teal ring-1 sm:h-20 ${
                     isPending
                       ? "ring-2 ring-ocre"
                       : choiceRing(w.slug, currentSlug, status, chosen)
@@ -150,7 +157,7 @@ export function AudioImageChoice({
             })}
           </div>
 
-          <div className="mt-8 flex justify-center">
+          <div className="mt-3 flex shrink-0 justify-center">
             <button
               type="button"
               disabled={locked || !pendingSlug}
@@ -164,6 +171,6 @@ export function AudioImageChoice({
           </div>
         </>
       )}
-    </div>
+    </SessionLayout>
   );
 }

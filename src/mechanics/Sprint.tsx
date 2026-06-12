@@ -13,6 +13,7 @@ import { wordBySlug, type Word } from "../content/words";
 import { type MechanicProps } from "./types";
 import { choiceRing, useChoiceFeedback } from "./choiceFeedback";
 import { ProgressBar } from "./ProgressBar";
+import { FitGrid, SessionLayout } from "./layout";
 
 /** Délai par item (tempo). Au-delà → compté comme manqué. */
 const ITEM_MS = 3500;
@@ -82,15 +83,17 @@ export function Sprint({
   const currentSlug = current.slug;
 
   return (
-    <div className="mx-auto flex w-full max-w-xl flex-1 flex-col px-4 py-5 sm:px-6 sm:py-6">
-      <ProgressBar done={index} total={sequence.length} />
+    <SessionLayout>
+      <div className="shrink-0">
+        <ProgressBar done={index} total={sequence.length} />
+      </div>
 
-      <p className="mt-6 text-center text-sm font-medium text-ink/60">
+      <p className="mt-4 shrink-0 text-center text-sm font-medium text-ink/60">
         Sprint — écoute et choisis vite.
       </p>
 
       {/* Compte à rebours (informatif). Redémarre à chaque item via `key`. */}
-      <div className="mt-4 h-1 w-full overflow-hidden rounded-full bg-ink/10">
+      <div className="mt-3 h-1 w-full shrink-0 overflow-hidden rounded-full bg-ink/10">
         {status === "idle" && (
           <div
             key={index}
@@ -100,7 +103,7 @@ export function Sprint({
         )}
       </div>
 
-      <div className="mt-8 grid grid-cols-2 gap-4">
+      <FitGrid count={options.length} cols={2}>
         {options.map((w, i) => (
           <button
             key={w.slug}
@@ -112,7 +115,7 @@ export function Sprint({
               if (correct) onWordMastered?.(currentSlug);
               resolve(w.slug, correct);
             }}
-            className={`aspect-square touch-manipulation select-none overflow-hidden rounded-2xl bg-white p-2 ring-1 ${choiceRing(
+            className={`min-h-0 touch-manipulation select-none overflow-hidden rounded-2xl bg-white p-2 ring-1 ${choiceRing(
               w.slug,
               currentSlug,
               status,
@@ -122,7 +125,7 @@ export function Sprint({
             <WordImage word={w} />
           </button>
         ))}
-      </div>
-    </div>
+      </FitGrid>
+    </SessionLayout>
   );
 }

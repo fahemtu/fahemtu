@@ -10,6 +10,7 @@ import { WordImage } from "../ui/WordImage";
 import { shuffle } from "../lib/shuffle";
 import { ADVANCE_MS, REVEAL_MS, type MechanicProps } from "./types";
 import { ProgressBar } from "./ProgressBar";
+import { FitGrid, SessionLayout } from "./layout";
 
 type Kind = "image" | "sound";
 interface Card {
@@ -101,17 +102,20 @@ export function Memory({
   }
 
   // Mobile : 3 colonnes (cartes plus grandes) ; à partir de sm : 4 colonnes.
-  const cols = cards.length > 12 ? "grid-cols-4 sm:grid-cols-5" : "grid-cols-3 sm:grid-cols-4";
+  // Colonnes fixes ; la grille (FitGrid) se redimensionne en hauteur.
+  const cols = cards.length <= 6 ? 3 : 4;
 
   return (
-    <div className="mx-auto flex w-full max-w-xl flex-1 flex-col px-4 py-5 sm:px-6 sm:py-6">
-      <ProgressBar done={matched.size} total={total} />
+    <SessionLayout>
+      <div className="shrink-0">
+        <ProgressBar done={matched.size} total={total} />
+      </div>
 
-      <p className="mt-6 text-center text-sm font-medium text-ink/60">
+      <p className="mt-4 shrink-0 text-center text-sm font-medium text-ink/60">
         Associe chaque image à son son.
       </p>
 
-      <div className={`mt-8 grid ${cols} gap-3`}>
+      <FitGrid count={cards.length} cols={cols}>
         {cards.map((card) => {
           const isUp = matched.has(card.slug) || revealed.some((c) => c.id === card.id);
           const word = wordOf[card.slug];
@@ -122,7 +126,7 @@ export function Memory({
               disabled={busy || matched.has(card.slug)}
               onClick={() => tap(card)}
               aria-label={card.kind === "sound" ? "Carte son" : "Carte image"}
-              className={`grid aspect-square touch-manipulation select-none place-items-center overflow-hidden rounded-2xl bg-white p-2 ${ringFor(
+              className={`grid min-h-0 touch-manipulation select-none place-items-center overflow-hidden rounded-2xl bg-white p-2 ${ringFor(
                 card,
               )}`}
             >
@@ -136,7 +140,7 @@ export function Memory({
             </button>
           );
         })}
-      </div>
-    </div>
+      </FitGrid>
+    </SessionLayout>
   );
 }

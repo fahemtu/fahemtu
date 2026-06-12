@@ -12,6 +12,7 @@ import { WordImage } from "../ui/WordImage";
 import { wordBySlug, type Word } from "../content/words";
 import { shuffle } from "../lib/shuffle";
 import { choiceRing, useChoiceFeedback } from "../mechanics/choiceFeedback";
+import { FitGrid, SessionLayout } from "../mechanics/layout";
 
 // Gestes guidés : cibles très distinctes (clusters différents) → faciles.
 const GUIDED: { target: string; distractors: string[] }[] = [
@@ -110,15 +111,15 @@ function GuidedItem({
   }, [target.slug]);
 
   return (
-    <div className="mx-auto flex w-full max-w-xl flex-1 flex-col px-4 py-6 sm:px-6 sm:py-8">
-      <p className="text-center text-xs font-semibold uppercase tracking-wide text-ink/40">
+    <SessionLayout>
+      <p className="shrink-0 text-center text-xs font-semibold uppercase tracking-wide text-ink/40">
         Le geste {index}/{total}
       </p>
-      <p className="mt-2 text-center text-sm font-medium text-ink/60">
+      <p className="mt-2 shrink-0 text-center text-sm font-medium text-ink/60">
         Touche l'image du mot que tu entends.
       </p>
 
-      <div className="mt-6 flex justify-center">
+      <div className="mt-4 flex shrink-0 justify-center">
         <button
           type="button"
           onClick={() => play(target.audio)}
@@ -129,7 +130,7 @@ function GuidedItem({
         </button>
       </div>
 
-      <div className="mt-8 grid grid-cols-3 gap-4">
+      <FitGrid count={options.length} cols={3}>
         {options.map((w, i) => (
           <button
             key={w.slug}
@@ -137,7 +138,7 @@ function GuidedItem({
             disabled={locked}
             aria-label={`Choix ${i + 1}`}
             onClick={() => resolve(w.slug, w.slug === target.slug)}
-            className={`aspect-square touch-manipulation select-none overflow-hidden rounded-2xl bg-white p-2 ring-1 ${choiceRing(
+            className={`min-h-0 touch-manipulation select-none overflow-hidden rounded-2xl bg-white p-2 ring-1 ${choiceRing(
               w.slug,
               target.slug,
               status,
@@ -147,15 +148,17 @@ function GuidedItem({
             <WordImage word={w} />
           </button>
         ))}
-      </div>
-    </div>
+      </FitGrid>
+    </SessionLayout>
   );
 }
 
 function Centered({ children }: { children: React.ReactNode }) {
   return (
-    <div className="mx-auto flex w-full max-w-xl flex-1 flex-col items-center justify-center gap-6 px-5 py-10 text-center sm:px-6 sm:py-12">
-      {children}
+    <div className="h-full overflow-y-auto">
+      <div className="mx-auto flex min-h-full w-full max-w-xl flex-col items-center justify-center gap-6 px-5 py-10 text-center sm:px-6 sm:py-12">
+        {children}
+      </div>
     </div>
   );
 }
