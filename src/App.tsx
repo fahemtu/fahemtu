@@ -1,122 +1,136 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+// Fahemtu — Produit 1 : point d'entrée.
+// Étape 1 : coquille (tokens + AppShell + routing) avec écrans placeholder.
+// Les écrans réels (carte de parcours, onboarding, lecteur, preuve, résumé)
+// arrivent aux étapes suivantes.
 
-function App() {
-  const [count, setCount] = useState(0)
+import { NavigationProvider } from "./app/navigation";
+import { useNavigation } from "./app/navigation-context";
+import { SoundProvider } from "./app/sound";
+import { AppShell } from "./app/AppShell";
+import { SESSIONS } from "./content/sessions";
 
+function Placeholder({
+  badge,
+  title,
+  children,
+}: {
+  badge: string;
+  title: string;
+  children?: React.ReactNode;
+}) {
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+    <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col items-center justify-center gap-6 px-6 py-12 text-center">
+      <span className="rounded-full bg-ocre/15 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-ocre">
+        {badge}
+      </span>
+      <h1 className="text-3xl font-bold tracking-tight text-ink">{title}</h1>
+      {children}
+    </div>
+  );
 }
 
-export default App
+function HomePlaceholder() {
+  const { navigate } = useNavigation();
+  return (
+    <Placeholder badge="Carte de parcours" title="Les mots qui débloquent l'arabe">
+      <p className="max-w-md text-ink/70">
+        Écran d'accueil provisoire (étape 1). La carte des 8 sessions et le
+        compteur « mots compris » arrivent à l'étape 5.
+      </p>
+      <div className="flex flex-wrap justify-center gap-3">
+        <button
+          type="button"
+          onClick={() => navigate({ name: "onboarding" })}
+          className="rounded-xl border border-ink/15 px-4 py-2 text-sm font-medium text-ink hover:bg-ink/5"
+        >
+          Onboarding
+        </button>
+        {SESSIONS.map((s) => (
+          <button
+            key={s.id}
+            type="button"
+            onClick={() => navigate({ name: "session", sessionId: s.id })}
+            className="rounded-xl border border-ink/15 px-4 py-2 text-sm font-medium text-ink hover:bg-ink/5"
+          >
+            S{s.id}
+          </button>
+        ))}
+      </div>
+    </Placeholder>
+  );
+}
+
+function Screens() {
+  const { route, navigate, goHome } = useNavigation();
+
+  switch (route.name) {
+    case "home":
+      return <HomePlaceholder />;
+    case "onboarding":
+      return (
+        <Placeholder badge="Onboarding" title="Bienvenue">
+          <p className="max-w-md text-ink/70">
+            Onboarding provisoire (étape 7). Il posera la promesse et le geste
+            audio ↔ image.
+          </p>
+          <button
+            type="button"
+            onClick={goHome}
+            className="rounded-xl bg-teal px-4 py-2 text-sm font-semibold text-creme hover:opacity-90"
+          >
+            Aller à la carte
+          </button>
+        </Placeholder>
+      );
+    case "session": {
+      const session = SESSIONS.find((s) => s.id === route.sessionId);
+      return (
+        <Placeholder
+          badge={`Session ${route.sessionId}`}
+          title={session?.title ?? "Session"}
+        >
+          <p className="max-w-md text-ink/70">
+            Lecteur de session provisoire (étape 3). Utilise le bouton accueil
+            (en haut) pour tester la confirmation de sortie.
+          </p>
+          <button
+            type="button"
+            onClick={() =>
+              navigate({ name: "summary", sessionId: route.sessionId })
+            }
+            className="rounded-xl bg-teal px-4 py-2 text-sm font-semibold text-creme hover:opacity-90"
+          >
+            Terminer (vers résumé)
+          </button>
+        </Placeholder>
+      );
+    }
+    case "summary":
+      return (
+        <Placeholder badge="Résumé" title="Bien joué">
+          <p className="max-w-md text-ink/70">
+            Résumé inter-session provisoire (étape 5).
+          </p>
+          <button
+            type="button"
+            onClick={goHome}
+            className="rounded-xl bg-teal px-4 py-2 text-sm font-semibold text-creme hover:opacity-90"
+          >
+            Retour à la carte
+          </button>
+        </Placeholder>
+      );
+  }
+}
+
+export default function App() {
+  return (
+    <NavigationProvider>
+      <SoundProvider>
+        <AppShell>
+          <Screens />
+        </AppShell>
+      </SoundProvider>
+    </NavigationProvider>
+  );
+}
