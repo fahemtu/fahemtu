@@ -42,14 +42,24 @@ export function Discovery({
 
       {/* Bloc image + légende, centré verticalement dans l'espace disponible. */}
       <div className="flex min-h-0 flex-1 flex-col items-center justify-center gap-4">
-        <button
-          type="button"
-          onClick={() => play(word.audio)}
-          aria-label="Réécouter"
-          className="aspect-square h-full max-h-full max-w-full touch-manipulation select-none overflow-hidden rounded-3xl bg-white p-3 ring-1 ring-ink/10 hover:ring-ocre/60"
+        {/* Zone-conteneur : permet de calculer le côté du carré en fonction de
+            la hauteur ET de la largeur disponibles (unités cqh/cqw). */}
+        <div
+          className="flex min-h-0 w-full flex-1 items-center justify-center"
+          style={{ containerType: "size" }}
         >
-          <WordImage word={word} />
-        </button>
+          <button
+            type="button"
+            onClick={() => play(word.audio)}
+            aria-label="Réécouter"
+            // Carré = min(largeur dispo, hauteur dispo, 400px) → rétrécit sur
+            // petit écran, ne ballonne pas sur grand écran.
+            style={{ width: "min(100cqw, 100cqh, 400px)" }}
+            className="aspect-square touch-manipulation select-none overflow-hidden rounded-3xl bg-white p-3 ring-1 ring-ink/10 hover:ring-ocre/60"
+          >
+            <WordImage word={word} />
+          </button>
+        </div>
 
         <span className="inline-flex shrink-0 items-center gap-1.5 text-xs text-ink/40">
           <SpeakerIcon className="h-4 w-4" />
