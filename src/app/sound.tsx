@@ -11,6 +11,7 @@ import {
   type ReactNode,
 } from "react";
 import { SoundContext, type SoundValue } from "./sound-context";
+import { asset } from "../lib/asset";
 
 const MUTE_KEY = "fahemtu.p1.muted";
 
@@ -45,7 +46,7 @@ export function SoundProvider({ children }: { children: ReactNode }) {
       const el = audioRef.current;
       if (!el) return;
       el.pause();
-      el.src = src;
+      el.src = asset(src);
       el.currentTime = 0;
       // L'échec de lecture (ex. politique autoplay) ne doit pas casser l'item.
       void el.play().catch(() => {});

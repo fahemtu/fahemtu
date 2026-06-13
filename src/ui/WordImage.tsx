@@ -5,6 +5,7 @@
 // la nommer trahirait l'exercice.
 
 import type { Word } from "../content/words";
+import { asset } from "../lib/asset";
 
 export function WordImage({
   word,
@@ -18,7 +19,7 @@ export function WordImage({
   if (word.image) {
     return (
       <img
-        src={word.image}
+        src={asset(word.image)}
         alt={alt}
         draggable={false}
         className={`h-full w-full object-contain select-none ${className}`}
