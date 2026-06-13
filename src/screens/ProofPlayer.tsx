@@ -18,7 +18,12 @@ import { FitGrid, SessionLayout } from "../mechanics/layout";
 const PROOF_SESSION_ID = 8;
 const TOTAL_WORDS = 67;
 
-export function ProofPlayer() {
+export function ProofPlayer({
+  initialFinished = false,
+}: {
+  /** Dev : rend directement l'écran de fin (relecture du texte), sans rafale. */
+  initialFinished?: boolean;
+}) {
   const { goHome } = useNavigation();
   const { recordMastered, completeSession } = useProgress();
   const { play } = useSound();
@@ -26,7 +31,7 @@ export function ProofPlayer() {
   // Séquence figée : les 67 mots une fois, ordre aléatoire. Pool = tous les mots.
   const sequence = useMemo(() => shuffle(WORDS.map((w) => w.slug)), []);
   const [index, setIndex] = useState(0);
-  const [finished, setFinished] = useState(false);
+  const [finished, setFinished] = useState(initialFinished);
 
   const { status, chosen, locked, resolve } = useChoiceFeedback(() => {
     const next = index + 1;
@@ -49,7 +54,8 @@ export function ProofPlayer() {
   }, [index, finished]);
 
   // Marque S8 complétée à la fin (comme les autres sessions).
-  const doneRef = useRef(false);
+  // En aperçu dev (initialFinished), on ne marque rien : simple relecture.
+  const doneRef = useRef(initialFinished);
   useEffect(() => {
     if (finished && !doneRef.current) {
       doneRef.current = true;

@@ -13,6 +13,7 @@ import { IntegrityGate } from "./app/IntegrityGate";
 import { JourneyMap } from "./screens/JourneyMap";
 import { SessionPlayer } from "./screens/SessionPlayer";
 import { Summary } from "./screens/Summary";
+import { ProofPlayer } from "./screens/ProofPlayer";
 import { Onboarding } from "./screens/Onboarding";
 
 function Screens() {
@@ -27,6 +28,8 @@ function Screens() {
       return <SessionPlayer sessionId={route.sessionId} />;
     case "summary":
       return <Summary sessionId={route.sessionId} />;
+    case "proofEnd":
+      return <ProofPlayer initialFinished />;
   }
 }
 

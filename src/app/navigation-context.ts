@@ -7,7 +7,8 @@ export type Route =
   | { name: "home" } // carte de parcours
   | { name: "onboarding" } // premier lancement (~2 min)
   | { name: "session"; sessionId: number } // lecteur de session (S1–S7) / preuve (S8)
-  | { name: "summary"; sessionId: number }; // résumé inter-session
+  | { name: "summary"; sessionId: number } // résumé inter-session
+  | { name: "proofEnd" }; // dev : écran de fin de preuve seul (relecture du texte)
 
 export interface NavigationValue {
   route: Route;

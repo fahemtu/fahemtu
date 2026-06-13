@@ -94,13 +94,22 @@ export function JourneyMap() {
           Revoir l'introduction
         </button>
         {SHOW_DEV_TOOLS && (
-          <button
-            type="button"
-            onClick={reset}
-            className="ml-4 text-xs font-medium text-ink/40 hover:text-ink/70"
-          >
-            dev · réinitialiser la progression
-          </button>
+          <>
+            <button
+              type="button"
+              onClick={reset}
+              className="ml-4 text-xs font-medium text-ink/40 hover:text-ink/70"
+            >
+              dev · réinitialiser la progression
+            </button>
+            <button
+              type="button"
+              onClick={() => navigate({ name: "proofEnd" })}
+              className="ml-4 text-xs font-medium text-ink/40 hover:text-ink/70"
+            >
+              dev · écran de fin de preuve
+            </button>
+          </>
         )}
       </div>
     </div>
