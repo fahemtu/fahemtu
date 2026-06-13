@@ -1,16 +1,15 @@
 @import "tailwindcss";
 
 /* Fahemtu — tokens de marque (Produit 1).
-   Plus Jakarta Sans = surfaces apprenant (Latin/chrome).
-   Noto Naskh Arabic = surfaces dev/admin uniquement (jamais l'apprenant). */
+   Plus Jakarta Sans (variable, self-hébergée via @fontsource) = surfaces
+   apprenant (Latin/chrome). Produit oral-only : aucune font arabe nécessaire. */
 @theme {
   --color-creme: #F4EFE5;
   --color-ink:   #1A1816;
   --color-ocre:  #B8893E;
   --color-teal:  #2E5A56;
 
-  --font-sans:   "Plus Jakarta Sans", system-ui, sans-serif;
-  --font-arabic: "Noto Naskh Arabic", serif;
+  --font-sans:   "Plus Jakarta Sans Variable", system-ui, sans-serif;
 }
 
 html,
