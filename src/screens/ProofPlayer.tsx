@@ -66,6 +66,10 @@ export function ProofPlayer() {
         <p className="text-lg text-ink">
           Tu comprends 67 mots arabes à l'oreille.
         </p>
+        <p className="max-w-sm text-pretty text-ink/70">
+          Bravo. Ces mots n'étaient que des sons — aujourd'hui tu les comprends.
+          C'est le vrai début de l'arabe à l'oreille.
+        </p>
         <button
           type="button"
           onClick={goHome}
