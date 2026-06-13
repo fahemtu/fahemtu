@@ -5,7 +5,7 @@
 
 import { WORDS, wordBySlug, type Cluster } from "./words";
 import { SESSIONS } from "./sessions";
-import { CONFUSABLE_GROUPS } from "./confusables";
+import { confusables } from "./confusables";
 
 export interface IntegrityResult {
   ok: boolean;
@@ -73,13 +73,14 @@ export function checkContentIntegrity(): IntegrityResult {
       warnings.push(`"${w.slug}" n'est introduit par aucune session.`);
   }
 
-  // Confusables (M2) : slugs définis, groupes d'au moins 2 mots.
-  for (const group of CONFUSABLE_GROUPS) {
-    if (group.length < 2)
-      warnings.push(`Groupe confusable de moins de 2 mots : [${group.join(", ")}].`);
-    for (const slug of group) {
-      if (!wordBySlug[slug])
-        errors.push(`Groupe confusable référence un slug inconnu : "${slug}".`);
+  // Confusables (M2) : tout slug référencé (clé ou voisin) doit exister.
+  // Garde-fou contre typo / mot retiré — on n'avale pas l'erreur.
+  for (const [slug, neighbours] of Object.entries(confusables)) {
+    if (!wordBySlug[slug])
+      errors.push(`Confusables : slug inconnu en clé : "${slug}".`);
+    for (const n of neighbours) {
+      if (!wordBySlug[n])
+        errors.push(`Confusables : voisin inconnu "${n}" (pour "${slug}").`);
     }
   }
 

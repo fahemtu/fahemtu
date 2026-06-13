@@ -1,29 +1,49 @@
-// Fahemtu — Produit 1 : groupes de mots phonétiquement proches (mécanique M2).
-//
-// Asset à CURER (cf. spec §10) : graine `qalb`/`kalb`, structure extensible.
-// Chaque groupe liste des slugs dont les mots arabes partagent un phonème dur
-// (ع ح خ ق ص ط ض) ou un squelette proche — pour forcer l'écoute de la consonne.
-// L'arabe en commentaire est une RÉFÉRENCE de build, jamais rendu à l'apprenant.
-//
-// Garantie d'usage : M2 privilégie ces voisins comme distracteurs quand ils sont
-// déjà introduits, et complète/retombe sur la logique de cluster (§4) sinon —
-// la sélection ne plante jamais (voir buildConfusableOptions).
+// confusables.ts
+// Mots proches À L'OREILLE EN ARABE. Sert UNIQUEMENT aux distracteurs de M2.
+// Jamais affiché : aucun texte arabe/translittéré n'est visible par l'apprenant.
+// Slugs = slugs français (noms de fichiers audio/image). À affiner si besoin lors de la relecture native.
 
-export const CONFUSABLE_GROUPS: string[][] = [
-  ["coeur", "chien"], // قَلْب qalb / كَلْب kalb — graine (ق vs ك, paire minimale)
-  ["cheval", "ane"], // حِصَان ḥiṣān / حِمَار ḥimār — ح initial, squelette proche
-  ["cafe", "pied"], // قَهْوَة qahwa / قَدَم qadam — ق initial
-  ["chat", "coeur"], // قِطّ qiṭṭ / قَلْب qalb — ق emphatique
-  ["mouton", "pain"], // خَرُوف kharūf / خُبْز khubz — خ initial
-  ["raisin", "miel"], // عِنَب ʿinab / عَسَل ʿasal — ع initial
+const CONFUSABLE_PAIRS: [string, string][] = [
+  ['coeur', 'chien'],               // qalb / kalb
+  ['lion', 'noir'],                 // asad / aswad
+  ['oeuf', 'blanc'],                // bayḍa / abyaḍ
+  ['vieil-homme', 'vieille-femme'], // musinn / musinna (finale féminine -a)
+  ['cheval', 'ane'],                // ḥiṣān / ḥimār
+  ['dent', 'vieil-homme'],          // sinn / mu-sinn
+  ['datte', 'tomate'],              // tamr / ṭamāṭim
+  ['the', 'cheveux'],               // shāy / shaʿr
+  ['lait', 'viande'],               // laban / laḥm
+  ['oeil', 'raisin'],               // ʿayn / ʿinab
+  ['souris', 'bouche'],             // faʾr / fam
+  ['vache', 'canard'],              // baqara / baṭṭa
 ];
 
-/** Voisins phonétiques d'un slug (union de tous les groupes le contenant). */
-export function confusablesOf(slug: string): string[] {
-  const out = new Set<string>();
+const CONFUSABLE_GROUPS: string[][] = [
+  // adjectifs de couleur en aF3aL — même squelette « a_a_ »
+  ['rouge', 'bleu', 'vert', 'jaune', 'noir', 'blanc'],
+  // aḥmar / azraq / akhḍar / aṣfar / aswad / abyaḍ
+];
+
+export const confusables: Record<string, string[]> = (() => {
+  const map: Record<string, Set<string>> = {};
+  const link = (a: string, b: string) => {
+    if (a === b) return;
+    (map[a] ??= new Set()).add(b);
+    (map[b] ??= new Set()).add(a);
+  };
+  for (const [a, b] of CONFUSABLE_PAIRS) link(a, b);
   for (const group of CONFUSABLE_GROUPS) {
-    if (!group.includes(slug)) continue;
-    for (const s of group) if (s !== slug) out.add(s);
+    for (const a of group) for (const b of group) link(a, b);
   }
-  return [...out];
+  return Object.fromEntries(
+    Object.entries(map).map(([slug, set]) => [slug, [...set]]),
+  );
+})();
+
+/**
+ * Voisins phonétiques d'un slug (contrat attendu par M2 / buildConfusableOptions).
+ * Dérivé de `confusables` pour ne pas changer la logique de distracteurs (§4).
+ */
+export function confusablesOf(slug: string): string[] {
+  return confusables[slug] ?? [];
 }

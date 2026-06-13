@@ -35,23 +35,32 @@ for (const m of read("src/content/sessions.ts").matchAll(
 }
 sessions.sort((a, b) => a.id - b.id);
 
-// confusables : groupes de slugs proches
-const confGroups = [];
+// confusables : reconstruit la map (paires + groupes) comme le fichier source.
+const confMap = {};
 {
-  const block = read("src/content/confusables.ts").match(
-    /CONFUSABLE_GROUPS[\s\S]*?\[([\s\S]*?)\];/,
-  );
-  if (block) {
-    for (const g of block[1].matchAll(/\[([^\]]*)\]/g)) {
-      confGroups.push([...g[1].matchAll(/"([^"]+)"/g)].map((x) => x[1]));
+  const src = read("src/content/confusables.ts");
+  const slugs = (s) => [...s.matchAll(/['"]([a-z][a-z-]*)['"]/g)].map((m) => m[1]);
+  const link = (a, b) => {
+    if (a === b) return;
+    (confMap[a] ??= new Set()).add(b);
+    (confMap[b] ??= new Set()).add(a);
+  };
+  const pairsBlock = src.match(/CONFUSABLE_PAIRS[\s\S]*?\[([\s\S]*?)\];/);
+  if (pairsBlock) {
+    for (const row of pairsBlock[1].matchAll(/\[([^\]]*)\]/g)) {
+      const [a, b] = slugs(row[1]);
+      if (a && b) link(a, b);
+    }
+  }
+  const groupsBlock = src.match(/CONFUSABLE_GROUPS[\s\S]*?\[([\s\S]*?)\];/);
+  if (groupsBlock) {
+    for (const row of groupsBlock[1].matchAll(/\[([^\]]*)\]/g)) {
+      const g = slugs(row[1]);
+      for (const a of g) for (const b of g) link(a, b);
     }
   }
 }
-const confusablesOf = (slug) => {
-  const out = new Set();
-  for (const g of confGroups) if (g.includes(slug)) for (const s of g) if (s !== slug) out.add(s);
-  return [...out];
-};
+const confusablesOf = (slug) => [...(confMap[slug] ?? [])];
 
 // --- Algo répliqué ----------------------------------------------------------
 const REQUEUE_GAP = 3;
@@ -182,6 +191,32 @@ for (const s of sessions) {
   const tag = est >= 50 && est <= 80 ? "✓" : "✗";
   if (est < 50 || est > 80) err(`S${s.id}: ${est} interactions hors cible 50–80.`);
   console.log(`  ${tag} S${s.id} (${s.spiral ?? "sans spirale"}) ≈ ${est} interactions`);
+}
+
+// --- Test léger : un distracteur confondable est tiré s'il est introduit ----
+// Pour chaque slug ayant des voisins, on construit un pool contenant la cible,
+// ses voisins, et quelques mots du même cluster. M2 doit privilégier au moins
+// un voisin confondable (présent dans le pool) parmi les distracteurs.
+{
+  const FILL = 4;
+  for (const [slug, neighbours] of Object.entries(confMap)) {
+    const target = words.get(slug);
+    if (!target) continue;
+    const neighWords = [...neighbours].map((s) => words.get(s)).filter(Boolean);
+    if (neighWords.length === 0) continue;
+    const sameCluster = [...words.values()].filter(
+      (w) => w.cluster === target.cluster && w.slug !== slug,
+    );
+    const pool = uniq([target, ...neighWords, ...sameCluster.slice(0, FILL)]);
+    // Plusieurs tirages (mélange) : un voisin doit apparaître à chaque fois.
+    let ok = true;
+    for (let r = 0; r < 6; r++) {
+      const opts = buildConfusableOptions(target, pool, 4).map((w) => w.slug);
+      if (!opts.some((o) => neighbours.has(o))) ok = false;
+    }
+    checks++;
+    if (!ok) err(`M2 confusables : aucun voisin tiré pour « ${slug} » (pool l'inclut).`);
+  }
 }
 
 console.log(`sim-session: ${checks} vérifications.`);

@@ -79,6 +79,14 @@ for (const m of sessionsSrc.matchAll(/newWords:\s*\[([^\]]*)\]/g)) {
   }
 }
 
+// --- Slugs de confusables (M2) définis dans words.ts ------------------------
+// Tout slug cité (paires ou groupes) doit exister — typo / mot retiré = échec.
+const confusablesSrc = read("src/content/confusables.ts");
+for (const m of confusablesSrc.matchAll(/['"]([a-z][a-z-]*)['"]/g)) {
+  if (!declared.has(m[1]))
+    errors.push(`Confusables référence un slug inconnu : "${m[1]}".`);
+}
+
 // --- Rapport -----------------------------------------------------------------
 console.log(`${DIM}check-assets:${RST} ${words.length} mots, ${audioFiles.size} audio, ${imageFiles.size} images.`);
 for (const w of warnings) console.log(`${YEL}⚠ ${w}${RST}`);
