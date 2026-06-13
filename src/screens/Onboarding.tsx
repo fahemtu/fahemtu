@@ -12,7 +12,7 @@ import { WordImage } from "../ui/WordImage";
 import { wordBySlug, type Word } from "../content/words";
 import { shuffle } from "../lib/shuffle";
 import { choiceRing, useChoiceFeedback } from "../mechanics/choiceFeedback";
-import { FitGrid, SessionLayout } from "../mechanics/layout";
+import { SessionLayout } from "../mechanics/layout";
 
 // Gestes guidés : cibles très distinctes (clusters différents) → faciles.
 const GUIDED: { target: string; distractors: string[] }[] = [
@@ -130,7 +130,11 @@ function GuidedItem({
         </button>
       </div>
 
-      <FitGrid count={options.length} cols={3} cap={200}>
+      {/* Onboarding = scroll de document (pas de hauteur verrouillée) : on
+          dimensionne les tuiles par la LARGEUR (aspect-square), sans dépendre
+          d'une hauteur définie ni de container-query — contrairement à FitGrid,
+          réservé aux écrans de jeu verrouillés. */}
+      <div className="mx-auto mt-6 grid w-full max-w-sm grid-cols-3 gap-3 sm:gap-4">
         {options.map((w, i) => (
           <button
             key={w.slug}
@@ -138,7 +142,7 @@ function GuidedItem({
             disabled={locked}
             aria-label={`Choix ${i + 1}`}
             onClick={() => resolve(w.slug, w.slug === target.slug)}
-            className={`aspect-square min-h-0 touch-manipulation select-none overflow-hidden rounded-2xl bg-white p-2 ring-1 ${choiceRing(
+            className={`aspect-square touch-manipulation select-none overflow-hidden rounded-2xl bg-white p-2 ring-1 ${choiceRing(
               w.slug,
               target.slug,
               status,
@@ -148,7 +152,7 @@ function GuidedItem({
             <WordImage word={w} />
           </button>
         ))}
-      </FitGrid>
+      </div>
     </SessionLayout>
   );
 }
