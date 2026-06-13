@@ -6,11 +6,11 @@ import { useNavigation } from "../app/navigation-context";
 import { useProgress } from "../app/progress-context";
 import { SESSIONS } from "../content/sessions";
 import { CheckIcon, LockIcon } from "../app/icons";
-import { DEV_UNLOCK_ALL_PHASES } from "../config";
 
 const TOTAL_WORDS = 67;
-// Outils de dev visibles seulement en développement (jamais en prod).
-const SHOW_DEV_TOOLS = import.meta.env.DEV || DEV_UNLOCK_ALL_PHASES;
+// Outils de dev gatés directement sur import.meta.env.DEV → éliminés du bundle
+// de prod (dead-code) et donc invisibles.
+const SHOW_DEV_TOOLS = import.meta.env.DEV;
 
 export function JourneyMap() {
   const { navigate } = useNavigation();
