@@ -503,7 +503,14 @@ const faq = [
     width: 100%;
     height: auto;
     margin: 0 auto;
-    border-radius: 0.5rem;
+    /* Cadre sobre pour qu'on lise « capture d'app » : bordure fine, coins
+       arrondis, ombre très douce (carte qui se soulève à peine), léger padding. */
+    border-radius: 0.6rem;
+    border: 1px solid rgba(26, 24, 22, 0.14);
+    background: #fff;
+    padding: 0.5rem;
+    box-shadow: 0 1px 2px rgba(26, 24, 22, 0.05),
+      0 6px 16px rgba(26, 24, 22, 0.06);
   }
   .shot.session img {
     max-width: 480px;
