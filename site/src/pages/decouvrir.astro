@@ -1,0 +1,76 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+  title="Découvrir Fahemtu — Recevoir les premiers mots"
+  description="Recevez par email un premier aperçu de la méthode Fahemtu : comprendre l'arabe à l'oreille."
+>
+  <section class="lead-magnet">
+    <h1>Commencer à comprendre, gratuitement</h1>
+    <p>
+      Laissez votre email pour recevoir un premier aperçu de la méthode : quelques
+      mots arabes à reconnaître à l'oreille, sans rien lire.
+    </p>
+
+    <!-- Formulaire non branché pour l'instant (placeholder). -->
+    <form class="signup" action="#" aria-label="Inscription (à venir)">
+      <label for="email">Votre email</label>
+      <input
+        id="email"
+        name="email"
+        type="email"
+        placeholder="vous@exemple.fr"
+        autocomplete="email"
+      />
+      <button type="button" disabled>Recevoir (bientôt)</button>
+    </form>
+    <p class="note">Aucune inscription active pour le moment — page en préparation.</p>
+  </section>
+</Layout>
+
+<style>
+  .lead-magnet {
+    max-width: 34rem;
+  }
+  h1 {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    margin: 0 0 1rem;
+  }
+  .signup {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: end;
+    margin: 1.5rem 0 0.75rem;
+  }
+  label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.35rem;
+  }
+  input {
+    font: inherit;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid color-mix(in srgb, var(--encre) 25%, transparent);
+    border-radius: 0.5rem;
+    background: #fff;
+    min-width: 16rem;
+  }
+  button {
+    font: inherit;
+    font-weight: 600;
+    padding: 0.6rem 1.2rem;
+    border: 0;
+    border-radius: 0.5rem;
+    background: var(--teal);
+    color: var(--creme);
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+  .note {
+    font-size: 0.85rem;
+    color: color-mix(in srgb, var(--encre) 55%, transparent);
+  }
+</style>

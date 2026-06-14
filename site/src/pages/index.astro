@@ -4,8 +4,47 @@ import Layout from "../layouts/Layout.astro";
 
 <Layout
   title="Fahemtu — Comprendre l'arabe à l'oreille"
-  description="Fahemtu : apprendre à comprendre l'arabe à l'oreille, par le son et l'image."
+  description="Apprendre à comprendre l'arabe à l'oreille, par le son et l'image. Sans lecture, sans écriture, sans grammaire."
 >
-  <h1>Comprendre l'arabe à l'oreille</h1>
-  <p>Page d'accueil — contenu détaillé à l'étape suivante.</p>
+  <section class="hero">
+    <p class="kicker">Écoute. Reconnais. Comprends.</p>
+    <h1>Comprendre l'arabe à l'oreille</h1>
+    <p class="lead">
+      Sans lecture, sans écriture, sans grammaire. On part du son et de l'image —
+      comme on apprend une langue avant de savoir l'écrire.
+    </p>
+    <a class="cta" href="/mots">Découvrir les mots</a>
+  </section>
 </Layout>
+
+<style>
+  .hero {
+    max-width: 38rem;
+  }
+  .kicker {
+    font-weight: 600;
+    color: var(--ocre);
+    margin: 0 0 0.75rem;
+  }
+  h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    margin: 0 0 1rem;
+  }
+  .lead {
+    font-size: 1.15rem;
+    color: color-mix(in srgb, var(--encre) 80%, transparent);
+    margin: 0 0 2rem;
+  }
+  .cta {
+    display: inline-block;
+    background: var(--teal);
+    color: var(--creme);
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.6rem;
+  }
+  .cta:hover {
+    opacity: 0.92;
+  }
+</style>
