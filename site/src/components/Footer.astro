@@ -1,0 +1,49 @@
+---
+// Pied de page sobre.
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="inner">
+    <p class="tagline">
+      <span class="wordmark" lang="ar" dir="rtl" aria-hidden="true">فَهِمْتُ</span>
+      Comprendre l'arabe à l'oreille.
+    </p>
+    <p class="legal">© {year} Fahemtu</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid color-mix(in srgb, var(--encre) 12%, transparent);
+    margin-top: 4rem;
+  }
+  .inner {
+    max-width: 64rem;
+    margin: 0 auto;
+    padding: 2rem 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .tagline {
+    margin: 0;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    color: color-mix(in srgb, var(--encre) 70%, transparent);
+    font-size: 0.95rem;
+  }
+  .wordmark {
+    font-family: var(--font-arabic);
+    font-weight: 700;
+    color: var(--ocre);
+  }
+  .legal {
+    margin: 0;
+    color: color-mix(in srgb, var(--encre) 50%, transparent);
+    font-size: 0.85rem;
+  }
+</style>

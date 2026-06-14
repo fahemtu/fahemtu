@@ -1,0 +1,82 @@
+---
+// En-tête de marque sobre : wordmark arabe + « Fahemtu » + navigation.
+const links = [
+  { href: "/", label: "Accueil" },
+  { href: "/mots", label: "Les mots" },
+  { href: "/decouvrir", label: "Découvrir" },
+  { href: "/articles", label: "Articles" },
+];
+const path = Astro.url.pathname;
+const isActive = (href: string) =>
+  href === "/" ? path === "/" : path === href || path.startsWith(href + "/");
+---
+
+<header class="site-header">
+  <div class="inner">
+    <a class="brand" href="/">
+      <span class="wordmark" lang="ar" dir="rtl" aria-hidden="true">فَهِمْتُ</span>
+      <span class="brand-name">Fahemtu</span>
+    </a>
+    <nav aria-label="Navigation principale">
+      {
+        links.map((l) => (
+          <a href={l.href} aria-current={isActive(l.href) ? "page" : undefined}>
+            {l.label}
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    border-bottom: 1px solid color-mix(in srgb, var(--encre) 12%, transparent);
+  }
+  .inner {
+    max-width: 64rem;
+    margin: 0 auto;
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .brand {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    text-decoration: none;
+    color: var(--encre);
+  }
+  .wordmark {
+    font-family: var(--font-arabic);
+    font-weight: 700;
+    font-size: 1.6rem;
+    color: var(--ocre);
+    line-height: 1;
+  }
+  .brand-name {
+    font-weight: 600;
+    font-size: 1.15rem;
+    letter-spacing: -0.01em;
+  }
+  nav {
+    display: flex;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+  }
+  nav a {
+    text-decoration: none;
+    color: color-mix(in srgb, var(--encre) 70%, transparent);
+    font-size: 0.95rem;
+  }
+  nav a:hover {
+    color: var(--encre);
+  }
+  nav a[aria-current="page"] {
+    color: var(--teal);
+    font-weight: 600;
+  }
+</style>

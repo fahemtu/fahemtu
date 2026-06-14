@@ -1,0 +1,117 @@
+---
+// Layout partagé : <head> SEO (title/description/canonical/Open Graph par page),
+// fonts self-hébergées, tokens de marque globaux, header + footer.
+// Ton sobre, anti-décoratif (pas d'emoji, pas de gradient, pas d'ombre décorative).
+import "@fontsource-variable/plus-jakarta-sans/wght.css";
+import "@fontsource/noto-naskh-arabic/arabic-700.css";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  /** Canonique explicite (sinon dérivée de l'URL courante). */
+  canonical?: string;
+  /** Image Open Graph (chemin relatif au site ou URL absolue). */
+  ogImage?: string;
+}
+
+const { title, description, canonical, ogImage } = Astro.props;
+const canonicalURL = canonical ?? new URL(Astro.url.pathname, Astro.site).href;
+const ogImageURL = ogImage ? new URL(ogImage, Astro.site).href : undefined;
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Open Graph / réseaux -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Fahemtu" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:locale" content="fr_FR" />
+    {ogImageURL && <meta property="og:image" content={ogImageURL} />}
+    <meta
+      name="twitter:card"
+      content={ogImageURL ? "summary_large_image" : "summary"}
+    />
+  </head>
+  <body>
+    <Header />
+    <main class="container">
+      <slot />
+    </main>
+    <Footer />
+
+    <style is:global>
+      :root {
+        /* Tokens de marque */
+        --creme: #f4efe5;
+        --encre: #1a1816;
+        --ocre: #b8893e;
+        --teal: #2e5a56;
+
+        --font-sans: "Plus Jakarta Sans Variable", system-ui, sans-serif;
+        --font-arabic: "Noto Naskh Arabic", serif;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html {
+        -webkit-text-size-adjust: 100%;
+      }
+
+      body {
+        margin: 0;
+        background: var(--creme);
+        color: var(--encre);
+        font-family: var(--font-sans);
+        line-height: 1.65;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      main {
+        flex: 1;
+      }
+
+      .container {
+        max-width: 64rem;
+        margin: 0 auto;
+        padding: 3rem 1.25rem;
+      }
+
+      h1,
+      h2,
+      h3 {
+        line-height: 1.2;
+        letter-spacing: -0.015em;
+        font-weight: 700;
+      }
+
+      a {
+        color: var(--teal);
+      }
+
+      p {
+        margin: 0 0 1rem;
+      }
+    </style>
+  </body>
+</html>
