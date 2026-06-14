@@ -104,6 +104,15 @@ const faq = [
       </li>
     </ol>
 
+    <figure class="shot session">
+      <img
+        src="/images/app/app-session.png"
+        alt="Écran de session Fahemtu : on entend un mot et on choisit l'image parmi quatre"
+        loading="lazy"
+      />
+      <figcaption>Un écran de session : tu entends, tu choisis l'image.</figcaption>
+    </figure>
+
     <p>
       Pas de règle, pas de tableau. Juste le son et son sens, renforcés session
       après session — jusqu'à ce que comprendre devienne un réflexe.
@@ -132,6 +141,34 @@ const faq = [
         comprends tous, rien qu'au son.
       </li>
     </ul>
+
+    <!-- Aperçu du style des illustrations (5 des 67). -->
+    <div class="illus-row" role="img" aria-label="Aperçu de cinq des illustrations du Produit 1">
+      <img src="/images/illustrations/chat.png" alt="" width="72" height="72" />
+      <img src="/images/illustrations/pomme.png" alt="" width="72" height="72" />
+      <img src="/images/illustrations/main.png" alt="" width="72" height="72" />
+      <img src="/images/illustrations/oeil.png" alt="" width="72" height="72" />
+      <img src="/images/illustrations/poisson.png" alt="" width="72" height="72" />
+    </div>
+
+    <figure class="shot parcours">
+      <img
+        src="/images/app/app-parcours.png"
+        alt="Les 8 sessions du Produit 1 et le compteur de mots compris à l'oreille"
+        loading="lazy"
+      />
+      <figcaption>Ton parcours : 8 sessions.</figcaption>
+    </figure>
+
+    <figure class="shot preuve">
+      <img
+        src="/images/app/app-preuve.png"
+        alt="Écran de preuve : 67 mots arabes compris à l'oreille"
+        loading="lazy"
+      />
+      <figcaption>Le moment de preuve.</figcaption>
+    </figure>
+
     <p>
       À ce stade, tu ne traduis plus dans ta tête. Tu entends l'un de ces mots, et
       son sens t'arrive directement. C'est le premier vrai déclic de l'arabe à
@@ -453,6 +490,49 @@ const faq = [
     margin: 0;
     padding: 0 1.1rem 1.1rem;
     color: color-mix(in srgb, var(--encre) 82%, transparent);
+  }
+
+  /* Visuels : captures contenues, centrées, sans cadre ni ombre (le fond crème
+     se fond dans la page). Coin arrondi discret. */
+  .shot {
+    margin: 1.75rem auto;
+    text-align: center;
+  }
+  .shot img {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+    border-radius: 0.5rem;
+  }
+  .shot.session img {
+    max-width: 480px;
+  }
+  .shot.parcours img {
+    max-width: 380px;
+  }
+  .shot.preuve img {
+    max-width: 440px;
+  }
+  figcaption {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: color-mix(in srgb, var(--encre) 60%, transparent);
+  }
+
+  /* Rangée d'aperçu des illustrations (~72 px, alignées, espacées). */
+  .illus-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin: 1.75rem 0;
+  }
+  .illus-row img {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
   }
 
   /* 9 — final */
