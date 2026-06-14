@@ -1,56 +1,293 @@
 ---
 import Layout from "../layouts/Layout.astro";
+
+const faq = [
+  {
+    q: "Je n'ai aucune base en arabe. C'est pour moi ?",
+    a: "Oui — on part de zéro. Tu n'as pas besoin de connaître l'alphabet, puisque tu n'as rien à lire : tout passe par l'oreille et l'image.",
+  },
+  {
+    q: "Combien de temps faut-il y consacrer ?",
+    a: "Les sessions sont courtes, et tu avances à ton rythme. Aucun rythme imposé — la régularité compte plus que la durée.",
+  },
+  {
+    q: "Est-ce que j'apprends à lire, écrire ou parler l'arabe ?",
+    a: "Non. Fahemtu te fait uniquement comprendre l'arabe à l'oreille. Lire, écrire et parler ne sont pas couverts — si c'est ton objectif, ce produit n'est pas le bon.",
+  },
+  {
+    q: "Est-ce que ça m'apprend l'arabe du Coran ?",
+    a: "Le Coran est le cap à long terme, et l'arabe que tu travailles ici en est la fondation. Mais ce produit seul n'est pas un parcours Coran : il construit ton oreille — la base sur laquelle le reste se bâtira.",
+  },
+  {
+    q: "Pourquoi seulement 67 mots ?",
+    a: "Parce que l'objectif n'est pas le volume, mais le déclic : reconnaître des mots arabes rien qu'au son, sans traduire. 67 mots concrets suffisent à l'enclencher. La suite viendra par étapes.",
+  },
+  {
+    q: "Comment ça marche, concrètement ?",
+    a: "Tu entends un mot, tu choisis l'image qui correspond. Aucun texte arabe, aucune traduction affichée. Les mots reviennent en spirale d'une session à l'autre, jusqu'à ce que les reconnaître devienne automatique.",
+  },
+  {
+    q: "Sur quel appareil ? Et l'accès ?",
+    a: "Depuis n'importe quel appareil avec un navigateur. Paiement unique, accès à vie, sans abonnement.",
+  },
+  {
+    q: "Et si ça ne me convient pas ?",
+    a: "Tu as 14 jours pour demander un remboursement complet, sans avoir à te justifier. Un email suffit.",
+  },
+];
 ---
 
 <Layout
-  title="Les mots qui débloquent l'arabe — Fahemtu"
-  description="67 mots arabes à comprendre à l'oreille, par le son et l'image. La première brique de Fahemtu."
+  title="Les mots qui débloquent l'arabe | Fahemtu"
+  description="Comprends 67 mots arabes rien qu'à l'oreille — sans lire, sans écrire, sans grammaire. La méthode 100 % orale de Fahemtu. 19 €, paiement unique."
 >
-  <section class="sales">
-    <p class="kicker">Produit 1</p>
-    <h1>Les mots qui débloquent l'arabe</h1>
+  <!-- 1 — Hero -->
+  <section class="hero prose" aria-labelledby="hero-title">
+    <p class="eyebrow">Produit 1</p>
+    <h1 id="hero-title">Tes premiers mots d'arabe, compris à l'oreille.</h1>
     <p class="lead">
-      67 mots essentiels, appris à l'oreille : on écoute l'arabe, on reconnaît
-      l'image, on comprend. Aucun texte arabe, aucune traduction à mémoriser.
+      Pas de lecture, pas de grammaire, pas de tableaux à mémoriser. Tu écoutes un
+      mot, tu reconnais ce qu'il veut dire. 67 mots pour déclencher la
+      compréhension — le vrai début de l'arabe à l'oreille.
+    </p>
+    <div class="cta-row">
+      <a class="cta" href="#">Commencer — 19 €</a>
+      <span class="price-note"><s>29 €</s> · paiement unique</span>
+    </div>
+    <p><a class="secondary" href="#methode">Découvrir la méthode ↓</a></p>
+  </section>
+
+  <!-- 2 — Le constat -->
+  <section class="prose" aria-labelledby="constat-title">
+    <p class="eyebrow">Le constat</p>
+    <h2 id="constat-title">On t'a fait commencer par le plus dur.</h2>
+    <p>
+      La plupart des méthodes te donnent d'abord l'alphabet, puis les règles, puis
+      les tableaux. Des semaines d'effort — et le jour où tu entends de l'arabe,
+      une récitation ou une simple phrase, tu ne reconnais presque rien.
+    </p>
+    <p>
+      Ce n'est pas que tu n'es « pas doué pour les langues ». C'est l'ordre qui
+      cloche. Comprendre à l'oreille est une compétence à part entière — celle qui
+      fait le déclic — et c'est presque jamais par là qu'on te laisse commencer.
+    </p>
+  </section>
+
+  <!-- 3 — La méthode -->
+  <section class="prose" id="methode" aria-labelledby="methode-title">
+    <p class="eyebrow">La méthode</p>
+    <h2 id="methode-title">Comprendre, pas déchiffrer.</h2>
+    <p>
+      Enfant, personne ne t'a donné de manuel pour apprendre à parler. On te
+      montrait une chose en la nommant — « ça, c'est un chat » — et le mot restait.
+      Une langue entre comme ça : par l'association d'un son et d'une chose,
+      répétée jusqu'à devenir évidente.
+    </p>
+    <p>
+      Fahemtu fait exactement ça, pour l'arabe, par l'oreille : tu entends un mot,
+      tu vois des images, tu reconnais celle qui correspond. Aucun texte arabe,
+      aucune traduction affichée — le sens s'attache directement au son.
     </p>
 
-    <div class="placeholder" aria-hidden="true">
-      <p>Argumentaire détaillé, démonstration et tarif — à venir.</p>
-    </div>
+    <ol class="triad" aria-label="Le geste en trois temps">
+      <li>
+        <span class="triad-step">Écoute.</span>
+        Un mot arabe, prononcé clairement.
+      </li>
+      <li>
+        <span class="triad-step">Reconnais.</span>
+        Tu choisis l'image qui correspond au sens.
+      </li>
+      <li>
+        <span class="triad-step">Comprends.</span>
+        Le lien s'installe, et la répétition le grave.
+      </li>
+    </ol>
 
-    <!-- Lien vers l'app à définir (placeholder). -->
-    <a class="cta" href="#app">Commencer</a>
+    <p>
+      Pas de règle, pas de tableau. Juste le son et son sens, renforcés session
+      après session — jusqu'à ce que comprendre devienne un réflexe.
+    </p>
+  </section>
+
+  <!-- 4 — Ce que tu obtiens -->
+  <section class="prose" aria-labelledby="obtiens-title">
+    <p class="eyebrow">Ce que tu obtiens</p>
+    <h2 id="obtiens-title">67 mots que tu reconnaîtras sans réfléchir.</h2>
+    <p>
+      Le Produit 1 te fait comprendre, à l'oreille, 67 mots arabes concrets — le
+      socle sur lequel tout le reste se construira.
+    </p>
+    <ul class="ticks">
+      <li>
+        67 mots imageables, en 5 familles : les gens, les animaux, les couleurs,
+        manger & boire, le corps.
+      </li>
+      <li>
+        8 sessions courtes, qui font revenir les mots en spirale pour les ancrer
+        durablement.
+      </li>
+      <li>
+        Un moment de preuve : à la fin, les 67 mots s'enchaînent — et tu les
+        comprends tous, rien qu'au son.
+      </li>
+    </ul>
+    <p>
+      À ce stade, tu ne traduis plus dans ta tête. Tu entends l'un de ces mots, et
+      son sens t'arrive directement. C'est le premier vrai déclic de l'arabe à
+      l'oreille.
+    </p>
+  </section>
+
+  <!-- 5 — Pour qui -->
+  <section class="prose" aria-labelledby="pourqui-title">
+    <p class="eyebrow">Pour qui</p>
+    <h2 id="pourqui-title">Fait pour toi, ou pas. Autant être clair.</h2>
+    <div class="audience">
+      <div class="audience-col">
+        <h3>Oui, si :</h3>
+        <ul>
+          <li>tu veux enfin comprendre l'arabe quand tu l'entends ;</li>
+          <li>tu débutes, ou tu as déjà essayé et lâché en route ;</li>
+          <li>tu n'as pas des heures par jour à y consacrer ;</li>
+          <li>tu veux comprendre, pas réciter des règles ;</li>
+          <li>comprendre le Coran un jour fait partie de tes raisons.</li>
+        </ul>
+      </div>
+      <div class="audience-col">
+        <h3>Non, si :</h3>
+        <ul>
+          <li>tu veux apprendre à lire ou à écrire l'arabe ;</li>
+          <li>tu veux apprendre à parler, ou viser un dialecte ;</li>
+          <li>tu prépares un diplôme ou un examen officiel ;</li>
+          <li>tu cherches un cours de grammaire classique ;</li>
+          <li>
+            tu attends de tout comprendre d'un coup — ici, c'est la première
+            marche, 67 mots.
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 — L'horizon -->
+  <section class="prose" aria-labelledby="horizon-title">
+    <p class="eyebrow">L'horizon</p>
+    <h2 id="horizon-title">Le premier pas d'un chemin plus long.</h2>
+    <p>
+      67 mots, ce n'est pas la fin — c'est la fondation. L'oreille que tu construis
+      ici est celle qui te servira pour tout le reste : d'autres mots, puis des
+      phrases, puis des passages entiers. Et au bout du chemin, la raison qui t'a
+      fait commencer : comprendre l'arabe du Coran, dans sa propre langue.
+    </p>
+    <p>
+      Sois sûr d'une chose : ce produit seul ne te fera pas comprendre le Coran.
+      Mais il pose ce sur quoi tout repose — l'habitude de comprendre par
+      l'oreille. On avance une marche à la fois. Celle-ci est la première.
+    </p>
+  </section>
+
+  <!-- 7 — Tarif -->
+  <section class="prose" aria-labelledby="tarif-title">
+    <p class="eyebrow">Tarif</p>
+    <h2 id="tarif-title">Une fois. Et c'est à toi.</h2>
+    <div class="pricing">
+      <p class="pricing-name">
+        Fahemtu · Produit 1 — Les mots qui débloquent l'arabe
+      </p>
+      <p class="pricing-sub">
+        67 mots · 5 familles · 8 sessions · le moment de preuve « 67 »
+      </p>
+      <p class="pricing-price">
+        <span class="amount">19 €</span> <s>29 €</s>
+      </p>
+      <p class="pricing-terms">
+        Prix TTC · Paiement unique · Sans abonnement · Accès à vie
+      </p>
+      <ul class="ticks">
+        <li>Les 67 mots et les 8 sessions, dès l'achat.</li>
+        <li>Le moment de preuve « 67 ».</li>
+        <li>Accès depuis n'importe quel appareil.</li>
+        <li>Mises à jour incluses.</li>
+      </ul>
+      <a class="cta" href="#">Commencer — 19 €</a>
+      <p class="guarantee">Satisfait ou remboursé 14 jours, sans justification.</p>
+    </div>
+  </section>
+
+  <!-- 8 — FAQ -->
+  <section class="prose" aria-labelledby="faq-title">
+    <p class="eyebrow">FAQ</p>
+    <h2 id="faq-title">Questions fréquentes</h2>
+    <div class="faq">
+      {
+        faq.map((item) => (
+          <details>
+            <summary>{item.q}</summary>
+            <p>{item.a}</p>
+          </details>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- 9 — CTA final -->
+  <section class="prose final" aria-labelledby="final-title">
+    <p class="eyebrow">Le premier pas</p>
+    <h2 id="final-title">L'arabe à l'oreille. Ça commence par 67 mots.</h2>
+    <p>
+      Bientôt, ces mots ne seront plus des sons : tu les entendras, et tu
+      comprendras. C'est le déclic — et c'est par là que tout commence.
+    </p>
+    <a class="cta" href="#">Commencer — 19 €</a>
+    <p class="price-note">
+      19 € · <s>29 €</s> · paiement unique · accès à vie · satisfait ou remboursé
+      14 jours
+    </p>
   </section>
 </Layout>
 
 <style>
-  .sales {
-    max-width: 38rem;
+  /* Sections : rythme vertical sobre, texte lisible. */
+  section {
+    margin: 0 auto 4.5rem;
   }
-  .kicker {
+  .prose {
+    max-width: 42rem;
+  }
+  .eyebrow {
+    font-size: 0.78rem;
     font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
     color: var(--ocre);
-    margin: 0 0 0.5rem;
+    margin: 0 0 0.6rem;
   }
   h1 {
-    font-size: clamp(1.9rem, 4.5vw, 2.75rem);
+    font-size: clamp(2rem, 5vw, 3rem);
     margin: 0 0 1rem;
   }
+  h2 {
+    font-size: clamp(1.6rem, 3.5vw, 2.1rem);
+    margin: 0 0 1rem;
+  }
+  h3 {
+    font-size: 1.05rem;
+    margin: 0 0 0.75rem;
+  }
   .lead {
-    font-size: 1.1rem;
-    color: color-mix(in srgb, var(--encre) 80%, transparent);
-    margin: 0 0 2rem;
+    font-size: 1.18rem;
+    color: color-mix(in srgb, var(--encre) 82%, transparent);
+    margin: 0 0 1.75rem;
   }
-  .placeholder {
-    border: 1px dashed color-mix(in srgb, var(--encre) 25%, transparent);
-    border-radius: 0.6rem;
-    padding: 2rem 1.25rem;
-    text-align: center;
-    color: color-mix(in srgb, var(--encre) 55%, transparent);
-    margin-bottom: 2rem;
-  }
-  .placeholder p {
-    margin: 0;
+
+  /* CTA */
+  .cta-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
   }
   .cta {
     display: inline-block;
@@ -58,10 +295,175 @@ import Layout from "../layouts/Layout.astro";
     color: var(--creme);
     text-decoration: none;
     font-weight: 600;
-    padding: 0.75rem 1.5rem;
+    padding: 0.8rem 1.6rem;
     border-radius: 0.6rem;
   }
   .cta:hover {
     opacity: 0.92;
+  }
+  .price-note {
+    color: color-mix(in srgb, var(--encre) 60%, transparent);
+    font-size: 0.95rem;
+  }
+  .price-note s,
+  .pricing-price s {
+    color: color-mix(in srgb, var(--encre) 45%, transparent);
+  }
+  .secondary {
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .secondary:hover {
+    text-decoration: underline;
+  }
+
+  /* 3 — Triade */
+  .triad {
+    list-style: none;
+    counter-reset: triad;
+    padding: 0;
+    margin: 1.75rem 0;
+    display: grid;
+    gap: 1rem;
+  }
+  .triad li {
+    border: 1px solid color-mix(in srgb, var(--encre) 14%, transparent);
+    border-radius: 0.6rem;
+    padding: 1rem 1.1rem;
+    background: color-mix(in srgb, var(--ocre) 5%, transparent);
+  }
+  .triad-step {
+    display: block;
+    font-weight: 700;
+    color: var(--teal);
+    margin-bottom: 0.15rem;
+  }
+  @media (min-width: 40rem) {
+    .triad {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* 4 / 7 — listes à puces sobres */
+  .ticks {
+    list-style: none;
+    padding: 0;
+    margin: 1.25rem 0;
+    display: grid;
+    gap: 0.7rem;
+  }
+  .ticks li {
+    padding-left: 1.3rem;
+    position: relative;
+  }
+  .ticks li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: var(--ocre);
+  }
+
+  /* 5 — Pour qui */
+  .audience {
+    display: grid;
+    gap: 1.75rem;
+    margin-top: 1.25rem;
+  }
+  .audience ul {
+    margin: 0;
+    padding-left: 1.1rem;
+    display: grid;
+    gap: 0.5rem;
+  }
+  @media (min-width: 40rem) {
+    .audience {
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+    }
+  }
+
+  /* 7 — Carte tarif */
+  .pricing {
+    border: 1px solid color-mix(in srgb, var(--encre) 16%, transparent);
+    border-radius: 0.8rem;
+    padding: 1.75rem;
+    background: #fff;
+  }
+  .pricing-name {
+    font-weight: 700;
+    margin: 0 0 0.35rem;
+  }
+  .pricing-sub {
+    color: color-mix(in srgb, var(--encre) 65%, transparent);
+    margin: 0 0 1rem;
+  }
+  .pricing-price {
+    margin: 0 0 0.25rem;
+  }
+  .pricing-price .amount {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--teal);
+  }
+  .pricing-price s {
+    font-size: 1.2rem;
+    margin-left: 0.4rem;
+  }
+  .pricing-terms {
+    font-size: 0.9rem;
+    color: color-mix(in srgb, var(--encre) 60%, transparent);
+    margin: 0 0 1.25rem;
+  }
+  .guarantee {
+    font-size: 0.9rem;
+    color: color-mix(in srgb, var(--encre) 60%, transparent);
+    margin: 0.9rem 0 0;
+  }
+
+  /* 8 — FAQ accordéon natif */
+  .faq {
+    display: grid;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+  }
+  details {
+    border: 1px solid color-mix(in srgb, var(--encre) 14%, transparent);
+    border-radius: 0.6rem;
+    background: #fff;
+  }
+  summary {
+    cursor: pointer;
+    font-weight: 600;
+    padding: 0.9rem 1.1rem;
+    list-style: none;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  summary::after {
+    content: "+";
+    float: right;
+    color: var(--ocre);
+    font-weight: 700;
+  }
+  details[open] summary::after {
+    content: "–";
+  }
+  details p {
+    margin: 0;
+    padding: 0 1.1rem 1.1rem;
+    color: color-mix(in srgb, var(--encre) 82%, transparent);
+  }
+
+  /* 9 — final */
+  .final .cta {
+    margin-bottom: 0.9rem;
+  }
+
+  /* Accessibilité : focus clavier visible. */
+  a:focus-visible,
+  summary:focus-visible {
+    outline: 2px solid var(--teal);
+    outline-offset: 2px;
   }
 </style>
