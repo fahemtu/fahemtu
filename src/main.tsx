@@ -5,9 +5,12 @@ import { createRoot } from 'react-dom/client'
 import '@fontsource-variable/plus-jakarta-sans/wght.css'
 import './index.css'
 import App from './App.tsx'
+import { AuthGate } from './app/AuthGate.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <AuthGate>
+      <App />
+    </AuthGate>
   </StrictMode>,
 )
