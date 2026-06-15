@@ -6,7 +6,9 @@ import tseslint from 'typescript-eslint'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist']),
+  // `site/` est un projet Astro indépendant (toolchain propre) — l'ESLint de
+  // l'app racine ne doit pas linter ses sources ni ses fichiers générés.
+  globalIgnores(['dist', 'site']),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
