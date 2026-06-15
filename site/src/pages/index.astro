@@ -4,36 +4,110 @@ import Layout from "../layouts/Layout.astro";
 
 <Layout
   title="Fahemtu — Comprendre l'arabe à l'oreille"
-  description="Apprendre à comprendre l'arabe à l'oreille, par le son et l'image. Sans lecture, sans écriture, sans grammaire."
+  description="Apprends à comprendre l'arabe rien qu'à l'oreille — sans lire, sans écrire, sans grammaire. La méthode 100 % orale de Fahemtu. Commence gratuitement."
 >
-  <section class="hero">
-    <p class="kicker">Écoute. Reconnais. Comprends.</p>
-    <h1>Comprendre l'arabe à l'oreille</h1>
+  <!-- Hero -->
+  <section class="hero prose" aria-labelledby="hero-title">
+    <h1 id="hero-title">Comprendre l'arabe à l'oreille.</h1>
     <p class="lead">
-      Sans lecture, sans écriture, sans grammaire. On part du son et de l'image —
-      comme on apprend une langue avant de savoir l'écrire.
+      Fahemtu t'apprend à reconnaître l'arabe quand tu l'entends — sans lire, sans
+      écrire, sans grammaire. Tu écoutes, tu reconnais, tu comprends.
     </p>
-    <a class="cta" href="/mots">Découvrir les mots</a>
+    <div class="cta-row">
+      <a class="cta" href="/decouvrir">Commencer gratuitement</a>
+      <a class="secondary" href="/mots">Le premier produit</a>
+    </div>
+  </section>
+
+  <!-- L'idée -->
+  <section class="prose" aria-labelledby="idee-title">
+    <p class="eyebrow">L'idée</p>
+    <h2 id="idee-title">Comme tu as appris ta langue.</h2>
+    <p>
+      Enfant, tu as compris ta langue maternelle sans une seule règle : tu
+      entendais, tu associais, ça restait. Fahemtu fait pareil pour l'arabe — tu
+      écoutes un mot, tu reconnais ce qu'il désigne, et le sens s'installe. Pas de
+      texte, pas de grammaire. Juste l'oreille.
+    </p>
+  </section>
+
+  <!-- La vision -->
+  <section class="prose" aria-labelledby="vision-title">
+    <p class="eyebrow">La vision</p>
+    <h2 id="vision-title">Une marche à la fois, jusqu'au Coran.</h2>
+    <p>
+      Fahemtu construit la compréhension par étapes : des premiers mots aux
+      phrases, puis aux passages entiers. Au bout du chemin, le cap qui donne tout
+      son sens à l'effort : comprendre l'arabe du Coran, dans sa propre langue. On
+      commence petit — mais on commence par le bon endroit : l'oreille.
+    </p>
+  </section>
+
+  <!-- Par où commencer -->
+  <section class="prose" aria-labelledby="commencer-title">
+    <p class="eyebrow">Par où commencer</p>
+    <h2 id="commencer-title">Deux façons d'entrer.</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>Gratuitement</h3>
+        <p>
+          Découvre la méthode et goûte à l'arabe à l'oreille, sans rien payer.
+        </p>
+        <a class="cta" href="/decouvrir">Commencer gratuitement</a>
+      </div>
+      <div class="card">
+        <h3>Le premier produit</h3>
+        <p>
+          Les mots qui débloquent l'arabe : 67 mots compris à l'oreille, 19 €.
+        </p>
+        <a class="cta cta-outline" href="/mots">Voir le produit</a>
+      </div>
+    </div>
   </section>
 </Layout>
 
 <style>
-  .hero {
-    max-width: 38rem;
+  section {
+    margin: 0 auto 4.5rem;
   }
-  .kicker {
+  .prose {
+    max-width: 42rem;
+  }
+  .hero {
+    max-width: 40rem;
+  }
+  .eyebrow {
+    font-size: 0.78rem;
     font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
     color: var(--ocre);
-    margin: 0 0 0.75rem;
+    margin: 0 0 0.6rem;
   }
   h1 {
     font-size: clamp(2rem, 5vw, 3rem);
     margin: 0 0 1rem;
   }
-  .lead {
+  h2 {
+    font-size: clamp(1.6rem, 3.5vw, 2.1rem);
+    margin: 0 0 1rem;
+  }
+  h3 {
     font-size: 1.15rem;
-    color: color-mix(in srgb, var(--encre) 80%, transparent);
-    margin: 0 0 2rem;
+    margin: 0 0 0.5rem;
+  }
+  .lead {
+    font-size: 1.18rem;
+    color: color-mix(in srgb, var(--encre) 82%, transparent);
+    margin: 0 0 1.75rem;
+  }
+
+  /* CTA */
+  .cta-row {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    flex-wrap: wrap;
   }
   .cta {
     display: inline-block;
@@ -41,10 +115,61 @@ import Layout from "../layouts/Layout.astro";
     color: var(--creme);
     text-decoration: none;
     font-weight: 600;
-    padding: 0.75rem 1.5rem;
+    padding: 0.8rem 1.6rem;
     border-radius: 0.6rem;
   }
   .cta:hover {
     opacity: 0.92;
+  }
+  .cta-outline {
+    background: transparent;
+    color: var(--teal);
+    border: 1px solid color-mix(in srgb, var(--teal) 45%, transparent);
+  }
+  .cta-outline:hover {
+    opacity: 1;
+    background: color-mix(in srgb, var(--teal) 8%, transparent);
+  }
+  .secondary {
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .secondary:hover {
+    text-decoration: underline;
+  }
+
+  /* Cartes « Par où commencer » */
+  .cards {
+    display: grid;
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+  }
+  .card {
+    border: 1px solid color-mix(in srgb, var(--encre) 16%, transparent);
+    border-radius: 0.8rem;
+    background: #fff;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  .card p {
+    color: color-mix(in srgb, var(--encre) 80%, transparent);
+    margin: 0 0 1rem;
+  }
+  .card .cta {
+    margin-top: auto;
+  }
+  @media (min-width: 40rem) {
+    .cards {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  /* Accessibilité : focus clavier visible. */
+  a:focus-visible {
+    outline: 2px solid var(--teal);
+    outline-offset: 2px;
   }
 </style>
