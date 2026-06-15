@@ -13,8 +13,11 @@
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
+    "@astrojs/vercel": "^10.0.8",
     "@fontsource-variable/plus-jakarta-sans": "^5.2.8",
     "@fontsource/noto-naskh-arabic": "^5.2.11",
-    "astro": "^6.4.6"
+    "@supabase/supabase-js": "^2.108.2",
+    "astro": "^6.4.6",
+    "stripe": "^22.2.1"
   }
 }
