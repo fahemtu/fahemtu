@@ -44,6 +44,22 @@ const ogImageURL = ogImage ? new URL(ogImage, Astro.site).href : undefined;
       name="twitter:card"
       content={ogImageURL ? "summary_large_image" : "summary"}
     />
+
+    <!-- Révélation au scroll — progressive enhancement.
+         On active l'effet (et donc l'état masqué initial) AVANT le 1er paint,
+         uniquement si JS + mouvement autorisé + IntersectionObserver dispo.
+         Sans JS / crawlers / reduced-motion → la classe n'est jamais posée,
+         le contenu reste visible (jamais masqué derrière le JS). -->
+    <script is:inline>
+      (function () {
+        try {
+          var ok =
+            "IntersectionObserver" in window &&
+            !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+          if (ok) document.documentElement.classList.add("reveal-enabled");
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <Header />
@@ -112,6 +128,43 @@ const ogImageURL = ogImage ? new URL(ogImage, Astro.site).href : undefined;
       p {
         margin: 0 0 1rem;
       }
+
+      /* Révélation au scroll : un seul effet, homogène sur tous les blocs
+         principaux (enfants directs de <main>). Uniquement opacity + transform
+         → aucun layout shift. Actif seulement quand .reveal-enabled est posé
+         (JS + mouvement autorisé) ; sinon le contenu est visible par défaut. */
+      @media (prefers-reduced-motion: no-preference) {
+        .reveal-enabled main > * {
+          opacity: 0;
+          transform: translateY(14px);
+        }
+        .reveal-enabled main > .is-visible {
+          opacity: 1;
+          transform: none;
+          transition:
+            opacity 550ms ease-out,
+            transform 550ms ease-out;
+        }
+      }
     </style>
+
+    <!-- Observe chaque bloc principal et le révèle une seule fois. Bundlé et
+         différé par Astro ; ne s'exécute que si l'effet a été activé. -->
+    <script>
+      if (document.documentElement.classList.contains("reveal-enabled")) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-visible");
+                io.unobserve(entry.target);
+              }
+            }
+          },
+          { rootMargin: "0px 0px -10% 0px", threshold: 0.05 },
+        );
+        for (const el of document.querySelectorAll("main > *")) io.observe(el);
+      }
+    </script>
   </body>
 </html>
