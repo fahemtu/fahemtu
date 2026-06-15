@@ -3,74 +3,74 @@ import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout
-  title="Découvrir Fahemtu — Recevoir les premiers mots"
-  description="Recevez par email un premier aperçu de la méthode Fahemtu : comprendre l'arabe à l'oreille."
+  title="Découvre l'arabe à l'oreille — gratuitement | Fahemtu"
+  description="Comprends tes premiers mots d'arabe rien qu'en les écoutant, gratuitement et sans inscription. Un avant-goût de la méthode Fahemtu."
 >
-  <section class="lead-magnet">
-    <h1>Commencer à comprendre, gratuitement</h1>
-    <p>
-      Laissez votre email pour recevoir un premier aperçu de la méthode : quelques
-      mots arabes à reconnaître à l'oreille, sans rien lire.
+  <!-- Hero -->
+  <section class="block" aria-labelledby="hero-title">
+    <p class="eyebrow">Gratuit — sans inscription</p>
+    <h1 id="hero-title">Goûte à l'arabe à l'oreille.</h1>
+    <p class="lead">
+      En quelques minutes, comprends tes premiers mots d'arabe rien qu'en les
+      écoutant. Pas de lecture, pas d'inscription : tu presses play, et tu
+      commences.
     </p>
+    <a class="cta" href="#">Commencer gratuitement</a>
+  </section>
 
-    <!-- Formulaire non branché pour l'instant (placeholder). -->
-    <form class="signup" action="#" aria-label="Inscription (à venir)">
-      <label for="email">Votre email</label>
-      <input
-        id="email"
-        name="email"
-        type="email"
-        placeholder="vous@exemple.fr"
-        autocomplete="email"
-      />
-      <button type="button" disabled>Recevoir (bientôt)</button>
-    </form>
-    <p class="note">Aucune inscription active pour le moment — page en préparation.</p>
+  <!-- Comment ça marche -->
+  <section class="block" aria-labelledby="comment-title">
+    <p class="eyebrow">Comment ça marche</p>
+    <p class="explain">
+      Tu entends un mot, tu choisis l'image qui lui correspond, et le sens
+      s'installe. Une dizaine de mots, quelques minutes — c'est la méthode
+      Fahemtu, en version courte.
+    </p>
+    <a class="cta" href="#">Commencer gratuitement</a>
   </section>
 </Layout>
 
 <style>
-  .lead-magnet {
+  /* Page courte et centrée : un tremplin. */
+  .block {
     max-width: 34rem;
+    margin: 0 auto 3.5rem;
+    text-align: center;
+  }
+  .eyebrow {
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ocre);
+    margin: 0 0 0.6rem;
   }
   h1 {
-    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-size: clamp(2rem, 5vw, 3rem);
     margin: 0 0 1rem;
   }
-  .signup {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    align-items: end;
-    margin: 1.5rem 0 0.75rem;
+  .lead,
+  .explain {
+    font-size: 1.15rem;
+    color: color-mix(in srgb, var(--encre) 82%, transparent);
+    margin: 0 0 1.75rem;
   }
-  label {
-    display: block;
-    font-size: 0.9rem;
-    font-weight: 600;
-    margin-bottom: 0.35rem;
-  }
-  input {
-    font: inherit;
-    padding: 0.6rem 0.8rem;
-    border: 1px solid color-mix(in srgb, var(--encre) 25%, transparent);
-    border-radius: 0.5rem;
-    background: #fff;
-    min-width: 16rem;
-  }
-  button {
-    font: inherit;
-    font-weight: 600;
-    padding: 0.6rem 1.2rem;
-    border: 0;
-    border-radius: 0.5rem;
+  .cta {
+    display: inline-block;
     background: var(--teal);
     color: var(--creme);
-    cursor: not-allowed;
-    opacity: 0.55;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.8rem 1.6rem;
+    border-radius: 0.6rem;
   }
-  .note {
-    font-size: 0.85rem;
-    color: color-mix(in srgb, var(--encre) 55%, transparent);
+  .cta:hover {
+    opacity: 0.92;
+  }
+
+  /* Accessibilité : focus clavier visible. */
+  a:focus-visible {
+    outline: 2px solid var(--teal);
+    outline-offset: 2px;
   }
 </style>
