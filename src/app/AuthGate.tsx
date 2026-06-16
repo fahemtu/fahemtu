@@ -18,8 +18,10 @@ import type { Session } from "@supabase/supabase-js";
 import { supabase } from "../lib/supabase";
 import { fetchAssetUrls } from "../lib/fetchAssetUrls";
 
-// URL de la page produit (placeholder, à configurer plus tard).
-const PRODUCT_PAGE_URL = "#";
+// Page produit (écran « pas encore d'accès »). En prod même domaine que le
+// site → /mots existe ; en dev l'app tourne seule (5173) et n'a pas /mots,
+// sans effet pour cet écran edge.
+const PRODUCT_PAGE_URL = "/mots";
 const PRODUCT = "produit-1";
 
 type Phase = "loading" | "ready";
@@ -222,7 +224,13 @@ function SignInScreen() {
     setSending(true);
     const { error } = await supabase.auth.signInWithOtp({
       email: email.trim().toLowerCase(),
-      options: { emailRedirectTo: window.location.origin },
+      // Retour sur l'app après le lien magique, sans domaine en dur :
+      // dev → http://localhost:5173/ · prod → https://<domaine>/app/
+      // (BASE_URL vaut '/' en dev, '/app/' au build). detectSessionInUrl
+      // (défaut Supabase) capte le token à l'arrivée.
+      options: {
+        emailRedirectTo: window.location.origin + import.meta.env.BASE_URL,
+      },
     });
     setSending(false);
     if (error) {
