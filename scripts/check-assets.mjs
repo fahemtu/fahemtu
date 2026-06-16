@@ -1,13 +1,16 @@
-// Fahemtu — Produit 1 : check d'intégrité des ASSETS (build-time).
-// Vérifie, fichiers à l'appui, les critères d'acceptation §9 :
-//   - chaque Word a un audio présent ET (une image présente OU un hex) ;
-//   - chaque slug de session est défini dans words.ts ;
+// Fahemtu — Produit 1 : check d'intégrité des DÉCLARATIONS de contenu (build-time).
+//
+// Palier 4 : les binaires payants (PNG/MP3) ne vivent plus dans public/ — ils
+// sont servis via URLs signées depuis le bucket privé. Ce script ne vérifie
+// donc PLUS la présence physique des fichiers ; il valide uniquement la
+// cohérence des déclarations (impossible à faire côté navigateur) :
+//   - chaque Word déclare un `audio` et (une `image` OU un `hex`) ;
 //   - pas de slug en double ;
-//   - signale les fichiers orphelins (présents mais non déclarés).
-// Le check d'intégrité "data" (runtime) vit dans src/content/integrity.ts ;
-// celui-ci ajoute la confrontation au système de fichiers, impossible côté navigateur.
+//   - chaque slug de session est défini dans words.ts ;
+//   - chaque slug de confusables est défini dans words.ts.
+// Le check d'intégrité "data" runtime vit, lui, dans src/content/integrity.ts.
 
-import { existsSync, readFileSync, readdirSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
@@ -15,13 +18,11 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const read = (p) => readFileSync(join(root, p), "utf8");
 
 const RED = "\x1b[31m";
-const YEL = "\x1b[33m";
 const GRN = "\x1b[32m";
 const DIM = "\x1b[2m";
 const RST = "\x1b[0m";
 
 const errors = [];
-const warnings = [];
 
 // --- Parse words.ts (objets sur une ligne, format généré) -------------------
 const wordsSrc = read("src/content/words.ts");
@@ -48,28 +49,12 @@ for (const w of words) {
 }
 const declared = seen;
 
-// --- Présence audio + (image | hex) ; fichiers sur disque -------------------
-const audioFiles = new Set(
-  readdirSync(join(root, "public/audio")).filter((f) => f.endsWith(".mp3")).map((f) => f.slice(0, -4)),
-);
-const imageFiles = new Set(
-  readdirSync(join(root, "public/images")).filter((f) => f.endsWith(".png")).map((f) => f.slice(0, -4)),
-);
-
+// --- Déclarations : audio + (image | hex) -----------------------------------
+// (Présence des champs dans words.ts — pas de fichier sur disque à vérifier.)
 for (const w of words) {
   if (!w.hasAudio) errors.push(`"${w.slug}" : champ audio manquant.`);
-  else if (!audioFiles.has(w.slug)) errors.push(`"${w.slug}" : fichier audio absent (public/audio/${w.slug}.mp3).`);
-
-  if (!w.hasImage && !w.hasHex) {
-    errors.push(`"${w.slug}" : ni image ni hex.`);
-  } else if (w.hasImage && !imageFiles.has(w.slug)) {
-    errors.push(`"${w.slug}" : image déclarée mais fichier absent (public/images/${w.slug}.png).`);
-  }
+  if (!w.hasImage && !w.hasHex) errors.push(`"${w.slug}" : ni image ni hex.`);
 }
-
-// --- Orphelins (fichiers présents mais non déclarés) ------------------------
-for (const f of audioFiles) if (!declared.has(f)) warnings.push(`Audio orphelin : public/audio/${f}.mp3 (slug non déclaré).`);
-for (const f of imageFiles) if (!declared.has(f)) warnings.push(`Image orpheline : public/images/${f}.png (slug non déclaré).`);
 
 // --- Slugs de sessions définis dans words.ts --------------------------------
 const sessionsSrc = read("src/content/sessions.ts");
@@ -88,11 +73,10 @@ for (const m of confusablesSrc.matchAll(/['"]([a-z][a-z-]*)['"]/g)) {
 }
 
 // --- Rapport -----------------------------------------------------------------
-console.log(`${DIM}check-assets:${RST} ${words.length} mots, ${audioFiles.size} audio, ${imageFiles.size} images.`);
-for (const w of warnings) console.log(`${YEL}⚠ ${w}${RST}`);
+console.log(`${DIM}check-assets:${RST} ${words.length} mots déclarés.`);
 if (errors.length) {
   for (const e of errors) console.log(`${RED}✗ ${e}${RST}`);
   console.error(`${RED}check-assets: ${errors.length} erreur(s) bloquante(s).${RST}`);
   process.exit(1);
 }
-console.log(`${GRN}✓ check-assets: intégrité OK (${warnings.length} avertissement(s)).${RST}`);
+console.log(`${GRN}✓ check-assets: déclarations cohérentes.${RST}`);
