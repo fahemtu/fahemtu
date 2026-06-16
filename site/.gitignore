@@ -4,6 +4,8 @@ dist/
 .astro/
 # adaptateur Vercel (sortie de build)
 .vercel/
+# app Vite buildée et déposée ici (artefact de build, voir build:all)
+public/app/
 
 # dependencies
 node_modules/

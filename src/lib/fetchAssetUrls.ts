@@ -1,7 +1,7 @@
 // Fahemtu — récupère les URLs signées des assets et alimente le store.
 // Appelé par l'AuthGate une fois l'utilisateur autorisé, avant de rendre l'app.
-// Chemin RELATIF /api/asset-urls → proxifié vers le site en dev (cf. vite.config),
-// même origine en prod → pas de cross-origin.
+// Chemin racine-absolu /api/asset-urls (slash initial) → insensible à la base
+// /app/ ; proxifié vers le site en dev (cf. vite.config), même origine en prod.
 
 import { supabase } from "./supabase";
 import { setAssetUrls } from "./assetUrls";

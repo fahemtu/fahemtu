@@ -5,7 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && npm run check:assets && vite build",
+    "build": "npm run build:all",
+    "build:app": "tsc -b && npm run check:assets && vite build",
+    "build:site": "npm --prefix site run build",
+    "build:all": "npm run build:app && npm run build:site",
     "check:assets": "node scripts/check-assets.mjs",
     "test": "node scripts/sim-session.mjs",
     "lint": "eslint .",
