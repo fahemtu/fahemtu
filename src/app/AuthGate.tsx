@@ -9,24 +9,31 @@
 import {
   useCallback,
   useEffect,
+  useRef,
   useState,
   type FormEvent,
   type ReactNode,
 } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { supabase } from "../lib/supabase";
+import { fetchAssetUrls } from "../lib/fetchAssetUrls";
 
 // URL de la page produit (placeholder, à configurer plus tard).
 const PRODUCT_PAGE_URL = "#";
 const PRODUCT = "produit-1";
 
 type Phase = "loading" | "ready";
+// État du chargement des URLs signées (après autorisation) :
+// "idle" = à charger / en cours · "ready" = chargé · "error" = échec.
+type AssetsState = "idle" | "ready" | "error";
 
 export function AuthGate({ children }: { children: ReactNode }) {
   const [phase, setPhase] = useState<Phase>("loading");
   const [session, setSession] = useState<Session | null>(null);
   // null = vérification en cours ; true/false = résultat.
   const [authorized, setAuthorized] = useState<boolean | null>(null);
+  const [assetsState, setAssetsState] = useState<AssetsState>("idle");
+  const assetsFetchingRef = useRef(false);
 
   // Session initiale + écoute des changements d'auth. On (ré)initialise
   // `authorized` à null (= « à vérifier ») dans ces callbacks async — pas dans
@@ -36,11 +43,15 @@ export function AuthGate({ children }: { children: ReactNode }) {
     supabase.auth.getSession().then(({ data }) => {
       setSession(data.session);
       setAuthorized(null);
+      setAssetsState("idle");
+      assetsFetchingRef.current = false;
       setPhase("ready");
     });
     const { data: sub } = supabase.auth.onAuthStateChange((_event, next) => {
       setSession(next);
       setAuthorized(null);
+      setAssetsState("idle");
+      assetsFetchingRef.current = false;
       setPhase("ready");
     });
     return () => sub.subscription.unsubscribe();
@@ -65,8 +76,33 @@ export function AuthGate({ children }: { children: ReactNode }) {
     };
   }, [phase, session]);
 
+  // Charge les URLs signées une fois autorisé, AVANT de rendre l'app.
+  // setState uniquement dans les callbacks async (jamais en synchrone d'effet).
+  useEffect(() => {
+    if (authorized !== true || assetsState !== "idle") return;
+    if (assetsFetchingRef.current) return;
+    assetsFetchingRef.current = true;
+    let active = true;
+    fetchAssetUrls()
+      .then(() => {
+        if (active) setAssetsState("ready");
+      })
+      .catch((err) => {
+        console.error("[auth] chargement des assets :", err);
+        if (active) setAssetsState("error");
+      });
+    return () => {
+      active = false;
+    };
+  }, [authorized, assetsState]);
+
   const signOut = useCallback(() => {
     void supabase.auth.signOut();
+  }, []);
+
+  const retryAssets = useCallback(() => {
+    assetsFetchingRef.current = false;
+    setAssetsState("idle");
   }, []);
 
   // — Chargement (session initiale, ou vérification d'accès en cours) —
@@ -84,7 +120,15 @@ export function AuthGate({ children }: { children: ReactNode }) {
     return <NoAccessScreen email={session.user.email} onSignOut={signOut} />;
   }
 
-  // — Connecté + autorisé : l'app, intacte, + déconnexion discrète —
+  // — Autorisé mais assets pas encore chargés : chargement / erreur —
+  if (assetsState === "error") {
+    return <AssetsErrorScreen onRetry={retryAssets} onSignOut={signOut} />;
+  }
+  if (assetsState !== "ready") {
+    return <LoadingScreen />;
+  }
+
+  // — Connecté + autorisé + assets prêts : l'app, intacte, + déconnexion discrète —
   return (
     <>
       {children}
@@ -96,6 +140,43 @@ export function AuthGate({ children }: { children: ReactNode }) {
         Se déconnecter
       </button>
     </>
+  );
+}
+
+function AssetsErrorScreen({
+  onRetry,
+  onSignOut,
+}: {
+  onRetry: () => void;
+  onSignOut: () => void;
+}) {
+  return (
+    <Shell>
+      <div className="w-full max-w-sm text-center">
+        <h1 className="text-xl font-bold tracking-tight">
+          Impossible de charger le contenu
+        </h1>
+        <p className="mt-2 text-sm text-ink/60">
+          Vérifie ta connexion, puis réessaie.
+        </p>
+        <button
+          type="button"
+          onClick={onRetry}
+          className="mt-6 inline-block rounded-xl bg-teal px-5 py-2.5 text-sm font-semibold text-creme hover:opacity-90"
+        >
+          Réessayer
+        </button>
+        <div className="mt-4">
+          <button
+            type="button"
+            onClick={onSignOut}
+            className="text-sm font-medium text-ink/50 hover:text-ink/80"
+          >
+            Se déconnecter
+          </button>
+        </div>
+      </div>
+    </Shell>
   );
 }
 
