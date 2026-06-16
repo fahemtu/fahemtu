@@ -35,6 +35,10 @@ const faq = [
     a: "Tu as 14 jours pour demander un remboursement complet, sans avoir à te justifier. Un email suffit.",
   },
 ];
+
+// URL de checkout (Stripe Payment Link). Pilotée par l'env → passage test→live
+// = simple changement de config, sans toucher au code. Absente → reste « # ».
+const checkoutUrl = import.meta.env.PUBLIC_CHECKOUT_URL || "#";
 ---
 
 <Layout
@@ -51,7 +55,7 @@ const faq = [
       compréhension — le vrai début de l'arabe à l'oreille.
     </p>
     <div class="cta-row">
-      <a class="cta" href="#">Commencer — 19 €</a>
+      <a class="cta" href={checkoutUrl}>Commencer — 19 €</a>
       <span class="price-note"><s>29 €</s> · paiement unique</span>
     </div>
     <p><a class="secondary" href="#methode">Découvrir la méthode ↓</a></p>
@@ -247,7 +251,7 @@ const faq = [
         <li>Accès depuis n'importe quel appareil.</li>
         <li>Mises à jour incluses.</li>
       </ul>
-      <a class="cta" href="#">Commencer — 19 €</a>
+      <a class="cta" href={checkoutUrl}>Commencer — 19 €</a>
       <p class="guarantee">Satisfait ou remboursé 14 jours, sans justification.</p>
     </div>
   </section>
@@ -276,7 +280,7 @@ const faq = [
       Bientôt, ces mots ne seront plus des sons : tu les entendras, et tu
       comprendras. C'est le déclic — et c'est par là que tout commence.
     </p>
-    <a class="cta" href="#">Commencer — 19 €</a>
+    <a class="cta" href={checkoutUrl}>Commencer — 19 €</a>
     <p class="price-note">
       19 € · <s>29 €</s> · paiement unique · accès à vie · satisfait ou remboursé
       14 jours
