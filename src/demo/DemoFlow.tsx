@@ -83,10 +83,55 @@ function Centered({ children }: { children: ReactNode }) {
 
 function PicScreen() {
   const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">(
+    "idle",
+  );
 
-  function handleSubmit(e: FormEvent) {
+  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    // TODO Beehiiv : brancher la capture email (no-op pour l'instant).
+    if (!emailValid || status === "sending") return;
+    setStatus("sending");
+    try {
+      // Chemin racine-absolu → proxifié vers le site en dev, même origine en prod.
+      const res = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.trim() }),
+      });
+      setStatus(res.ok ? "success" : "error");
+    } catch {
+      setStatus("error");
+    }
+  }
+
+  const goFurther = (
+    <div className="mt-5">
+      <a
+        href="/mots"
+        className="text-sm font-medium text-ink/60 underline-offset-2 hover:text-ink/90 hover:underline"
+      >
+        Aller plus loin
+      </a>
+    </div>
+  );
+
+  // Écran « merci » après inscription.
+  if (status === "success") {
+    return (
+      <Centered>
+        <div className="w-full max-w-md text-center">
+          <p className="text-sm font-semibold uppercase tracking-widest text-ocre">
+            Merci
+          </p>
+          <h1 className="mt-3 text-2xl font-bold tracking-tight text-ink">
+            C'est noté. La suite arrive par email.
+          </h1>
+          {goFurther}
+        </div>
+      </Centered>
+    );
   }
 
   return (
@@ -119,20 +164,20 @@ function PicScreen() {
           />
           <button
             type="submit"
-            className="rounded-xl bg-teal px-5 py-2.5 text-sm font-semibold text-creme hover:opacity-90"
+            disabled={status === "sending" || !emailValid}
+            className="rounded-xl bg-teal px-5 py-2.5 text-sm font-semibold text-creme hover:opacity-90 disabled:opacity-50"
           >
-            Recevoir la suite
+            {status === "sending" ? "Envoi…" : "Recevoir la suite"}
           </button>
         </form>
 
-        <div className="mt-5">
-          <a
-            href="/mots"
-            className="text-sm font-medium text-ink/60 underline-offset-2 hover:text-ink/90 hover:underline"
-          >
-            Aller plus loin
-          </a>
-        </div>
+        {status === "error" && (
+          <p className="mt-3 text-sm text-[#D64541]" role="alert">
+            L'inscription a échoué. Réessaie dans un instant.
+          </p>
+        )}
+
+        {goFurther}
       </div>
     </Centered>
   );
