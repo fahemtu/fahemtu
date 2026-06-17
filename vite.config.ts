@@ -1,6 +1,10 @@
+import { dirname, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
+
+const root = dirname(fileURLToPath(import.meta.url))
 
 // https://vite.dev/config/
 // Routage de prod : au BUILD, l'app est servie sous /app par le déploiement
@@ -14,6 +18,14 @@ export default defineConfig(({ command }) => ({
     // Sortie déposée dans le site Astro → servie en statique sous /app.
     outDir: 'site/public/app',
     emptyOutDir: true, // requis : le dossier est hors de la racine de l'app
+    // Multi-page : entrée payante (index.html) + avant-goût gratuit (demo/),
+    // bundles séparés. La démo n'importe aucun code payant.
+    rollupOptions: {
+      input: {
+        main: resolve(root, 'index.html'),
+        demo: resolve(root, 'demo/index.html'),
+      },
+    },
   },
   server: {
     // En dev, /api/* est proxifié vers le site Astro (port 4321) → l'app appelle
