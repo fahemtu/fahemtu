@@ -2,7 +2,7 @@
 // Intro → Discovery → AudioImageChoice (audio→image) → écran « pic ».
 // Réutilise les mécaniques existantes telles quelles (via leurs props).
 // Sobre, anti-décoratif, palette/typos de marque. Aucun appel /api, aucune auth.
-import { useState, type FormEvent, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { Discovery } from "../mechanics/Discovery";
 import { AudioImageChoice } from "../mechanics/AudioImageChoice";
 import { demoWords } from "./demoWords";
@@ -82,58 +82,6 @@ function Centered({ children }: { children: ReactNode }) {
 }
 
 function PicScreen() {
-  const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">(
-    "idle",
-  );
-
-  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
-
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault();
-    if (!emailValid || status === "sending") return;
-    setStatus("sending");
-    try {
-      // Chemin racine-absolu → proxifié vers le site en dev, même origine en prod.
-      const res = await fetch("/api/subscribe", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email.trim() }),
-      });
-      setStatus(res.ok ? "success" : "error");
-    } catch {
-      setStatus("error");
-    }
-  }
-
-  const goFurther = (
-    <div className="mt-5">
-      <a
-        href="/mots"
-        className="text-sm font-medium text-ink/60 underline-offset-2 hover:text-ink/90 hover:underline"
-      >
-        Aller plus loin
-      </a>
-    </div>
-  );
-
-  // Écran « merci » après inscription.
-  if (status === "success") {
-    return (
-      <Centered>
-        <div className="w-full max-w-md text-center">
-          <p className="text-sm font-semibold uppercase tracking-widest text-ocre">
-            Merci
-          </p>
-          <h1 className="mt-3 text-2xl font-bold tracking-tight text-ink">
-            C'est noté. La suite arrive par email.
-          </h1>
-          {goFurther}
-        </div>
-      </Centered>
-    );
-  }
-
   return (
     <Centered>
       <div className="w-full max-w-md text-center">
@@ -144,40 +92,15 @@ function PicScreen() {
           Tu viens de reconnaître 10 mots d'arabe, à l'oreille.
         </h1>
         <p className="mt-3 text-ink/70">
-          C'est le début de l'arabe à l'oreille. Reçois la suite par email.
+          C'est le début de l'arabe à l'oreille.
         </p>
 
-        <form
-          onSubmit={handleSubmit}
-          className="mt-6 flex flex-col gap-3"
-          aria-label="Recevoir la suite"
+        <a
+          href="/mots"
+          className="mt-8 inline-block rounded-xl bg-teal px-6 py-2.5 text-sm font-semibold text-creme hover:opacity-90"
         >
-          <input
-            type="email"
-            required
-            autoComplete="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="ton@email.fr"
-            aria-label="Adresse email"
-            className="rounded-lg bg-white px-3 py-2.5 text-center ring-1 ring-ink/15"
-          />
-          <button
-            type="submit"
-            disabled={status === "sending" || !emailValid}
-            className="rounded-xl bg-teal px-5 py-2.5 text-sm font-semibold text-creme hover:opacity-90 disabled:opacity-50"
-          >
-            {status === "sending" ? "Envoi…" : "Recevoir la suite"}
-          </button>
-        </form>
-
-        {status === "error" && (
-          <p className="mt-3 text-sm text-[#D64541]" role="alert">
-            L'inscription a échoué. Réessaie dans un instant.
-          </p>
-        )}
-
-        {goFurther}
+          Aller plus loin
+        </a>
       </div>
     </Centered>
   );
