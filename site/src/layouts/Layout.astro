@@ -79,6 +79,11 @@ const ogImageURL = ogImage ? new URL(ogImage, Astro.site).href : undefined;
         --font-sans: "Plus Jakarta Sans Variable", system-ui, sans-serif;
         --font-arabic: "Noto Naskh Arabic", serif;
 
+        /* Bornes horizontales partagées header + body + footer (alignement). */
+        --shell-max: 64rem;
+        --shell-pad: 1.5rem;
+        /* Padding vertical du conteneur (réutilisé par le hero plein écran). */
+        --container-pad-y: 3rem;
         /* Hauteur approximative du header (en flux) — sert au hero plein écran. */
         --header-h: 3.9rem;
       }
@@ -111,16 +116,20 @@ const ogImageURL = ogImage ? new URL(ogImage, Astro.site).href : undefined;
       }
 
       .container {
-        max-width: 52rem;
+        max-width: var(--shell-max);
         margin: 0 auto;
-        padding: 3rem 1.5rem;
+        padding: var(--container-pad-y) var(--shell-pad);
       }
 
       /* Hero plein écran (pages vitrine) : occupe la hauteur visible sous le
-         header, contenu centré verticalement. min-height (pas height) → sur
-         écran court, la section grandit et défile, le contenu n'est jamais coupé.
-         svh = plus petit viewport (barre d'URL mobile visible), sans jank. */
+         header, contenu centré verticalement DANS cette bande. Le margin-top
+         négatif annule le padding-top du conteneur pour que le hero démarre
+         juste sous le header (sinon il est poussé vers le bas → contenu sous le
+         centre). min-height (pas height) → sur écran court, la section grandit
+         et défile, le contenu n'est jamais coupé. svh = plus petit viewport
+         (barre d'URL mobile visible), sans jank. */
       .hero-full {
+        margin-top: calc(-1 * var(--container-pad-y));
         min-height: calc(100svh - var(--header-h));
         display: flex;
         flex-direction: column;

@@ -34,9 +34,9 @@ const isActive = (href: string) =>
     border-bottom: 1px solid color-mix(in srgb, var(--encre) 12%, transparent);
   }
   .inner {
-    max-width: 64rem;
+    max-width: var(--shell-max);
     margin: 0 auto;
-    padding: 1rem 1.25rem;
+    padding: 1rem var(--shell-pad);
     display: flex;
     align-items: center;
     justify-content: space-between;

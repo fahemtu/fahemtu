@@ -289,11 +289,17 @@ const checkoutUrl = import.meta.env.PUBLIC_CHECKOUT_URL || "#";
 </Layout>
 
 <style>
-  /* Sections : rythme vertical sobre, texte lisible. */
+  /* Sections : pleine largeur du conteneur, flush-gauche (rythme vertical sobre).
+     Le TEXTE courant est plafonné (lisibilité) et aligné à gauche ; les blocs
+     structurés (triade, listes, « Pour qui », carte tarif, FAQ, figures)
+     occupent toute la largeur du conteneur. */
   section {
-    margin: 0 auto 4.5rem;
+    margin: 0 0 4.5rem;
   }
-  .prose {
+  .prose > h1,
+  .prose > h2,
+  .prose > p,
+  .prose > .eyebrow {
     max-width: 42rem;
   }
   .eyebrow {
