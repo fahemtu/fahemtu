@@ -78,6 +78,9 @@ const ogImageURL = ogImage ? new URL(ogImage, Astro.site).href : undefined;
 
         --font-sans: "Plus Jakarta Sans Variable", system-ui, sans-serif;
         --font-arabic: "Noto Naskh Arabic", serif;
+
+        /* Hauteur approximative du header (en flux) — sert au hero plein écran. */
+        --header-h: 3.9rem;
       }
 
       *,
@@ -108,9 +111,20 @@ const ogImageURL = ogImage ? new URL(ogImage, Astro.site).href : undefined;
       }
 
       .container {
-        max-width: 64rem;
+        max-width: 52rem;
         margin: 0 auto;
-        padding: 3rem 1.25rem;
+        padding: 3rem 1.5rem;
+      }
+
+      /* Hero plein écran (pages vitrine) : occupe la hauteur visible sous le
+         header, contenu centré verticalement. min-height (pas height) → sur
+         écran court, la section grandit et défile, le contenu n'est jamais coupé.
+         svh = plus petit viewport (barre d'URL mobile visible), sans jank. */
+      .hero-full {
+        min-height: calc(100svh - var(--header-h));
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
       }
 
       h1,
