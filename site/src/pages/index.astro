@@ -7,15 +7,31 @@ import Layout from "../layouts/Layout.astro";
   description="Apprends à comprendre l'arabe rien qu'à l'oreille — sans lire, sans écrire, sans grammaire. La méthode 100 % orale de Fahemtu. Commence gratuitement."
 >
   <!-- Hero -->
-  <section class="hero prose hero-full" aria-labelledby="hero-title">
-    <h1 id="hero-title">Comprendre l'arabe à l'oreille.</h1>
-    <p class="lead">
-      Fahemtu t'apprend à reconnaître l'arabe quand tu l'entends — sans lire, sans
-      écrire, sans grammaire. Tu écoutes, tu reconnais, tu comprends.
-    </p>
-    <div class="cta-row">
-      <a class="cta" href="/decouvrir">Commencer gratuitement</a>
-      <a class="secondary" href="/mots">Le premier produit</a>
+  <section class="hero hero-full" aria-labelledby="hero-title">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <h1 id="hero-title">Comprendre l'arabe à l'oreille.</h1>
+        <p class="lead">
+          Fahemtu t'apprend à reconnaître l'arabe quand tu l'entends — sans lire,
+          sans écrire, sans grammaire. Tu écoutes, tu reconnais, tu comprends.
+        </p>
+        <div class="cta-row">
+          <a class="cta" href="/decouvrir">Commencer gratuitement</a>
+          <a class="secondary" href="/mots">Le premier produit</a>
+        </div>
+      </div>
+      <!-- Carte image (desktop uniquement) : comble le vide à droite, n'altère
+           pas la colonne de texte. Image publique du set démo gratuit. -->
+      <aside class="hero-card">
+        <img
+          class="hero-card-img"
+          src="/hero-chat.png"
+          width="512"
+          height="512"
+          alt="Un chat — l'image associée au mot entendu dans la méthode Fahemtu."
+        />
+        <p class="hero-card-cap">un mot, une image</p>
+      </aside>
     </div>
   </section>
 
@@ -96,8 +112,46 @@ import Layout from "../layouts/Layout.astro";
   .prose {
     max-width: 42rem;
   }
-  .hero {
-    max-width: 40rem;
+  /* Hero deux colonnes : la pile de texte (gauche, flush-gauche, plafonnée) ne
+     bouge pas ; la carte vient à droite. La section (.hero-full) reste un flex
+     column qui centre .hero-grid verticalement dans la bande. */
+  .hero-grid {
+    display: flex;
+    align-items: center; /* carte alignée au centre vertical du texte */
+    gap: 2.5rem;
+  }
+  .hero-copy {
+    max-width: 40rem; /* texte plafonné (lisibilité), 1er item → bord gauche = conteneur */
+  }
+  /* Carte : desktop uniquement. Masquée par défaut (mobile/étroit : pas de vide,
+     hero net en une colonne), affichée à partir de 64rem. */
+  .hero-card {
+    display: none;
+    flex: 0 0 auto;
+    width: 280px;
+    margin-left: auto; /* poussée à droite sans décaler le texte */
+    background: #fff;
+    border: 1px solid color-mix(in srgb, var(--encre) 12%, transparent);
+    border-radius: 14px;
+    padding: 0.75rem;
+  }
+  .hero-card-img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+  .hero-card-cap {
+    margin: 0.6rem 0 0.15rem;
+    text-align: center;
+    font-size: 0.85rem;
+    color: color-mix(in srgb, var(--encre) 55%, transparent);
+  }
+  @media (min-width: 64rem) {
+    .hero-card {
+      display: block;
+    }
   }
   .eyebrow {
     font-size: 0.78rem;
