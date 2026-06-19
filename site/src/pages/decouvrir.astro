@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import HeroCard from "../components/HeroCard.astro";
 ---
 
 <Layout
@@ -7,15 +8,24 @@ import Layout from "../layouts/Layout.astro";
   description="Comprends tes premiers mots d'arabe rien qu'en les écoutant, gratuitement et sans inscription. Un avant-goût de la méthode Fahemtu."
 >
   <!-- Hero -->
-  <section class="block hero-full" aria-labelledby="hero-title">
-    <p class="eyebrow">Gratuit — sans inscription</p>
-    <h1 id="hero-title">Goûte à l'arabe à l'oreille.</h1>
-    <p class="lead">
-      En quelques minutes, comprends tes premiers mots d'arabe rien qu'en les
-      écoutant. Pas de lecture, pas d'inscription : tu presses play, et tu
-      commences.
-    </p>
-    <a class="cta" href="/app/demo/">Commencer gratuitement</a>
+  <section class="hero hero-full" aria-labelledby="hero-title">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">Gratuit — sans inscription</p>
+        <h1 id="hero-title">Goûte à l'arabe à l'oreille.</h1>
+        <p class="lead">
+          En quelques minutes, comprends tes premiers mots d'arabe rien qu'en les
+          écoutant. Pas de lecture, pas d'inscription : tu presses play, et tu
+          commences.
+        </p>
+        <a class="cta" href="/app/demo/">Commencer gratuitement</a>
+      </div>
+      <HeroCard
+        image="/hero-lapin.png"
+        alt="Un lapin — l'image associée au mot entendu dans la méthode Fahemtu."
+        audio="/hero-lapin.mp3"
+      />
+    </div>
   </section>
 
   <!-- Comment ça marche -->
@@ -31,20 +41,21 @@ import Layout from "../layouts/Layout.astro";
 </Layout>
 
 <style>
-  /* Page courte : un tremplin. */
+  /* Page courte : un tremplin. Le bloc « Comment ça marche » (sous le hero)
+     reste centré. */
   .block {
     max-width: 34rem;
     margin: 0 auto 3.5rem;
     text-align: center;
   }
-  /* Hero aligné à gauche : on annule le centrage de .block (margin-inline: 0 +
-     text-align: left) et on ancre les enfants du flex column à gauche
-     (align-items: flex-start) → le bouton (flex item) épouse son texte au lieu
-     de s'étirer. Le bloc « Comment ça marche » dessous reste centré (intact). */
-  .hero-full {
-    margin-inline: 0;
-    align-items: flex-start;
-    text-align: left;
+  /* Hero : structure deux colonnes partagée (.hero-grid / .hero-copy / carte,
+     stylée dans Layout). On resserre la colonne de texte (34rem) et on conserve
+     l'espacement bas d'origine. Flush-gauche assuré par .hero-copy (1er item). */
+  .hero {
+    margin-bottom: 3.5rem;
+  }
+  .hero-copy {
+    max-width: 34rem;
   }
   .eyebrow {
     font-size: 0.78rem;

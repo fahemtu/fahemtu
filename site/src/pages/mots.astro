@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import HeroCard from "../components/HeroCard.astro";
 
 const faq = [
   {
@@ -46,19 +47,28 @@ const checkoutUrl = import.meta.env.PUBLIC_CHECKOUT_URL || "#";
   description="Comprends 67 mots arabes rien qu'à l'oreille — sans lire, sans écrire, sans grammaire. La méthode 100 % orale de Fahemtu. 19 €, paiement unique."
 >
   <!-- 1 — Hero -->
-  <section class="hero prose hero-full" aria-labelledby="hero-title">
-    <p class="eyebrow">Produit 1</p>
-    <h1 id="hero-title">Tes premiers mots d'arabe, compris à l'oreille.</h1>
-    <p class="lead">
-      Pas de lecture, pas de grammaire, pas de tableaux à mémoriser. Tu écoutes un
-      mot, tu reconnais ce qu'il veut dire. 67 mots pour déclencher la
-      compréhension — le vrai début de l'arabe à l'oreille.
-    </p>
-    <div class="cta-row">
-      <a class="cta" href={checkoutUrl}>Commencer — 19 €</a>
-      <span class="price-note"><s>29 €</s> · paiement unique</span>
+  <section class="hero hero-full" aria-labelledby="hero-title">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">Produit 1</p>
+        <h1 id="hero-title">Tes premiers mots d'arabe, compris à l'oreille.</h1>
+        <p class="lead">
+          Pas de lecture, pas de grammaire, pas de tableaux à mémoriser. Tu
+          écoutes un mot, tu reconnais ce qu'il veut dire. 67 mots pour déclencher
+          la compréhension — le vrai début de l'arabe à l'oreille.
+        </p>
+        <div class="cta-row">
+          <a class="cta" href={checkoutUrl}>Commencer — 19 €</a>
+          <span class="price-note"><s>29 €</s> · paiement unique</span>
+        </div>
+        <p><a class="secondary" href="#methode">Découvrir la méthode ↓</a></p>
+      </div>
+      <HeroCard
+        image="/hero-oiseau.png"
+        alt="Un oiseau — l'image associée au mot entendu dans la méthode Fahemtu."
+        audio="/hero-oiseau.mp3"
+      />
     </div>
-    <p><a class="secondary" href="#methode">Découvrir la méthode ↓</a></p>
   </section>
 
   <!-- 2 — Le constat -->

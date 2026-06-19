@@ -167,6 +167,103 @@ const ogImageURL = ogImage ? new URL(ogImage, Astro.site).href : undefined;
         justify-content: center;
       }
 
+      /* Hero deux colonnes (pages vitrine) — partagé par /, /mots, /decouvrir :
+         texte à gauche (flush-gauche, plafonné) + carte image à droite (desktop).
+         La carte (markup + JS) vient du composant HeroCard.astro ; ces styles
+         sont communs pour éviter toute divergence/duplication. */
+      .hero-grid {
+        display: flex;
+        align-items: center; /* carte alignée au centre vertical du texte */
+        gap: 2.5rem;
+      }
+      .hero-copy {
+        /* Largeur lisible par défaut ; une page peut resserrer (ex. /decouvrir).
+           1er item du flex row → bord gauche = conteneur (= marque). */
+        max-width: 42rem;
+      }
+      /* Carte : desktop uniquement. Masquée par défaut (mobile/étroit : pas de
+         vide, hero net en une colonne), affichée à partir de 64rem. */
+      .hero-card {
+        display: none;
+        flex: 0 0 auto;
+        width: 280px;
+        margin-left: auto; /* poussée à droite sans décaler le texte */
+        background: #fff;
+        border: 1px solid color-mix(in srgb, var(--encre) 12%, transparent);
+        border-radius: 14px;
+        padding: 0.75rem;
+      }
+      .hero-card-img {
+        display: block;
+        width: 100%;
+        /* height:auto requis : sans lui, l'attribut HTML height fixe la hauteur
+           et neutralise aspect-ratio → image étirée puis rognée. Avec height:auto,
+           aspect-ratio 1/1 + width:100% rendent la zone carrée ; source carrée
+           dans zone carrée → image entière, rien de rogné. */
+        height: auto;
+        aspect-ratio: 1 / 1;
+        object-fit: cover;
+        border-radius: 10px;
+      }
+      /* Pied de carte : grille 3 colonnes équilibrée → légende (col. centrale)
+         centrée par rapport à la carte (spacer gauche = bouton droit) ; bouton en
+         col. 3 (coin bas-droit), aucun chevauchement. */
+      .hero-card-foot {
+        display: grid;
+        grid-template-columns: 38px 1fr 38px;
+        align-items: center;
+        margin-top: 0.6rem;
+      }
+      .hero-card-play {
+        grid-column: 3;
+        justify-self: end;
+        width: 38px;
+        height: 38px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        border: none;
+        border-radius: 50%;
+        background: var(--teal);
+        color: var(--creme);
+        cursor: pointer;
+      }
+      .hero-card-play:hover {
+        opacity: 0.92;
+      }
+      .hero-card-play:focus-visible {
+        outline: 2px solid var(--teal);
+        outline-offset: 2px;
+      }
+      .hero-card-play svg {
+        width: 16px;
+        height: 16px;
+        display: block;
+        fill: currentColor;
+      }
+      .hero-card-play .icon-pause {
+        display: none;
+      }
+      .hero-card-play.is-playing .icon-play {
+        display: none;
+      }
+      .hero-card-play.is-playing .icon-pause {
+        display: block;
+      }
+      .hero-card-cap {
+        grid-column: 2;
+        margin: 0;
+        text-align: center;
+        font-size: 0.85rem;
+        color: color-mix(in srgb, var(--encre) 55%, transparent);
+      }
+      @media (min-width: 64rem) {
+        .hero-card {
+          display: block;
+        }
+      }
+
       h1,
       h2,
       h3 {

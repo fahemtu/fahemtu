@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import HeroCard from "../components/HeroCard.astro";
 ---
 
 <Layout
@@ -21,33 +22,12 @@ import Layout from "../layouts/Layout.astro";
         </div>
       </div>
       <!-- Carte image (desktop uniquement) : comble le vide à droite, n'altère
-           pas la colonne de texte. Image publique du set démo gratuit. -->
-      <aside class="hero-card">
-        <img
-          class="hero-card-img"
-          src="/hero-chat.png"
-          width="512"
-          height="512"
-          alt="Un chat — l'image associée au mot entendu dans la méthode Fahemtu."
-        />
-        <div class="hero-card-foot">
-          <p class="hero-card-cap">un mot, une image</p>
-          <button
-            type="button"
-            class="hero-card-play"
-            aria-label="Écouter le mot"
-            aria-pressed="false"
-          >
-            <svg class="icon-play" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M8 5v14l11-7z" />
-            </svg>
-            <svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M6 5h4v14H6zM14 5h4v14h-4z" />
-            </svg>
-          </button>
-        </div>
-        <audio class="hero-card-audio" src="/hero-chat.mp3" preload="none"></audio>
-      </aside>
+           pas la colonne de texte. Image + audio publics du set démo (mot : chat). -->
+      <HeroCard
+        image="/hero-chat.png"
+        alt="Un chat — l'image associée au mot entendu dans la méthode Fahemtu."
+        audio="/hero-chat.mp3"
+      />
     </div>
   </section>
 
@@ -118,39 +98,6 @@ import Layout from "../layouts/Layout.astro";
     </div>
   </section>
 
-  <!-- Carte hero : lecture de l'audio du mot au clic (vanilla, accessible
-       clavier). Pas d'autoplay, pas de boucle ; rejoue depuis le début. -->
-  <script is:inline>
-    (function () {
-      var card = document.querySelector(".hero-card");
-      if (!card) return;
-      var btn = card.querySelector(".hero-card-play");
-      var audio = card.querySelector(".hero-card-audio");
-      if (!btn || !audio) return;
-      function setPlaying(on) {
-        btn.classList.toggle("is-playing", on);
-        btn.setAttribute("aria-pressed", on ? "true" : "false");
-        btn.setAttribute("aria-label", on ? "Arrêter" : "Écouter le mot");
-      }
-      btn.addEventListener("click", function () {
-        if (audio.paused) {
-          audio.currentTime = 0;
-          audio.play();
-        } else {
-          audio.pause();
-        }
-      });
-      audio.addEventListener("play", function () {
-        setPlaying(true);
-      });
-      audio.addEventListener("pause", function () {
-        setPlaying(false);
-      });
-      audio.addEventListener("ended", function () {
-        setPlaying(false);
-      });
-    })();
-  </script>
 </Layout>
 
 <style>
@@ -162,100 +109,11 @@ import Layout from "../layouts/Layout.astro";
   .prose {
     max-width: 42rem;
   }
-  /* Hero deux colonnes : la pile de texte (gauche, flush-gauche, plafonnée) ne
-     bouge pas ; la carte vient à droite. La section (.hero-full) reste un flex
-     column qui centre .hero-grid verticalement dans la bande. */
-  .hero-grid {
-    display: flex;
-    align-items: center; /* carte alignée au centre vertical du texte */
-    gap: 2.5rem;
-  }
+  /* Hero deux colonnes (.hero-grid / .hero-copy / carte) : styles partagés dans
+     Layout. Ici on resserre seulement la colonne de texte de l'accueil (40rem,
+     valeur validée), 1er item du flex row → bord gauche = conteneur/marque. */
   .hero-copy {
-    max-width: 40rem; /* texte plafonné (lisibilité), 1er item → bord gauche = conteneur */
-  }
-  /* Carte : desktop uniquement. Masquée par défaut (mobile/étroit : pas de vide,
-     hero net en une colonne), affichée à partir de 64rem. */
-  .hero-card {
-    display: none;
-    flex: 0 0 auto;
-    width: 280px;
-    margin-left: auto; /* poussée à droite sans décaler le texte */
-    background: #fff;
-    border: 1px solid color-mix(in srgb, var(--encre) 12%, transparent);
-    border-radius: 14px;
-    padding: 0.75rem;
-  }
-  .hero-card-img {
-    display: block;
-    width: 100%;
-    /* height: auto requis : sans lui, l'attribut HTML height="512" fixe la
-       hauteur et neutralise aspect-ratio → image étirée en portrait puis rognée.
-       Avec height:auto, aspect-ratio:1/1 + width:100% rendent la zone carrée ;
-       source carrée dans zone carrée → image entière, rien de rogné. */
-    height: auto;
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
-    border-radius: 10px;
-  }
-  /* Pied de carte : grille 3 colonnes équilibrée → la légende (col. centrale)
-     est centrée par rapport à la carte, le spacer gauche compensant le bouton
-     droit ; le bouton ne décale donc pas le centrage et ne chevauche pas le texte. */
-  .hero-card-foot {
-    display: grid;
-    grid-template-columns: 38px 1fr 38px;
-    align-items: center;
-    margin-top: 0.6rem;
-  }
-  /* Bouton play discret, coin bas-droit de la CARTE (hors image). */
-  .hero-card-play {
-    grid-column: 3;
-    justify-self: end;
-    width: 38px;
-    height: 38px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    border: none;
-    border-radius: 50%;
-    background: var(--teal);
-    color: var(--creme);
-    cursor: pointer;
-  }
-  .hero-card-play:hover {
-    opacity: 0.92;
-  }
-  .hero-card-play:focus-visible {
-    outline: 2px solid var(--teal);
-    outline-offset: 2px;
-  }
-  .hero-card-play svg {
-    width: 16px;
-    height: 16px;
-    display: block;
-    fill: currentColor;
-  }
-  /* Bascule play ⇆ pause via la classe .is-playing (posée par le script). */
-  .hero-card-play .icon-pause {
-    display: none;
-  }
-  .hero-card-play.is-playing .icon-play {
-    display: none;
-  }
-  .hero-card-play.is-playing .icon-pause {
-    display: block;
-  }
-  .hero-card-cap {
-    grid-column: 2;
-    margin: 0;
-    text-align: center;
-    font-size: 0.85rem;
-    color: color-mix(in srgb, var(--encre) 55%, transparent);
-  }
-  @media (min-width: 64rem) {
-    .hero-card {
-      display: block;
-    }
+    max-width: 40rem;
   }
   .eyebrow {
     font-size: 0.78rem;

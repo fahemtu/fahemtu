@@ -1,0 +1,60 @@
+---
+// Carte hero réutilisable : image (entière, carrée) + légende centrée + bouton
+// play qui joue l'audio du mot. Desktop uniquement (masquée < 64rem par le CSS
+// global .hero-card, défini dans Layout). Image + audio = assets PUBLICS du set
+// démo, passés en props (jamais d'asset payant/privé).
+interface Props {
+  image: string;
+  alt: string;
+  audio: string;
+}
+const { image, alt, audio } = Astro.props;
+---
+
+<aside class="hero-card">
+  <img class="hero-card-img" src={image} width="512" height="512" alt={alt} />
+  <div class="hero-card-foot">
+    <p class="hero-card-cap">un mot, une image</p>
+    <button
+      type="button"
+      class="hero-card-play"
+      aria-label="Écouter le mot"
+      aria-pressed="false"
+    >
+      <svg class="icon-play" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M8 5v14l11-7z"></path>
+      </svg>
+      <svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M6 5h4v14H6zM14 5h4v14h-4z"></path>
+      </svg>
+    </button>
+  </div>
+  <audio class="hero-card-audio" src={audio} preload="none"></audio>
+</aside>
+
+<script>
+  // Lecture du mot au clic (vanilla, accessible clavier). Pas d'autoplay ni de
+  // boucle ; rejoue depuis le début ; l'icône bascule play ⇆ pause. Gère chaque
+  // carte présente sur la page (une par page vitrine).
+  for (const card of document.querySelectorAll(".hero-card")) {
+    const btn = card.querySelector(".hero-card-play");
+    const audio = card.querySelector(".hero-card-audio");
+    if (!btn || !audio) continue;
+    const setPlaying = (on) => {
+      btn.classList.toggle("is-playing", on);
+      btn.setAttribute("aria-pressed", on ? "true" : "false");
+      btn.setAttribute("aria-label", on ? "Arrêter" : "Écouter le mot");
+    };
+    btn.addEventListener("click", () => {
+      if (audio.paused) {
+        audio.currentTime = 0;
+        audio.play();
+      } else {
+        audio.pause();
+      }
+    });
+    audio.addEventListener("play", () => setPlaying(true));
+    audio.addEventListener("pause", () => setPlaying(false));
+    audio.addEventListener("ended", () => setPlaying(false));
+  }
+</script>
