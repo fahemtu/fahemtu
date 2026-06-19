@@ -197,17 +197,19 @@ import Layout from "../layouts/Layout.astro";
     object-fit: cover;
     border-radius: 10px;
   }
-  /* Pied de carte : légende à gauche, bouton play à droite, même ligne. */
+  /* Pied de carte : grille 3 colonnes équilibrée → la légende (col. centrale)
+     est centrée par rapport à la carte, le spacer gauche compensant le bouton
+     droit ; le bouton ne décale donc pas le centrage et ne chevauche pas le texte. */
   .hero-card-foot {
-    display: flex;
+    display: grid;
+    grid-template-columns: 38px 1fr 38px;
     align-items: center;
-    justify-content: space-between;
-    gap: 0.5rem;
     margin-top: 0.6rem;
   }
-  /* Bouton play discret, dans le coin bas-droit de la CARTE (hors image). */
+  /* Bouton play discret, coin bas-droit de la CARTE (hors image). */
   .hero-card-play {
-    flex: 0 0 auto;
+    grid-column: 3;
+    justify-self: end;
     width: 38px;
     height: 38px;
     display: inline-flex;
@@ -244,7 +246,9 @@ import Layout from "../layouts/Layout.astro";
     display: block;
   }
   .hero-card-cap {
+    grid-column: 2;
     margin: 0;
+    text-align: center;
     font-size: 0.85rem;
     color: color-mix(in srgb, var(--encre) 55%, transparent);
   }
