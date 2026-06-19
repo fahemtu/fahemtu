@@ -10,6 +10,7 @@ const year = new Date().getFullYear();
       Comprendre l'arabe à l'oreille.
     </p>
     <div class="meta">
+      <a class="contact" href="mailto:contact@fahemtu.com">contact@fahemtu.com</a>
       <p class="legal">© {year} Fahemtu</p>
       <a
         class="social"
@@ -76,6 +77,22 @@ const year = new Date().getFullYear();
     display: inline-flex;
     align-items: center;
     gap: 1rem;
+    flex-wrap: wrap;
+  }
+  /* Email de contact : style sobre du footer, survol discret vers teal. */
+  .contact {
+    color: color-mix(in srgb, var(--encre) 70%, transparent);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: color 150ms ease;
+  }
+  .contact:hover {
+    color: var(--teal);
+  }
+  .contact:focus-visible {
+    outline: 2px solid var(--teal);
+    outline-offset: 2px;
+    border-radius: 4px;
   }
   .social {
     display: inline-flex;
