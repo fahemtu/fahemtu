@@ -23,14 +23,30 @@ import Layout from "../layouts/Layout.astro";
       <!-- Carte image (desktop uniquement) : comble le vide à droite, n'altère
            pas la colonne de texte. Image publique du set démo gratuit. -->
       <aside class="hero-card">
-        <img
-          class="hero-card-img"
-          src="/hero-chat.png"
-          width="512"
-          height="512"
-          alt="Un chat — l'image associée au mot entendu dans la méthode Fahemtu."
-        />
+        <div class="hero-card-media">
+          <img
+            class="hero-card-img"
+            src="/hero-chat.png"
+            width="512"
+            height="512"
+            alt="Un chat — l'image associée au mot entendu dans la méthode Fahemtu."
+          />
+          <button
+            type="button"
+            class="hero-card-play"
+            aria-label="Écouter le mot"
+            aria-pressed="false"
+          >
+            <svg class="icon-play" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M8 5v14l11-7z" />
+            </svg>
+            <svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M6 5h4v14H6zM14 5h4v14h-4z" />
+            </svg>
+          </button>
+        </div>
         <p class="hero-card-cap">un mot, une image</p>
+        <audio class="hero-card-audio" src="/hero-chat.mp3" preload="none"></audio>
       </aside>
     </div>
   </section>
@@ -101,6 +117,40 @@ import Layout from "../layouts/Layout.astro";
       </div>
     </div>
   </section>
+
+  <!-- Carte hero : lecture de l'audio du mot au clic (vanilla, accessible
+       clavier). Pas d'autoplay, pas de boucle ; rejoue depuis le début. -->
+  <script is:inline>
+    (function () {
+      var card = document.querySelector(".hero-card");
+      if (!card) return;
+      var btn = card.querySelector(".hero-card-play");
+      var audio = card.querySelector(".hero-card-audio");
+      if (!btn || !audio) return;
+      function setPlaying(on) {
+        btn.classList.toggle("is-playing", on);
+        btn.setAttribute("aria-pressed", on ? "true" : "false");
+        btn.setAttribute("aria-label", on ? "Arrêter" : "Écouter le mot");
+      }
+      btn.addEventListener("click", function () {
+        if (audio.paused) {
+          audio.currentTime = 0;
+          audio.play();
+        } else {
+          audio.pause();
+        }
+      });
+      audio.addEventListener("play", function () {
+        setPlaying(true);
+      });
+      audio.addEventListener("pause", function () {
+        setPlaying(false);
+      });
+      audio.addEventListener("ended", function () {
+        setPlaying(false);
+      });
+    })();
+  </script>
 </Layout>
 
 <style>
@@ -146,6 +196,50 @@ import Layout from "../layouts/Layout.astro";
     aspect-ratio: 1 / 1;
     object-fit: cover;
     border-radius: 10px;
+  }
+  /* Conteneur relatif : ancre le bouton play sur l'image sans changer sa taille. */
+  .hero-card-media {
+    position: relative;
+  }
+  /* Bouton play discret, coin bas-droit de l'image (léger chevauchement). */
+  .hero-card-play {
+    position: absolute;
+    bottom: 0.5rem;
+    right: 0.5rem;
+    width: 38px;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: var(--teal);
+    color: var(--creme);
+    cursor: pointer;
+  }
+  .hero-card-play:hover {
+    opacity: 0.92;
+  }
+  .hero-card-play:focus-visible {
+    outline: 2px solid var(--teal);
+    outline-offset: 2px;
+  }
+  .hero-card-play svg {
+    width: 16px;
+    height: 16px;
+    display: block;
+    fill: currentColor;
+  }
+  /* Bascule play ⇆ pause via la classe .is-playing (posée par le script). */
+  .hero-card-play .icon-pause {
+    display: none;
+  }
+  .hero-card-play.is-playing .icon-play {
+    display: none;
+  }
+  .hero-card-play.is-playing .icon-pause {
+    display: block;
   }
   .hero-card-cap {
     margin: 0.6rem 0 0.15rem;
