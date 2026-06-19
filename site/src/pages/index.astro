@@ -138,6 +138,11 @@ import Layout from "../layouts/Layout.astro";
   .hero-card-img {
     display: block;
     width: 100%;
+    /* height: auto requis : sans lui, l'attribut HTML height="512" fixe la
+       hauteur et neutralise aspect-ratio → image étirée en portrait puis rognée.
+       Avec height:auto, aspect-ratio:1/1 + width:100% rendent la zone carrée ;
+       source carrée dans zone carrée → image entière, rien de rogné. */
+    height: auto;
     aspect-ratio: 1 / 1;
     object-fit: cover;
     border-radius: 10px;
