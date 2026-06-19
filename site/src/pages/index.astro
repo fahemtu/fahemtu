@@ -23,14 +23,15 @@ import Layout from "../layouts/Layout.astro";
       <!-- Carte image (desktop uniquement) : comble le vide à droite, n'altère
            pas la colonne de texte. Image publique du set démo gratuit. -->
       <aside class="hero-card">
-        <div class="hero-card-media">
-          <img
-            class="hero-card-img"
-            src="/hero-chat.png"
-            width="512"
-            height="512"
-            alt="Un chat — l'image associée au mot entendu dans la méthode Fahemtu."
-          />
+        <img
+          class="hero-card-img"
+          src="/hero-chat.png"
+          width="512"
+          height="512"
+          alt="Un chat — l'image associée au mot entendu dans la méthode Fahemtu."
+        />
+        <div class="hero-card-foot">
+          <p class="hero-card-cap">un mot, une image</p>
           <button
             type="button"
             class="hero-card-play"
@@ -45,7 +46,6 @@ import Layout from "../layouts/Layout.astro";
             </svg>
           </button>
         </div>
-        <p class="hero-card-cap">un mot, une image</p>
         <audio class="hero-card-audio" src="/hero-chat.mp3" preload="none"></audio>
       </aside>
     </div>
@@ -197,15 +197,17 @@ import Layout from "../layouts/Layout.astro";
     object-fit: cover;
     border-radius: 10px;
   }
-  /* Conteneur relatif : ancre le bouton play sur l'image sans changer sa taille. */
-  .hero-card-media {
-    position: relative;
+  /* Pied de carte : légende à gauche, bouton play à droite, même ligne. */
+  .hero-card-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-top: 0.6rem;
   }
-  /* Bouton play discret, coin bas-droit de l'image (léger chevauchement). */
+  /* Bouton play discret, dans le coin bas-droit de la CARTE (hors image). */
   .hero-card-play {
-    position: absolute;
-    bottom: 0.5rem;
-    right: 0.5rem;
+    flex: 0 0 auto;
     width: 38px;
     height: 38px;
     display: inline-flex;
@@ -242,8 +244,7 @@ import Layout from "../layouts/Layout.astro";
     display: block;
   }
   .hero-card-cap {
-    margin: 0.6rem 0 0.15rem;
-    text-align: center;
+    margin: 0;
     font-size: 0.85rem;
     color: color-mix(in srgb, var(--encre) 55%, transparent);
   }
