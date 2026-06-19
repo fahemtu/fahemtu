@@ -75,10 +75,17 @@ import Layout from "../layouts/Layout.astro";
   .prose {
     max-width: 42rem;
   }
+  /* Réplique /mots : la section est pleine largeur et flush-gauche
+     (section { margin: 0 0 }), et le flex column (.hero-full) ANCRE son contenu
+     à gauche via align-items: flex-start (axe horizontal). justify-content:center
+     (axe vertical, dans .hero-full) reste inchangé. Le texte est plafonné mais
+     ancré à gauche → bord gauche du titre = bord gauche du conteneur/marque. */
   .hero {
-    max-width: 40rem;
-    /* Bloc collé à gauche (bord gauche = conteneur/marque), comme /mots. */
-    margin-inline: 0 auto;
+    align-items: flex-start;
+  }
+  .hero > h1,
+  .hero > .lead {
+    max-width: 42rem;
   }
   .eyebrow {
     font-size: 0.78rem;

@@ -37,11 +37,14 @@ import Layout from "../layouts/Layout.astro";
     margin: 0 auto 3.5rem;
     text-align: center;
   }
-  /* Hero aligné à gauche (modèle /mots) : bloc collé à gauche, eyebrow / titre /
-     sous-titre / bouton flush-gauche ; le bouton (inline-block) épouse son texte.
+  /* Hero aligné à gauche (modèle /mots) : bloc collé à gauche (margin-inline: 0,
+     pas auto), flex column ancré à gauche (align-items: flex-start), texte/bouton
+     flush-gauche (text-align: left ; le bouton inline-block épouse son texte).
+     justify-content:center (vertical, dans .hero-full global) inchangé.
      Le bloc « Comment ça marche » dessous reste centré (intact). */
   .hero-full {
-    margin-inline: 0 auto;
+    align-items: flex-start;
+    margin-inline: 0;
     text-align: left;
   }
   .eyebrow {
