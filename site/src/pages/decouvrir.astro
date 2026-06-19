@@ -43,9 +43,17 @@ import Layout from "../layouts/Layout.astro";
      justify-content:center (vertical, dans .hero-full global) inchangé.
      Le bloc « Comment ça marche » dessous reste centré (intact). */
   .hero-full {
-    align-items: flex-start;
+    /* Section hero PLEINE LARGEUR (comme /mots) → ne peut pas se centrer ; on
+       annule le cap 34rem hérité de .block et on force margin-inline: 0. */
+    max-width: none;
     margin-inline: 0;
+    align-items: flex-start;
     text-align: left;
+  }
+  /* Texte plafonné (lisibilité) mais ancré à gauche. */
+  .hero-full > h1,
+  .hero-full > .lead {
+    max-width: 42rem;
   }
   .eyebrow {
     font-size: 0.78rem;
