@@ -31,11 +31,18 @@ import Layout from "../layouts/Layout.astro";
 </Layout>
 
 <style>
-  /* Page courte et centrée : un tremplin. */
+  /* Page courte : un tremplin. */
   .block {
     max-width: 34rem;
     margin: 0 auto 3.5rem;
     text-align: center;
+  }
+  /* Hero aligné à gauche (modèle /mots) : bloc collé à gauche, eyebrow / titre /
+     sous-titre / bouton flush-gauche ; le bouton (inline-block) épouse son texte.
+     Le bloc « Comment ça marche » dessous reste centré (intact). */
+  .hero-full {
+    margin-inline: 0 auto;
+    text-align: left;
   }
   .eyebrow {
     font-size: 0.78rem;
