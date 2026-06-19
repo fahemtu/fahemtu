@@ -37,23 +37,14 @@ import Layout from "../layouts/Layout.astro";
     margin: 0 auto 3.5rem;
     text-align: center;
   }
-  /* Hero aligné à gauche (modèle /mots) : bloc collé à gauche (margin-inline: 0,
-     pas auto), flex column ancré à gauche (align-items: flex-start), texte/bouton
-     flush-gauche (text-align: left ; le bouton inline-block épouse son texte).
-     justify-content:center (vertical, dans .hero-full global) inchangé.
-     Le bloc « Comment ça marche » dessous reste centré (intact). */
+  /* Hero aligné à gauche : on annule le centrage de .block (margin-inline: 0 +
+     text-align: left) et on ancre les enfants du flex column à gauche
+     (align-items: flex-start) → le bouton (flex item) épouse son texte au lieu
+     de s'étirer. Le bloc « Comment ça marche » dessous reste centré (intact). */
   .hero-full {
-    /* Section hero PLEINE LARGEUR (comme /mots) → ne peut pas se centrer ; on
-       annule le cap 34rem hérité de .block et on force margin-inline: 0. */
-    max-width: none;
     margin-inline: 0;
     align-items: flex-start;
     text-align: left;
-  }
-  /* Texte plafonné (lisibilité) mais ancré à gauche. */
-  .hero-full > h1,
-  .hero-full > .lead {
-    max-width: 42rem;
   }
   .eyebrow {
     font-size: 0.78rem;

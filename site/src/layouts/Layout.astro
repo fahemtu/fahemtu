@@ -137,6 +137,14 @@ const ogImageURL = ogImage ? new URL(ogImage, Astro.site).href : undefined;
       }
 
       .container {
+        /* width: 100% est requis : <main> est un flex item de <body> (flex
+           column) ; ses marges inline auto (margin: 0 auto) empêchent le stretch
+           → sans width:100%, main prend sa largeur shrink-to-fit (= largeur du
+           contenu) puis se centre. Quand le contenu est étroit (texte capé
+           42rem), main rétrécit ET se décale vers le centre → tout le hero
+           dérive à droite. width:100% force main à occuper la largeur dispo,
+           plafonnée à --shell-max et centrée. */
+        width: 100%;
         max-width: var(--shell-max);
         margin: 0 auto;
         padding: var(--container-pad-y) var(--shell-pad);
