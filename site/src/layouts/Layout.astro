@@ -68,6 +68,25 @@ const ogImageURL = ogImage ? new URL(ogImage, Astro.site).href : undefined;
     </main>
     <Footer />
 
+    <!-- Hauteur réelle du header → --header-h (centrage exact du hero plein
+         écran, même si le header wrappe). Mis à jour au resize. Sans JS, le
+         repli CSS (--header-h) reste utilisé : centrage approximatif, jamais cassé. -->
+    <script is:inline>
+      (function () {
+        var header = document.querySelector("header");
+        if (!header) return;
+        var apply = function () {
+          document.documentElement.style.setProperty(
+            "--header-h",
+            header.offsetHeight + "px",
+          );
+        };
+        apply();
+        if (window.ResizeObserver) new ResizeObserver(apply).observe(header);
+        else window.addEventListener("resize", apply);
+      })();
+    </script>
+
     <style is:global>
       :root {
         /* Tokens de marque */
@@ -84,7 +103,9 @@ const ogImageURL = ogImage ? new URL(ogImage, Astro.site).href : undefined;
         --shell-pad: 1.5rem;
         /* Padding vertical du conteneur (réutilisé par le hero plein écran). */
         --container-pad-y: 3rem;
-        /* Hauteur approximative du header (en flux) — sert au hero plein écran. */
+        /* Repli avant JS / sans JS. Remplacé à l'exécution par la hauteur
+           RÉELLE du header (mesurée), pour un centrage exact même si le header
+           wrappe (mobile). Voir le script en bas de body. */
         --header-h: 3.9rem;
       }
 
@@ -108,7 +129,7 @@ const ogImageURL = ogImage ? new URL(ogImage, Astro.site).href : undefined;
         -moz-osx-font-smoothing: grayscale;
         display: flex;
         flex-direction: column;
-        min-height: 100vh;
+        min-height: 100svh;
       }
 
       main {
@@ -121,15 +142,17 @@ const ogImageURL = ogImage ? new URL(ogImage, Astro.site).href : undefined;
         padding: var(--container-pad-y) var(--shell-pad);
       }
 
-      /* Hero plein écran (pages vitrine) : occupe la hauteur visible sous le
-         header, contenu centré verticalement DANS cette bande. Le margin-top
-         négatif annule le padding-top du conteneur pour que le hero démarre
-         juste sous le header (sinon il est poussé vers le bas → contenu sous le
-         centre). min-height (pas height) → sur écran court, la section grandit
-         et défile, le contenu n'est jamais coupé. svh = plus petit viewport
-         (barre d'URL mobile visible), sans jank. */
+      /* Hero plein écran (pages vitrine) : occupe la BANDE visible sous le header
+         (hauteur réelle du header mesurée à l'exécution → --header-h, sans valeur
+         dépendante d'un header figé) et centre son contenu dans cette bande →
+         espaces vides haut/bas égaux. On neutralise le padding-top du conteneur
+         (via :has) pour que la bande démarre pile sous le header, sans marge
+         négative. min-height (pas height) → écran court : la section grandit et
+         défile, contenu jamais coupé. svh = plus petit viewport, sans jank. */
+      .container:has(> .hero-full) {
+        padding-top: 0;
+      }
       .hero-full {
-        margin-top: calc(-1 * var(--container-pad-y));
         min-height: calc(100svh - var(--header-h));
         display: flex;
         flex-direction: column;
