@@ -297,6 +297,50 @@ const ogImageURL = ogImage ? new URL(ogImage, Astro.site).href : undefined;
             transform 550ms ease-out;
         }
       }
+
+      /* Entrée soignée au chargement — UNIQUEMENT le hero, une seule fois.
+         On neutralise le reveal de BLOC générique pour le hero, et on fait monter
+         ses éléments en CASCADE douce (fondu + légère montée, easing lent et
+         confiant, sans rebond). Piloté par la même classe .is-visible posée au
+         load par l'IntersectionObserver existant. Sans JS / reduced-motion :
+         .reveal-enabled n'est jamais posée → tout reste visible immédiatement. */
+      @media (prefers-reduced-motion: no-preference) {
+        .reveal-enabled main > .hero {
+          opacity: 1;
+          transform: none;
+        }
+        .reveal-enabled .hero-copy > *,
+        .reveal-enabled .hero-card {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        .reveal-enabled .hero.is-visible .hero-copy > *,
+        .reveal-enabled .hero.is-visible .hero-card {
+          opacity: 1;
+          transform: none;
+          transition:
+            opacity 520ms cubic-bezier(0.22, 1, 0.36, 1),
+            transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .reveal-enabled .hero.is-visible .hero-copy > *:nth-child(1) {
+          transition-delay: 60ms;
+        }
+        .reveal-enabled .hero.is-visible .hero-copy > *:nth-child(2) {
+          transition-delay: 140ms;
+        }
+        .reveal-enabled .hero.is-visible .hero-copy > *:nth-child(3) {
+          transition-delay: 220ms;
+        }
+        .reveal-enabled .hero.is-visible .hero-copy > *:nth-child(4) {
+          transition-delay: 300ms;
+        }
+        .reveal-enabled .hero.is-visible .hero-copy > *:nth-child(5) {
+          transition-delay: 380ms;
+        }
+        .reveal-enabled .hero.is-visible .hero-card {
+          transition-delay: 300ms;
+        }
+      }
     </style>
 
     <!-- Observe chaque bloc principal et le révèle une seule fois. Bundlé et
