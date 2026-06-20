@@ -25,6 +25,10 @@ const isActive = (href: string) =>
           </a>
         ))
       }
+      <!-- Connexion : ouvre l'app (/app/) → écran de connexion par lien magique
+           (auth Supabase existante). L'accès au produit reste verrouillé par
+           l'entitlement ; se connecter sans droit ne donne accès à rien. -->
+      <a class="login" href="/app/">Connexion</a>
     </nav>
   </div>
 </header>
@@ -64,6 +68,7 @@ const isActive = (href: string) =>
   }
   nav {
     display: flex;
+    align-items: center; /* aligne verticalement liens de nav + bouton Connexion */
     gap: 1.25rem;
     flex-wrap: wrap;
   }
@@ -78,5 +83,22 @@ const isActive = (href: string) =>
   nav a[aria-current="page"] {
     color: var(--teal);
     font-weight: 600;
+  }
+  /* Connexion : action sobre (pastille teal en contour), distincte des liens de
+     nav, dans l'identité. */
+  nav a.login {
+    color: var(--teal);
+    font-weight: 600;
+    padding: 0.3rem 0.85rem;
+    border: 1px solid color-mix(in srgb, var(--teal) 40%, transparent);
+    border-radius: 0.5rem;
+  }
+  nav a.login:hover {
+    color: var(--teal);
+    background: color-mix(in srgb, var(--teal) 8%, transparent);
+  }
+  nav a.login:focus-visible {
+    outline: 2px solid var(--teal);
+    outline-offset: 2px;
   }
 </style>
