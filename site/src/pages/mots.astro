@@ -118,14 +118,26 @@ const checkoutUrl = import.meta.env.PUBLIC_CHECKOUT_URL || "#";
       </li>
     </ol>
 
-    <figure class="shot session">
-      <img
-        src="/images/app/app-session.png"
-        alt="Écran de session Fahemtu : on entend un mot et on choisit l'image parmi quatre"
-        loading="lazy"
-      />
-      <figcaption>Un écran de session : tu entends, tu choisis l'image.</figcaption>
-    </figure>
+    <!-- Deux écrans de session côte à côte (empilés sur mobile) → montre la
+         variété des sessions, sobrement. Pas de mention de mécanique de jeu. -->
+    <div class="shot-pair">
+      <figure class="shot">
+        <img
+          src="/images/app/app-session.png"
+          alt="Écran de session Fahemtu : on entend un mot et on choisit l'image parmi quatre"
+          loading="lazy"
+        />
+        <figcaption>Un écran de session : tu entends, tu choisis l'image.</figcaption>
+      </figure>
+      <figure class="shot">
+        <img
+          src="/images/app/app-memory.png"
+          alt="Écran de session Fahemtu : on relie un mot entendu à l'image correspondante"
+          loading="lazy"
+        />
+        <figcaption>Un autre exercice : tu relies le son et l'image.</figcaption>
+      </figure>
+    </div>
 
     <p>
       Pas de règle, pas de tableau. Juste le son et son sens, renforcés session
@@ -441,6 +453,9 @@ const checkoutUrl = import.meta.env.PUBLIC_CHECKOUT_URL || "#";
 
   /* 7 — Carte tarif */
   .pricing {
+    /* Plafonnée pour coller à son contenu (carte, pas bande pleine largeur) ;
+       flush-gauche comme le reste de la page → plus de grand vide à droite. */
+    max-width: 34rem;
     border: 1px solid color-mix(in srgb, var(--encre) 16%, transparent);
     border-radius: 0.8rem;
     padding: 1.75rem;
@@ -545,6 +560,24 @@ const checkoutUrl = import.meta.env.PUBLIC_CHECKOUT_URL || "#";
     margin-top: 0.5rem;
     font-size: 0.85rem;
     color: color-mix(in srgb, var(--encre) 60%, transparent);
+  }
+  /* Deux captures côte à côte (tailles équilibrées), empilées sur mobile. Chaque
+     image remplit sa colonne ; réutilise le cadre sobre de .shot img. */
+  .shot-pair {
+    display: grid;
+    gap: 1.25rem;
+    margin: 1.75rem auto;
+    max-width: 480px;
+  }
+  .shot-pair .shot {
+    margin: 0; /* l'espacement est géré par la grille */
+  }
+  @media (min-width: 40rem) {
+    .shot-pair {
+      grid-template-columns: 1fr 1fr;
+      max-width: 720px;
+      align-items: start;
+    }
   }
 
   /* Rangée d'aperçu des illustrations (~72 px, alignées, espacées). */
