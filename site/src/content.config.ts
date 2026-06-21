@@ -8,6 +8,8 @@ const articles = defineCollection({
     title: z.string(),
     description: z.string(),
     date: z.coerce.date(),
+    // Couverture / og:image (chemin public, ex. /images/articles/xxx.png). Optionnel.
+    cover: z.string().optional(),
   }),
 });
 

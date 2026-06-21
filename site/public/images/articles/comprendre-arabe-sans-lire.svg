@@ -1,0 +1,11 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Comprendre l'arabe à l'oreille — Fahemtu">
+  <rect width="1200" height="630" fill="#F4EFE5"/>
+  <text x="72" y="86" font-family="'Noto Naskh Arabic', serif" font-size="40" fill="#B8893E">فَهِمْتُ</text>
+  <text x="205" y="83" font-family="'Plus Jakarta Sans', sans-serif" font-size="32" font-weight="700" fill="#1A1816">Fahemtu</text>
+  <text x="72" y="312" font-family="'Plus Jakarta Sans', sans-serif" font-size="88" font-weight="700" fill="#1A1816">Comprendre l'arabe</text>
+  <text x="72" y="406" font-family="'Plus Jakarta Sans', sans-serif" font-size="88" font-weight="700" fill="#2E5A56">à l'oreille.</text>
+  <g fill="#2E5A56">
+    <rect x="72" y="508" width="13" height="32" rx="6"/><rect x="93" y="484" width="13" height="56" rx="6"/><rect x="114" y="450" width="13" height="90" rx="6"/><rect x="135" y="490" width="13" height="50" rx="6"/><rect x="156" y="466" width="13" height="74" rx="6"/><rect x="177" y="502" width="13" height="38" rx="6"/><rect x="198" y="458" width="13" height="82" rx="6"/><rect x="219" y="494" width="13" height="46" rx="6"/><rect x="240" y="474" width="13" height="66" rx="6"/><rect x="261" y="506" width="13" height="34" rx="6"/><rect x="282" y="486" width="13" height="54" rx="6"/><rect x="303" y="512" width="13" height="28" rx="6"/>
+  </g>
+  <text x="1128" y="562" text-anchor="end" font-family="'Plus Jakarta Sans', sans-serif" font-size="22" font-weight="500" fill="#1A1816" fill-opacity="0.5">fahemtu.com</text>
+</svg>

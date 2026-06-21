@@ -12,7 +12,11 @@ const { Content } = await render(post);
 const dateFmt = new Intl.DateTimeFormat("fr-FR", { dateStyle: "long" });
 ---
 
-<Layout title={`${post.data.title} — Fahemtu`} description={post.data.description}>
+<Layout
+  title={`${post.data.title} — Fahemtu`}
+  description={post.data.description}
+  ogImage={post.data.cover}
+>
   <article class="prose">
     <a class="back" href="/articles">← Tous les articles</a>
     <h1>{post.data.title}</h1>
@@ -42,5 +46,75 @@ const dateFmt = new Intl.DateTimeFormat("fr-FR", { dateStyle: "long" });
     font-size: 0.85rem;
     color: color-mix(in srgb, var(--encre) 55%, transparent);
     margin-bottom: 1.5rem;
+  }
+</style>
+
+<!-- Styles des éléments embarqués dans le corps markdown (bandeau d'ondes +
+     visuel de méthode). Globaux car le HTML de <Content /> n'a pas l'attribut de
+     scope Astro ; classes préfixées « aw- » (uniques) → aucun débordement. -->
+<style is:global>
+  .aw-figure {
+    margin: 1.6rem 0;
+  }
+  /* Bandeau d'ondes : large et court, évocateur (aria-hidden dans le markup). */
+  .aw-waves {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 96px;
+    padding: 0 1rem;
+    background: var(--creme);
+    border: 1px solid color-mix(in srgb, var(--encre) 12%, transparent);
+    border-radius: 12px;
+  }
+  .aw-waves span {
+    flex: 0 0 5px;
+    width: 5px;
+    border-radius: 3px;
+    background: var(--teal);
+  }
+  /* Visuel de méthode : 3 temps en ligne, séparés par des flèches ocre. */
+  .aw-method {
+    margin-top: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    background: var(--creme);
+    border: 1px solid color-mix(in srgb, var(--encre) 12%, transparent);
+    border-radius: 12px;
+  }
+  .aw-step {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  .aw-step-label {
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: var(--encre);
+  }
+  .aw-step-sub {
+    font-size: 0.92rem;
+    color: color-mix(in srgb, var(--encre) 60%, transparent);
+  }
+  .aw-arrow {
+    flex: 0 0 auto;
+    color: var(--ocre);
+    font-weight: 700;
+    font-size: 1.3rem;
+    line-height: 1;
+  }
+  /* Mobile : flèches masquées, les 3 temps s'empilent. */
+  @media (max-width: 540px) {
+    .aw-method {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.9rem;
+    }
+    .aw-arrow {
+      display: none;
+    }
   }
 </style>
