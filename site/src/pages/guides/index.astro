@@ -17,7 +17,7 @@ const dateFmt = new Intl.DateTimeFormat("fr-FR", { dateStyle: "long" });
     {
       articles.map((post) => (
         <li>
-          <a class="card" href={`/articles/${post.id}`}>
+          <a class="card" href={`/guides/${post.id}`}>
             <span class="card-title">{post.data.title}</span>
             <time datetime={post.data.date.toISOString()}>
               {dateFmt.format(post.data.date)}

@@ -11,6 +11,13 @@ import vercel from '@astrojs/vercel';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://fahemtu.com',
+  // Migration /articles → /guides : redirections PERMANENTES (301) niveau serveur.
+  // Avec l'adaptateur Vercel, Astro les compile dans .vercel/output/config.json
+  // (vraies redirections HTTP, pas de meta-refresh). Le slug est transmis tel quel.
+  redirects: {
+    '/articles': '/guides',
+    '/articles/[slug]': '/guides/[slug]',
+  },
   integrations: [sitemap()],
   adapter: vercel(),
 });
