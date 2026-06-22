@@ -9,19 +9,21 @@ const dateFmt = new Intl.DateTimeFormat("fr-FR", { dateStyle: "long" });
 ---
 
 <Layout
-  title="Articles — Fahemtu"
+  title="Guides — Fahemtu"
   description="Réflexions et repères pour apprendre à comprendre l'arabe à l'oreille."
 >
-  <h1>Articles</h1>
+  <h1>Guides</h1>
   <ul class="list">
     {
       articles.map((post) => (
         <li>
-          <a href={`/articles/${post.id}`}>{post.data.title}</a>
-          <time datetime={post.data.date.toISOString()}>
-            {dateFmt.format(post.data.date)}
-          </time>
-          <p>{post.data.description}</p>
+          <a class="card" href={`/articles/${post.id}`}>
+            <span class="card-title">{post.data.title}</span>
+            <time datetime={post.data.date.toISOString()}>
+              {dateFmt.format(post.data.date)}
+            </time>
+            <p>{post.data.description}</p>
+          </a>
         </li>
       ))
     }
@@ -33,29 +35,59 @@ const dateFmt = new Intl.DateTimeFormat("fr-FR", { dateStyle: "long" });
     font-size: clamp(1.9rem, 4.5vw, 2.75rem);
     margin: 0 0 1.5rem;
   }
+  /* Une seule colonne, cartes empilées (pas de grille multi-colonnes). */
   .list {
     list-style: none;
     padding: 0;
     margin: 0;
-    display: grid;
-    gap: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
     max-width: 42rem;
   }
-  .list a {
+  /* Carte cliquable (le lien englobe tout), raccord avec les cartes de l'article :
+     crème + bordure fine encre, coins arrondis, padding généreux. */
+  .card {
+    display: block;
+    text-decoration: none;
+    background: var(--creme);
+    border: 1px solid color-mix(in srgb, var(--encre) 12%, transparent);
+    border-radius: 12px;
+    padding: 1.6rem 1.75rem;
+    transition:
+      border-color 150ms ease,
+      transform 150ms ease;
+  }
+  .card:hover {
+    border-color: color-mix(in srgb, var(--encre) 28%, transparent);
+    transform: translateY(-2px);
+  }
+  .card:focus-visible {
+    outline: 2px solid var(--teal);
+    outline-offset: 2px;
+  }
+  /* Pas d'animation de transform si l'utilisateur réduit les animations. */
+  @media (prefers-reduced-motion: reduce) {
+    .card {
+      transition: border-color 150ms ease;
+    }
+    .card:hover {
+      transform: none;
+    }
+  }
+  .card-title {
+    display: block;
     font-size: 1.2rem;
     font-weight: 600;
-    text-decoration: none;
+    color: var(--teal);
   }
-  .list a:hover {
-    text-decoration: underline;
-  }
-  time {
+  .card time {
     display: block;
     font-size: 0.85rem;
     color: color-mix(in srgb, var(--encre) 55%, transparent);
     margin: 0.2rem 0 0.4rem;
   }
-  .list p {
+  .card p {
     margin: 0;
     color: color-mix(in srgb, var(--encre) 80%, transparent);
   }
