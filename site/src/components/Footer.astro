@@ -12,29 +12,6 @@ const year = new Date().getFullYear();
     <div class="meta">
       <a class="contact" href="mailto:contact@fahemtu.com">contact@fahemtu.com</a>
       <p class="legal">© {year} Fahemtu</p>
-      <a
-        class="social"
-        href="https://instagram.com/fahemtu"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Instagram"
-      >
-        <svg
-          viewBox="0 0 24 24"
-          width="20"
-          height="20"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-          <line x1="17.5" y1="6.5" x2="17.5" y2="6.5"></line>
-        </svg>
-      </a>
     </div>
   </div>
 </footer>
@@ -72,7 +49,7 @@ const year = new Date().getFullYear();
     color: color-mix(in srgb, var(--encre) 50%, transparent);
     font-size: 0.85rem;
   }
-  /* Réseaux (Instagram pour l'instant), groupés à droite avec le copyright. */
+  /* Email de contact + copyright, groupés à droite. */
   .meta {
     display: inline-flex;
     align-items: center;
@@ -93,22 +70,5 @@ const year = new Date().getFullYear();
     outline: 2px solid var(--teal);
     outline-offset: 2px;
     border-radius: 4px;
-  }
-  .social {
-    display: inline-flex;
-    /* Encre atténué par défaut → teal au survol (sobre, dans la palette). */
-    color: color-mix(in srgb, var(--encre) 50%, transparent);
-    transition: color 150ms ease;
-  }
-  .social:hover {
-    color: var(--teal);
-  }
-  .social:focus-visible {
-    outline: 2px solid var(--teal);
-    outline-offset: 2px;
-    border-radius: 4px;
-  }
-  .social svg {
-    display: block;
   }
 </style>
