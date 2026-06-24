@@ -21,12 +21,12 @@ import HeroCard from "../components/HeroCard.astro";
           <a class="secondary" href="/mots">Le premier produit</a>
         </div>
       </div>
-      <!-- Carte image (desktop uniquement) : comble le vide à droite, n'altère
-           pas la colonne de texte. Image + audio publics du set démo (mot : chat). -->
+      <!-- Carte image : comble le vide à droite, n'altère pas la colonne de
+           texte. Image + audio publics du set démo (mot : oiseau). -->
       <HeroCard
-        image="/hero-chat.png"
-        alt="Un chat — l'image associée au mot entendu dans la méthode Fahemtu."
-        audio="/hero-chat.mp3"
+        image="/hero-oiseau.png"
+        alt="Un oiseau — l'image associée au mot entendu dans la méthode Fahemtu."
+        audio="/hero-oiseau.mp3"
       />
     </div>
   </section>
@@ -124,9 +124,10 @@ import HeroCard from "../components/HeroCard.astro";
     color: var(--ocre);
     margin: 0 0 0.6rem;
   }
+  /* Titre du hero : taille fluide (grandit en grand écran, rétrécit en petit). */
   h1 {
-    font-size: clamp(2rem, 5vw, 3rem);
-    margin: 0 0 1rem;
+    font-size: clamp(2.25rem, 5.5vw, 4.5rem);
+    margin: 0 0 clamp(1rem, 1.6vw, 1.5rem);
   }
   h2 {
     font-size: clamp(1.6rem, 3.5vw, 2.1rem);
@@ -136,17 +137,20 @@ import HeroCard from "../components/HeroCard.astro";
     font-size: 1.15rem;
     margin: 0 0 0.5rem;
   }
+  /* Sous-texte du hero : fluide, interligne confortable. Largeur de ligne tenue
+     par .hero-copy (≈ lisible). */
   .lead {
-    font-size: 1.18rem;
+    font-size: clamp(1.1rem, 1.6vw, 1.4rem);
+    line-height: 1.6;
     color: color-mix(in srgb, var(--encre) 82%, transparent);
-    margin: 0 0 1.75rem;
+    margin: 0 0 clamp(1.5rem, 2.4vw, 2.25rem);
   }
 
   /* CTA */
   .cta-row {
     display: flex;
     align-items: center;
-    gap: 1.25rem;
+    gap: clamp(1rem, 1.6vw, 1.6rem);
     flex-wrap: wrap;
   }
   .cta {
@@ -157,6 +161,16 @@ import HeroCard from "../components/HeroCard.astro";
     font-weight: 600;
     padding: 0.8rem 1.6rem;
     border-radius: 0.6rem;
+  }
+  /* Boutons du hero : agrandis proportionnellement (fluide) — uniquement le hero
+     (les CTA des cartes « Par où commencer » gardent leur taille de base). */
+  .hero-copy .cta,
+  .hero-copy .secondary {
+    font-size: clamp(1rem, 1.1vw, 1.18rem);
+  }
+  .hero-copy .cta {
+    padding: clamp(0.8rem, 1.1vw, 1.05rem) clamp(1.6rem, 2.2vw, 2.4rem);
+    border-radius: 0.7rem;
   }
   .cta:hover {
     opacity: 0.92;

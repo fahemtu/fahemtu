@@ -98,9 +98,12 @@ const ogImageURL = ogImage ? new URL(ogImage, Astro.site).href : undefined;
         --font-sans: "Plus Jakarta Sans Variable", system-ui, sans-serif;
         --font-arabic: "Noto Naskh Arabic", serif;
 
-        /* Bornes horizontales partagées header + body + footer (alignement). */
-        --shell-max: 64rem;
-        --shell-pad: 1.5rem;
+        /* Bornes horizontales partagées header + body + footer (alignement).
+           --shell-max élargi (remplit mieux les grands écrans) ; --shell-pad
+           fluide (marges latérales qui respirent en grand, resserrées en petit).
+           Header, conteneur et footer partagent ces tokens → alignement préservé. */
+        --shell-max: 85rem;
+        --shell-pad: clamp(1.25rem, 3.5vw, 3rem);
         /* Padding vertical du conteneur (réutilisé par le hero plein écran). */
         --container-pad-y: 3rem;
         /* Repli avant JS / sans JS. Remplacé à l'exécution par la hauteur
@@ -171,23 +174,24 @@ const ogImageURL = ogImage ? new URL(ogImage, Astro.site).href : undefined;
          texte à gauche (flush-gauche, plafonné) + carte image à droite (desktop).
          La carte (markup + JS) vient du composant HeroCard.astro ; ces styles
          sont communs pour éviter toute divergence/duplication. */
+      /* Mobile-first : une colonne (carte empilée sous le texte). Gap fluide. */
       .hero-grid {
         display: flex;
-        align-items: center; /* carte alignée au centre vertical du texte */
-        gap: 2.5rem;
+        flex-direction: column;
+        align-items: stretch;
+        gap: clamp(1.75rem, 5vw, 2.5rem);
       }
       .hero-copy {
         /* Largeur lisible par défaut ; une page peut resserrer (ex. /decouvrir).
-           1er item du flex row → bord gauche = conteneur (= marque). */
+           1er item → bord gauche = conteneur (= marque). */
         max-width: 42rem;
       }
-      /* Carte : desktop uniquement. Masquée par défaut (mobile/étroit : pas de
-         vide, hero net en une colonne), affichée à partir de 64rem. */
+      /* Carte : visible sur tous les écrans. Mobile = compacte, flush-gauche sous
+         le texte ; desktop (≥56rem) = à droite, taille fluide (cf. media plus bas). */
       .hero-card {
-        display: none;
         flex: 0 0 auto;
-        width: 280px;
-        margin-left: auto; /* poussée à droite sans décaler le texte */
+        width: 100%;
+        max-width: clamp(14rem, 60vw, 18rem);
         background: #fff;
         border: 1px solid color-mix(in srgb, var(--encre) 12%, transparent);
         border-radius: 14px;
@@ -258,9 +262,19 @@ const ogImageURL = ogImage ? new URL(ogImage, Astro.site).href : undefined;
         font-size: 0.85rem;
         color: color-mix(in srgb, var(--encre) 55%, transparent);
       }
-      @media (min-width: 64rem) {
+      /* Desktop ≥56rem : deux colonnes côte à côte ; carte poussée à droite et
+         agrandie de façon fluide (proportions/style inchangés). Le texte garde
+         son plafond de lisibilité → la largeur supplémentaire va à la carte/l'air. */
+      @media (min-width: 56rem) {
+        .hero-grid {
+          flex-direction: row;
+          align-items: center;
+          gap: clamp(2.5rem, 4vw, 4.5rem);
+        }
         .hero-card {
-          display: block;
+          width: clamp(16rem, 22vw, 23rem);
+          max-width: none;
+          margin-left: auto;
         }
       }
 
