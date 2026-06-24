@@ -22,9 +22,6 @@ import Layout from "../layouts/Layout.astro";
     </div>
   </section>
 
-  <!-- Frise-colonne « vertébrale » (CSS global .spine) : pastille sur la section
-       de contenu, fil dans la gouttière gauche. Hero exclu (au-dessus). -->
-  <div class="spine">
   <!-- Comment ça marche -->
   <section class="block" aria-labelledby="comment-title">
     <p class="eyebrow">Comment ça marche</p>
@@ -35,15 +32,15 @@ import Layout from "../layouts/Layout.astro";
     </p>
     <a class="cta" href="/app/demo/">Commencer gratuitement</a>
   </section>
-  </div>
 </Layout>
 
 <style>
-  /* Page courte : un tremplin. Le bloc « Comment ça marche » est flush-gauche
-     (aligné sur la frise-colonne : pastille + label à gauche). */
+  /* Page courte : un tremplin. Le bloc « Comment ça marche » (sous le hero)
+     reste centré. */
   .block {
     max-width: 34rem;
-    margin: 0 0 3.5rem;
+    margin: 0 auto 3.5rem;
+    text-align: center;
   }
   /* Hero : structure deux colonnes partagée (.hero-grid / .hero-copy / carte,
      stylée dans Layout). On resserre la colonne de texte (34rem) et on conserve
