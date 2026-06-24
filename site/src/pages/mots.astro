@@ -65,6 +65,9 @@ const checkoutUrl = import.meta.env.PUBLIC_CHECKOUT_URL || "#";
     </div>
   </section>
 
+  <!-- Frise-colonne « vertébrale » (CSS global .spine) : une pastille par
+       section de contenu, fil dans la gouttière gauche. Hero exclu (au-dessus). -->
+  <div class="spine">
   <!-- 2 — Le constat -->
   <section class="prose" aria-labelledby="constat-title">
     <p class="eyebrow">Le constat</p>
@@ -302,6 +305,7 @@ const checkoutUrl = import.meta.env.PUBLIC_CHECKOUT_URL || "#";
       14 jours
     </p>
   </section>
+  </div>
 </Layout>
 
 <style>

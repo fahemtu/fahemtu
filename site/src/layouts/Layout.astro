@@ -312,6 +312,45 @@ const ogImageURL = ogImage ? new URL(ogImage, Astro.site).href : undefined;
         }
       }
 
+      /* Frise-colonne « vertébrale » — partagée (/, /mots, /decouvrir).
+         Fil vertical fin teal dans une gouttière gauche réservée ; une pastille
+         teal sur le fil, alignée au label (1re ligne) de CHAQUE section enfant.
+         Le fil court du haut de la 1re section au bas de la dernière.
+         Masquée < 48rem : gouttière à 0, contenu pleine largeur (page impeccable). */
+      .spine {
+        position: relative;
+      }
+      @media (min-width: 48rem) {
+        .spine {
+          --spine-gutter: clamp(1.75rem, 3.5vw, 3rem);
+          padding-left: var(--spine-gutter);
+        }
+        .spine::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: calc(var(--spine-gutter) / 2);
+          width: 2px;
+          transform: translateX(-50%);
+          background: color-mix(in srgb, var(--teal) 28%, transparent);
+        }
+        .spine > section {
+          position: relative;
+        }
+        .spine > section::before {
+          content: "";
+          position: absolute;
+          top: 0.62em;
+          left: calc(-1 * var(--spine-gutter) / 2);
+          width: clamp(10px, 0.9vw, 13px);
+          aspect-ratio: 1;
+          border-radius: 50%;
+          background: var(--teal);
+          transform: translate(-50%, -50%);
+        }
+      }
+
       /* Entrée soignée au chargement — UNIQUEMENT le hero, une seule fois.
          On neutralise le reveal de BLOC générique pour le hero, et on fait monter
          ses éléments en CASCADE douce (fondu + légère montée, easing lent et
@@ -319,7 +358,11 @@ const ogImageURL = ogImage ? new URL(ogImage, Astro.site).href : undefined;
          load par l'IntersectionObserver existant. Sans JS / reduced-motion :
          .reveal-enabled n'est jamais posée → tout reste visible immédiatement. */
       @media (prefers-reduced-motion: no-preference) {
-        .reveal-enabled main > .hero {
+        /* Hero : pas de reveal de bloc (cascade interne). Frise-colonne (.spine,
+           accueil) : enveloppe les sections → la garder visible (sinon tout le
+           bloc resterait masqué tant qu'il n'a pas croisé le viewport). */
+        .reveal-enabled main > .hero,
+        .reveal-enabled main > .spine {
           opacity: 1;
           transform: none;
         }

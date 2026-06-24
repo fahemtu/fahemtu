@@ -31,8 +31,12 @@ import HeroCard from "../components/HeroCard.astro";
     </div>
   </section>
 
-  <!-- Pourquoi Fahemtu -->
-  <section class="prose" aria-labelledby="pourquoi-title">
+  <!-- Frise-colonne « vertébrale » : fil vertical dans la gouttière gauche, une
+       pastille par section (ligne + pastilles en CSS, .spine). Structure la page
+       du bas du hero jusqu'au footer. Masquée proprement sur petit écran. -->
+  <div class="spine">
+    <!-- Pourquoi Fahemtu -->
+    <section class="prose" aria-labelledby="pourquoi-title">
     <p class="eyebrow">Pourquoi Fahemtu</p>
     <h2 id="pourquoi-title">On n'apprend pas à nager depuis le bord.</h2>
     <p>
@@ -98,6 +102,7 @@ import HeroCard from "../components/HeroCard.astro";
       </div>
     </div>
   </section>
+  </div>
 
 </Layout>
 
@@ -110,6 +115,9 @@ import HeroCard from "../components/HeroCard.astro";
   .prose {
     max-width: 42rem;
   }
+  /* La frise-colonne « vertébrale » (.spine) est désormais factorisée en CSS
+     global (Layout) — partagée par /, /mots, /decouvrir. */
+
   /* Hero deux colonnes (.hero-grid / .hero-copy / carte) : styles partagés dans
      Layout. Ici on resserre seulement la colonne de texte de l'accueil (40rem,
      valeur validée), 1er item du flex row → bord gauche = conteneur/marque. */
