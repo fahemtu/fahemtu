@@ -14,9 +14,12 @@ interface Props {
   canonical?: string;
   /** Image Open Graph (chemin relatif au site ou URL absolue). */
   ogImage?: string;
+  /** Si vrai, ajoute <meta name="robots" content="noindex, nofollow"> (pages
+      légales). Optionnel, défaut false → aucun effet sur les pages existantes. */
+  noindex?: boolean;
 }
 
-const { title, description, canonical, ogImage } = Astro.props;
+const { title, description, canonical, ogImage, noindex = false } = Astro.props;
 const canonicalURL = canonical ?? new URL(Astro.url.pathname, Astro.site).href;
 const ogImageURL = ogImage ? new URL(ogImage, Astro.site).href : undefined;
 ---
@@ -30,6 +33,7 @@ const ogImageURL = ogImage ? new URL(ogImage, Astro.site).href : undefined;
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
     <meta name="generator" content={Astro.generator} />
 
     <!-- Open Graph / réseaux -->

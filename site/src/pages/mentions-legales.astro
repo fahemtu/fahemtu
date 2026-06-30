@@ -1,0 +1,76 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+  title="Mentions légales — Fahemtu"
+  description="Mentions légales du site Fahemtu : éditeur, hébergement, propriété intellectuelle et données personnelles."
+  noindex={true}
+>
+  <article class="prose">
+    <h1>Mentions légales</h1>
+
+    <h2>1. Éditeur du site</h2>
+    <p>Le site Fahemtu (https://fahemtu.com) est édité par :</p>
+    <p>
+      AMARIA ABBOUD, entrepreneur individuel (EI)<br />
+      Adresse : 28 AVENUE ROGER SALENGRO, 69100 VILLEURBANNE<br />
+      SIRET : 10690666200015<br />
+      TVA : non applicable, article 293 B du CGI (franchise en base de TVA)<br />
+      Contact : contact@fahemtu.com
+    </p>
+
+    <h2>2. Responsable de la publication</h2>
+    <p>AMARIA ABBOUD</p>
+
+    <h2>3. Hébergement</h2>
+    <p>
+      Le site est hébergé par :<br />
+      Vercel Inc.<br />
+      340 S Lemon Ave #4133, Walnut, CA 91789, États-Unis<br />
+      https://vercel.com
+    </p>
+
+    <h2>4. Propriété intellectuelle</h2>
+    <p>
+      L'ensemble des contenus présents sur le site Fahemtu (textes, contenus
+      audio, supports pédagogiques, éléments graphiques et structure du site) est
+      la propriété exclusive de AMARIA ABBOUD (EI), sauf mention contraire. Toute
+      reproduction, représentation, modification, publication ou adaptation,
+      totale ou partielle, par quelque procédé que ce soit, est interdite sans
+      autorisation écrite préalable de l'éditeur.
+    </p>
+
+    <h2>5. Liens hypertextes</h2>
+    <p>
+      Le site peut contenir des liens vers des sites tiers. L'éditeur n'exerce
+      aucun contrôle sur ces sites et décline toute responsabilité quant à leur
+      contenu.
+    </p>
+
+    <h2>6. Données personnelles</h2>
+    <p>
+      Le traitement des données personnelles est décrit dans la Politique de
+      confidentialité, accessible à l'adresse
+      <a href="/confidentialite">https://fahemtu.com/confidentialite</a>.
+    </p>
+
+    <h2>7. Droit applicable</h2>
+    <p>
+      Les présentes mentions légales sont régies par le droit français. En cas de
+      litige, et à défaut de résolution amiable, les tribunaux français sont
+      compétents.
+    </p>
+  </article>
+</Layout>
+
+<style>
+  /* Mêmes réglages éditoriaux que /guides (réutilisés, aucun style nouveau). */
+  .prose {
+    max-width: 42rem;
+  }
+  h1 {
+    font-size: clamp(1.9rem, 4.5vw, 2.6rem);
+    margin: 0 0 1.5rem;
+  }
+</style>

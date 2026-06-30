@@ -1,0 +1,109 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+  title="Politique de confidentialité — Fahemtu"
+  description="Politique de confidentialité de Fahemtu : données collectées, finalités, sous-traitants, durées de conservation et vos droits RGPD."
+  noindex={true}
+>
+  <article class="prose">
+    <h1>Politique de confidentialité</h1>
+    <p class="updated">Dernière mise à jour : 30 juin 2026</p>
+
+    <h2>1. Responsable du traitement</h2>
+    <p>
+      Les données personnelles collectées sur Fahemtu (https://fahemtu.com) sont
+      traitées par AMARIA ABBOUD, entrepreneur individuel (EI), 28 AVENUE ROGER
+      SALENGRO, 69100 VILLEURBANNE, SIRET 10690666200015. Contact :
+      contact@fahemtu.com.
+    </p>
+
+    <h2>2. Données collectées et finalités</h2>
+    <p>
+      Le site vitrine ne collecte aucune donnée personnelle : il ne contient ni
+      traceur, ni cookie de suivi, ni outil de mesure d'audience.
+    </p>
+    <p>Des données sont collectées uniquement dans les cas suivants :</p>
+    <ul>
+      <li>
+        <strong>Accès à l'application d'apprentissage</strong> : lors de la
+        connexion par lien magique, votre adresse e-mail est collectée afin de
+        créer et sécuriser votre accès. Finalité : authentification et gestion de
+        votre compte.
+      </li>
+      <li>
+        <strong>Achat d'un produit</strong> : lors d'un paiement, votre adresse
+        e-mail et vos informations de paiement sont traitées pour exécuter la
+        commande et vous transmettre votre accès. Les données de paiement sont
+        collectées directement par notre prestataire Stripe sur sa page
+        sécurisée ; nous n'avons jamais accès à vos coordonnées bancaires.
+      </li>
+    </ul>
+
+    <h2>3. Base légale</h2>
+    <p>
+      Les traitements reposent sur l'exécution du contrat (fourniture de l'accès
+      au produit acheté et gestion de votre compte), conformément à l'article
+      6.1.b du RGPD.
+    </p>
+
+    <h2>4. Destinataires et sous-traitants</h2>
+    <p>
+      Vos données sont traitées par des prestataires agissant pour le compte de
+      l'éditeur :
+    </p>
+    <ul>
+      <li><strong>Supabase</strong> — authentification et gestion des comptes.</li>
+      <li><strong>Stripe</strong> — traitement des paiements.</li>
+      <li>
+        <strong>Resend</strong> — envoi des e-mails liés à votre commande et votre
+        accès.
+      </li>
+      <li><strong>Vercel</strong> — hébergement du site.</li>
+    </ul>
+    <p>
+      Certains de ces prestataires peuvent traiter des données en dehors de
+      l'Union européenne, dans le cadre des garanties prévues par le RGPD (clauses
+      contractuelles types).
+    </p>
+
+    <h2>5. Durée de conservation</h2>
+    <p>
+      Vos données sont conservées le temps nécessaire à la fourniture du service,
+      puis archivées ou supprimées conformément aux durées légales applicables.
+    </p>
+
+    <h2>6. Vos droits</h2>
+    <p>
+      Conformément au RGPD, vous disposez d'un droit d'accès, de rectification,
+      d'effacement, de limitation, d'opposition et de portabilité de vos données.
+      Pour exercer ces droits, contactez : contact@fahemtu.com. Vous pouvez
+      également introduire une réclamation auprès de la CNIL (www.cnil.fr).
+    </p>
+
+    <h2>7. Cookies</h2>
+    <p>
+      Le site n'utilise aucun cookie de suivi ni de mesure d'audience. Seuls des
+      éléments strictement nécessaires au fonctionnement de l'application (gestion
+      de votre session de connexion) sont utilisés lorsque vous accédez à votre
+      espace.
+    </p>
+  </article>
+</Layout>
+
+<style>
+  /* Mêmes réglages éditoriaux que /guides (réutilisés, aucun style nouveau). */
+  .prose {
+    max-width: 42rem;
+  }
+  h1 {
+    font-size: clamp(1.9rem, 4.5vw, 2.6rem);
+    margin: 0 0 0.4rem;
+  }
+  .updated {
+    font-size: 0.85rem;
+    color: color-mix(in srgb, var(--encre) 55%, transparent);
+    margin-bottom: 1.5rem;
+  }
+</style>
