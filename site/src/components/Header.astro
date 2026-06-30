@@ -1,5 +1,5 @@
 ---
-// En-tête de marque sobre : wordmark arabe + « Fahemtu » + navigation.
+// En-tête de marque sobre : « Fahemtu » + navigation.
 const links = [
   { href: "/", label: "Accueil" },
   { href: "/mots", label: "Les mots" },
@@ -14,7 +14,6 @@ const isActive = (href: string) =>
 <header class="site-header">
   <div class="inner">
     <a class="brand" href="/">
-      <span class="wordmark" lang="ar" dir="rtl" aria-hidden="true">فَهِمْتُ</span>
       <span class="brand-name">Fahemtu</span>
     </a>
     <nav aria-label="Navigation principale">
@@ -53,13 +52,6 @@ const isActive = (href: string) =>
     gap: 0.6rem;
     text-decoration: none;
     color: var(--encre);
-  }
-  .wordmark {
-    font-family: var(--font-arabic);
-    font-weight: 700;
-    font-size: 1.6rem;
-    color: var(--ocre);
-    line-height: 1;
   }
   .brand-name {
     font-weight: 600;
