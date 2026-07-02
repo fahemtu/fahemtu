@@ -35,12 +35,12 @@ jobs:
           fi
 
           # Requête REST légère qui touche réellement Postgres :
-          #   GET /rest/v1/entitlements?select=product&limit=1
-          # - table applicative existante (entitlements)
-          # - colonne non sensible (product), 1 ligne max
+          #   GET /rest/v1/healthcheck?select=ping&limit=1
+          # - table dédiée healthcheck, publique en lecture pour le rôle anon
+          #   (donc HTTP 200 attendu), 1 ligne max
           # La clé n'est envoyée que dans les en-têtes (jamais loggée).
           base="${SUPABASE_URL%/}"
-          path="/rest/v1/entitlements?select=product&limit=1"
+          path="/rest/v1/healthcheck?select=ping&limit=1"
           echo "GET ${path} (hôte Supabase masqué)"
 
           code=$(curl -sS --max-time 30 \
@@ -55,8 +55,8 @@ jobs:
 
           echo "Statut HTTP : ${code}"
 
-          # 2xx = la base a répondu (même une liste vide [] via RLS compte comme
-          # une lecture réelle → projet gardé actif). Sinon, échec.
+          # 2xx = la base a répondu (table healthcheck publique en lecture pour
+          # anon → HTTP 200 attendu, lecture réelle → projet gardé actif). Sinon, échec.
           if [ "${code}" -ge 200 ] && [ "${code}" -lt 300 ]; then
             echo "✅ Supabase keepalive OK — la base a été interrogée avec succès."
           else
