@@ -1,0 +1,67 @@
+name: Supabase keepalive
+
+# Empêche la mise en veille du projet Supabase (plan gratuit : pause après
+# ~7 jours d'inactivité). On effectue une VRAIE requête de lecture sur la base
+# tous les 3 jours (marge confortable). L'URL et la clé viennent de secrets
+# GitHub — jamais en clair ici. On utilise la clé ANON/PUBLIQUE (pas la secrète).
+
+on:
+  schedule:
+    # 06:00 UTC tous les 3 jours (jours du mois 1, 4, 7, …).
+    - cron: "0 6 */3 * *"
+  # Déclenchement manuel possible (onglet Actions → Run workflow) pour tester.
+  workflow_dispatch:
+
+# Un seul run à la fois ; on ne cherche pas à empiler les pings.
+concurrency:
+  group: supabase-keepalive
+  cancel-in-progress: false
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Requête de lecture légère sur Supabase (keepalive)
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          set -uo pipefail
+
+          if [ -z "${SUPABASE_URL:-}" ] || [ -z "${SUPABASE_ANON_KEY:-}" ]; then
+            echo "::error::Secrets SUPABASE_URL et/ou SUPABASE_ANON_KEY manquants."
+            exit 1
+          fi
+
+          # Requête REST légère qui touche réellement Postgres :
+          #   GET /rest/v1/entitlements?select=product&limit=1
+          # - table applicative existante (entitlements)
+          # - colonne non sensible (product), 1 ligne max
+          # La clé n'est envoyée que dans les en-têtes (jamais loggée).
+          base="${SUPABASE_URL%/}"
+          path="/rest/v1/entitlements?select=product&limit=1"
+          echo "GET ${path} (hôte Supabase masqué)"
+
+          code=$(curl -sS --max-time 30 \
+            -o /tmp/keepalive-response.txt \
+            -w "%{http_code}" \
+            -H "apikey: ${SUPABASE_ANON_KEY}" \
+            -H "Authorization: Bearer ${SUPABASE_ANON_KEY}" \
+            "${base}${path}") || {
+              echo "::error::Échec de connexion à Supabase (curl n'a pas abouti)."
+              exit 1
+            }
+
+          echo "Statut HTTP : ${code}"
+
+          # 2xx = la base a répondu (même une liste vide [] via RLS compte comme
+          # une lecture réelle → projet gardé actif). Sinon, échec.
+          if [ "${code}" -ge 200 ] && [ "${code}" -lt 300 ]; then
+            echo "✅ Supabase keepalive OK — la base a été interrogée avec succès."
+          else
+            echo "::error::❌ Supabase keepalive en échec (HTTP ${code})."
+            echo "Réponse (diagnostic, sans clé) :"
+            cat /tmp/keepalive-response.txt || true
+            exit 1
+          fi
