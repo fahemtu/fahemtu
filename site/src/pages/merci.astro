@@ -1,0 +1,37 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+  title="Merci pour ton achat — Fahemtu"
+  description="Confirmation de ton achat Fahemtu. Ton accès arrive par email dans les prochaines minutes."
+  noindex={true}
+>
+  <article class="prose">
+    <h1>Merci pour ton achat</h1>
+    <p>Ton accès arrive par email dans les prochaines minutes.</p>
+    <p>
+      Pense à vérifier tes spams si tu ne le vois pas, et ajoute
+      <a href="mailto:hello@fahemtu.com">hello@fahemtu.com</a> à tes contacts pour
+      ne rien manquer.
+    </p>
+    <p>
+      Une question ? Écris-nous à
+      <a href="mailto:hello@fahemtu.com">hello@fahemtu.com</a>.
+    </p>
+  </article>
+</Layout>
+
+<style>
+  /* Reprise des réglages éditoriaux (/guides) + centrage sobre du bloc « Comment
+     ça marche » de /decouvrir. Aucun style nouveau. */
+  .prose {
+    max-width: 42rem;
+    margin: 0 auto;
+    text-align: center;
+  }
+  h1 {
+    font-size: clamp(1.9rem, 4.5vw, 2.6rem);
+    margin: 0 0 1.5rem;
+  }
+</style>
